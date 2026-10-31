@@ -1,6 +1,7 @@
 # SOURCE: notes2_nonlinear block 10 (page 11) - translational motion of the misaligned shuttle
 # DEPENDS: notes2_nonlinear_05
 # NOTE: prepends the subs(t=t2,%) version (block 05). Prepending the assume version (block 04) instead makes cmaple hang >500 s (slow). With block 05, Maple 2024 gives vx := 0. and rx := 0. (nested ints reusing t2); doc shows no output and says Maple cannot really solve this (too many nested numeric integrations)
+# KNOWN: k=19,20,24 - Maple returns 0. for these nested float ints (variable capture of t2); we keep the int unevaluated, as Maple does for exact input
 restart;
 FThrust:=13.8e6:
 mshuttle:=24000: mtank:=760000: mbooster:=400000-3500*t:

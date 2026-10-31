@@ -63,7 +63,7 @@ _FUNCS = {
     "sinh": sp.sinh, "cosh": sp.cosh, "tanh": sp.tanh, "sech": sp.sech, "csch": sp.csch,
     "coth": sp.coth, "arcsin": sp.asin, "arccos": sp.acos, "arcsinh": sp.asinh,
     "arccosh": sp.acosh, "arctanh": sp.atanh, "arccot": sp.acot, "arcsec": sp.asec,
-    "arccsc": sp.acsc, "exp": sp.exp, "ln": sp.log, "log": sp.log, "sqrt": sp.sqrt,
+    "arccsc": sp.acsc, "arccoth": sp.acoth, "csgn": lambda x: sp.sign(sp.re(x)), "exp": sp.exp, "ln": sp.log, "log": sp.log, "sqrt": sp.sqrt,
     "abs": sp.Abs, "signum": sp.sign, "Heaviside": sp.Heaviside, "Dirac": sp.DiracDelta,
     "floor": sp.floor, "ceil": sp.ceiling, "max": sp.Max, "min": sp.Min, "erf": sp.erf,
     "GAMMA": sp.gamma, "factorial": sp.factorial, "binomial": sp.binomial, "Re": sp.re,
@@ -201,6 +201,12 @@ def _value(e, pt):
     return v if math.isfinite(v.real) and math.isfinite(v.imag) else None
 
 
+def _term_scale(e, pt) -> float:
+    """Largest term of any sum in e: float results that cancel big terms are only good to REL_TOL of it."""
+    vals = (_value(t, pt) for n in sp.preorder_traversal(e) if isinstance(n, sp.Add) for t in n.args)
+    return max((abs(v) for v in vals if v is not None), default=0.0)
+
+
 def numeric_equal(a, b) -> bool | None:
     """True/False by evaluation at sample points; None when no point could be evaluated."""
     A, B = _opaque_map(a, b)
@@ -216,7 +222,15 @@ def numeric_equal(a, b) -> bool | None:
         if va is None or vb is None:
             continue
         if not close(va, vb):
-            return False
+            if not (has_float(A) or has_float(B)):
+                return False
+            global _scale
+            old, _scale = _scale, max(_scale, _term_scale(A, pt), _term_scale(B, pt))
+            try:
+                if not close(va, vb):
+                    return False
+            finally:
+                _scale = old
         good += 1
         if good == need:
             break
@@ -677,6 +691,9 @@ def compare_statement(golden: list[dict], ours: list[dict]) -> dict:
     O = [o for o in ours if o["kind"] != "warning"]
     if G and G[-1].get("truncated"):
         O = O[:len(G)]
+    # cmaple recovers after a syntax error and reports more; the GUI (and we) stop at the first
+    if G and O and G[0]["kind"] == O[0]["kind"] == "error" and "syntax error" in G[0]["text"]:
+        G, O = G[:1], O[:1]
     res = {"verdict": "pass", "subtype": None, "reason": None, "notes": notes}
     if len(G) != len(O):
         res.update(verdict="fail", subtype="count",

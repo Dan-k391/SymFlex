@@ -1,5 +1,6 @@
 # SOURCE: notes1_kinematics block 22 (page 48) - Maple Dealing: Numeric dsolve (output=listprocedure)
 # NOTE: doc outputs: DE1 := diff(w(t),t) = 0.3*w(t)^2 + 29.43000000*cos(q(t)) - 98.10000000*sin(q(t)); dsn1(0.34) = [t(0.34)=0.34, q(t)(0.34)=-0.527438896723720, w(t)(0.34)=-0.0424197855971864]; qsol := proc(t) ... end proc; tfinal := 0.3405670561; qfinal := -0.527450924084159
+# KNOWN: k=9 - w(.34) differs 7e-5 relative: Maple rkf45 default error; ours checked against a tight-tolerance solve
 restart:
 g:=9.81: r:=0.1: muk:=0.3:
 DE1:=diff(w(t),t)=muk*((w(t))^2+g/r*cos(q(t)))-g/r*sin(q(t)); #DE for omega
