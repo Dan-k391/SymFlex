@@ -10,3 +10,5 @@ __pycache__/
 .work/
 tests/out/
 public/examples.json
+docs/flexpde_help/
+corpus/text/

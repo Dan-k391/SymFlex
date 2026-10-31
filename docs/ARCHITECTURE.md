@@ -23,7 +23,7 @@ SymFlex/
   corpus/media, corpus/pages   reference images (Maple output images, PDF pages)
   scripts/           automation (extract, golden generation, bundling, test runners)
   tests/             test runners + unit tests
-  docs/flexpde_help/ decompiled FlexPDE 8 manual (HTML) — the syntax reference
+  docs/flexpde_help/ decompiled FlexPDE 8 manual (HTML, local only, not published) — the syntax reference
 ```
 
 ## Maple engine (Python, `py/symflex_maple`)
