@@ -1,0 +1,146 @@
+{
+ "case": "lab4/lab4_09",
+ "file": "corpus/cases/lab4/lab4_09.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "V0:=1",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "C:=1e-9",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "L:=100e-3",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "R:=100",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "f:=1e3",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "omega:=2*Pi*f",
+   "terminator": ";",
+   "line": 2,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omega := 6283.185308"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "omega0:=1/sqrt(L*C)",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omega0 := 100000.0000"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "omegar:=omega/omega0",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omegar := .6283185308e-1"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "Q:=sqrt(L/C)/R",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Q := 100.0000000"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "A0:=V0*C",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "A0 := .1e-8"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "H:=Q/sqrt(Q^2*(1-omegar^2)^2+omegar^2)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "H := 1.003963289"
+    }
+   ]
+  },
+  {
+   "k": 13,
+   "src": "phi:=arctan(omegar, (1-omegar^2)*Q)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "phi := .6308087807e-3"
+    }
+   ]
+  },
+  {
+   "k": 14,
+   "src": "qss:=H*A0*cos(omega*t-phi)",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "qss := .1003963289e-8*cos(6283.185308*t-.6308087807e-3)"
+    }
+   ]
+  }
+ ]
+}

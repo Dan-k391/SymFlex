@@ -1,0 +1,117 @@
+{
+ "case": "lab3/lab3_08",
+ "file": "corpus/cases/lab3/lab3_08.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "rho:=10",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "CD:=.8",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "A:=2",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "with(LinearAlgebra)",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "vvec:=<3,-2>",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "vwvec:=<2,0>",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "vrelvec:=vvec-vwvec",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vrelvec := Vector[column](2,{1 = 1, 2 = -2},datatype = anything,storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "vrel:=sqrt(vrelvec.vrelvec)",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vrel := 5^(1/2)"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "vrelhat:=vrelvec/vrel",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vrelhat := Vector[column](2,{1 = 1/5*5^(1/2), 2 = -2/5*5^(1/2)},datatype = anything,storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "FD:=.5*rho*CD*A*vrel^2*(-vrelhat)",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "FD := Vector[column](2,{1 = -8.000000000*5^(1/2), 2 = 16.00000000*5^(1/2)},datatype = anything,storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Vector[column](2,{1 = -17.88854382, 2 = 35.77708763},datatype = anything,storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  }
+ ]
+}

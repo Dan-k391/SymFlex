@@ -1,0 +1,86 @@
+{
+ "case": "notes5_energy_lagrange/notes5_energy_lagrange_06",
+ "file": "corpus/cases/notes5_energy_lagrange/notes5_energy_lagrange_06.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "g:=9.81",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "R:=.2",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "IG:=.156",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "h:=.03",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "m:=10",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "ConsAngMom:=IG*v2/R+m*v2*R=IG*v1/R+m*v1*(R-h)",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "ConsAngMom := 2.780000000*v2 = 2.480000000*v1"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "ConsEnergy:=-.5*(IG*(v2/R)^2+m*v2^2)=-m*g*h",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "ConsEnergy := -6.950000000*v2^2 = -2.9430"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "simplify(solve([ConsAngMom, ConsEnergy], [v1, v2]))",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "[[v1 = .7294505295, v2 = .6507328464], [v1 = -.7294505295, v2 = -.6507328464]]"
+    }
+   ]
+  }
+ ]
+}

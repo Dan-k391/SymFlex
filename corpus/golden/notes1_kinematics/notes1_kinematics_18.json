@@ -1,0 +1,82 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_18",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_18.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "int1:=simplify(int(exp(-2*mu_k*theta)*gr*(mu_k*cos(theta)-sin(theta)), theta))",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "C:=simplify(solve(0=subs(theta=Pi/2, int1)+C, C))",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "C := -3*gr*exp(-mu_k*Pi)*mu_k/(4*mu_k^2+1)"
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "src": "w:=simplify((int1+C)/exp(-2*mu_k*theta))",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "w := (-3*mu_k*exp(-mu_k*(Pi-2*theta))-2*cos(theta)*mu_k^2+3*mu_k*sin(theta)+cos(theta))*gr/(4*mu_k^2+1)"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "theta1:=fsolve(subs(mu_k=0.3, w/gr)=0, theta=-Pi/2..0)",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "theta1 := -.5274507695"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "0.7*cos(theta1)",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".6048650906"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "sin(-theta1)",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".5033322069"
+    }
+   ]
+  }
+ ]
+}

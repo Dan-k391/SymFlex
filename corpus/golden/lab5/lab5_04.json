@@ -1,0 +1,55 @@
+{
+ "case": "lab5/lab5_04",
+ "file": "corpus/cases/lab5/lab5_04.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "F:=100",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "k:=20",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "L:=3",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "m:=4",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "alpha:=-(3/m*F/2/L+15/4/m*k*theta)",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "alpha := -25/2-75/4*theta"
+    }
+   ]
+  }
+ ]
+}

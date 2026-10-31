@@ -1,0 +1,146 @@
+{
+ "case": "lab2/lab2_01",
+ "file": "corpus/cases/lab2/lab2_01.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "W:=300",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "T:=100",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "theta:=10*Pi/180",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "phi:=45*Pi/180",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "s:=5",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "Wx:=-300*sin(theta)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Wx := -300*sin(1/18*Pi)"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "Tx:=T*cos(phi)",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Tx := 50*2^(1/2)"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "WorkW:=Wx*s",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "WorkW := -1500*sin(1/18*Pi)"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "-260.4722666"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "WorkT:=Tx*s",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "WorkT := 250*2^(1/2)"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "353.5533905"
+    }
+   ]
+  },
+  {
+   "k": 13,
+   "src": "DeltaKE:=WorkW+WorkT",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "DeltaKE := -1500*sin(1/18*Pi)+250*2^(1/2)"
+    }
+   ]
+  },
+  {
+   "k": 14,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "93.0811239"
+    }
+   ]
+  }
+ ]
+}

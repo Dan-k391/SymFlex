@@ -1,0 +1,41 @@
+{
+ "case": "lab3/lab3_19",
+ "file": "corpus/cases/lab3/lab3_19.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "rhof:=1200",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "Area:=.01",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "b:=.5*rhof*5*Area",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "b := 30.000"
+    }
+   ]
+  }
+ ]
+}

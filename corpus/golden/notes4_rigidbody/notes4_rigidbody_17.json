@@ -1,0 +1,125 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_17",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_17.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "IG:=1/12*m*L^2",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "at:=L/2*alpha",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "at := 1/2*L*alpha"
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "src": "an:=(omega(theta))^2*L/2",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "an := 1/2*omega(theta)^2*L"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "DE1:=L/2*m*g*cos(theta) = IG*alpha + m*L/2*at",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "DE1 := 1/2*L*m*g*cos(theta) = 1/3*m*L^2*alpha"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "alpha:=solve(DE1, alpha)",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "alpha := 3/2/L*g*cos(theta)"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "DE2:= alpha = omega(theta)*D[1](omega)(theta)",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "DE2 := 3/2/L*g*cos(theta) = omega(theta)*D(omega)(theta)"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "dsolve([DE2, omega(0)=0])",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omega(theta) = 1/L*3^(1/2)*(L*g*sin(theta))^(1/2), omega(theta) = -1/L*3^(1/2)*(L*g*sin(theta))^(1/2)"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "assign(%[1])",
+   "terminator": ";",
+   "line": 11,
+   "outputs": []
+  },
+  {
+   "k": 10,
+   "src": "An := m*g*sin(theta)+m*an",
+   "terminator": ";",
+   "line": 12,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "An := 5/2*m*g*sin(theta)"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "At :=-m*g*cos(theta)+m*at",
+   "terminator": ";",
+   "line": 13,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "At := -1/4*m*g*cos(theta)"
+    }
+   ]
+  }
+ ]
+}

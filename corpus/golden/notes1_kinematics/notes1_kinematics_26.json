@@ -1,0 +1,53 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_26",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_26.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ";",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "p_eqn:=M*vi=M*vf1+m*vf2",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "E_eqn:=M*vi^2=M*vf1^2+m*vf2^2",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "solve({p_eqn,E_eqn}, [vf1,vf2])",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "[[vf1 = vi, vf2 = 0], [vf1 = vi*(M-m)/(M+m), vf2 = 2*M*vi/(M+m)]]"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "subs(m=M/2, %)",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "[[vf1 = vi, vf2 = 0], [vf1 = 1/3*vi, vf2 = 4/3*vi]]"
+    }
+   ]
+  }
+ ]
+}

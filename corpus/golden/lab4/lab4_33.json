@@ -1,0 +1,211 @@
+{
+ "case": "lab4/lab4_33",
+ "file": "corpus/cases/lab4/lab4_33.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "with(VectorCalculus)",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "BasisFormat(false)",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "R90:=Matrix([[0, -1], [1, 0]])",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "rPC:=12/100",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "rOP:=5/100",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "theta:=1200*2*Pi/60*t",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "phi:=arcsin(rOP/rPC*sin(theta))",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 9,
+   "src": "rOPvec:=rOP*<sin(theta), cos(theta)>",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 10,
+   "src": "rPCvec:=rPC*<-sin(phi), cos(phi)>",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 11,
+   "src": "omegaOP:=-diff(theta,t)",
+   "terminator": ":",
+   "line": 8,
+   "outputs": []
+  },
+  {
+   "k": 12,
+   "src": "vOP:=diff(rOPvec,t)",
+   "terminator": ":",
+   "line": 9,
+   "outputs": []
+  },
+  {
+   "k": 13,
+   "src": "vPC:=diff(rPCvec,t)",
+   "terminator": ":",
+   "line": 9,
+   "outputs": []
+  },
+  {
+   "k": 14,
+   "src": "aOP:=diff(vOP,t)",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "aOP := Vector[column](2,{1 = -80*Pi^2*sin(40*Pi*t), 2 = -80*Pi^2*cos(40*Pi*t)},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 15,
+   "src": "aPC:=diff(vPC,t)",
+   "terminator": ";",
+   "line": 11,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "aPC := Vector[column](2,{1 = 80*Pi^2*sin(40*Pi*t), 2 = -10000/(144-25*sin(40*Pi*t)^2)^(3/2)*sin(40*Pi*t)^2*Pi^2*cos(40*Pi*t)^2-400/(144-25*sin(40*Pi*t)^2)^(1/2)*Pi^2*cos(40*Pi*t)^2+400/(144-25*sin(40*Pi*t)^2)^(1/2)*sin(40*Pi*t)^2*Pi^2},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 16,
+   "src": "aP:=aOP",
+   "terminator": ":",
+   "line": 12,
+   "outputs": []
+  },
+  {
+   "k": 17,
+   "src": "aC:=aP+aPC",
+   "terminator": ":",
+   "line": 12,
+   "outputs": []
+  },
+  {
+   "k": 18,
+   "src": "T:=2*Pi/abs(omegaOP)",
+   "terminator": ":",
+   "line": 12,
+   "outputs": []
+  },
+  {
+   "k": 19,
+   "src": "rD:=rOPvec+rPCvec/2",
+   "terminator": ":",
+   "line": 13,
+   "outputs": []
+  },
+  {
+   "k": 20,
+   "src": "aD:=diff(rD,t,t)",
+   "terminator": ";",
+   "line": 13,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "aD := Vector[column](2,{1 = -40*Pi^2*sin(40*Pi*t), 2 = -80*Pi^2*cos(40*Pi*t)-5000/(144-25*sin(40*Pi*t)^2)^(3/2)*sin(40*Pi*t)^2*Pi^2*cos(40*Pi*t)^2-200/(144-25*sin(40*Pi*t)^2)^(1/2)*Pi^2*cos(40*Pi*t)^2+200/(144-25*sin(40*Pi*t)^2)^(1/2)*sin(40*Pi*t)^2*Pi^2},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 21,
+   "src": "simplify(subs(t=0, aD))",
+   "terminator": ";",
+   "line": 14,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Vector[column](2,{2 = -290/3*Pi^2},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 22,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 14,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Vector[column](2,{2 = -954.0617591},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 23,
+   "src": "aDy:=-(-40*Pi)^2*rOP-(50*Pi/3)^2*rPC/2",
+   "terminator": ";",
+   "line": 16,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "aDy := -290/3*Pi^2"
+    }
+   ]
+  },
+  {
+   "k": 24,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 16,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "-954.0617591"
+    }
+   ]
+  }
+ ]
+}

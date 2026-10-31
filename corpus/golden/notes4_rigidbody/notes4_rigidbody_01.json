@@ -1,0 +1,79 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_01",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_01.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "OA:=2",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "OB:=1",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "ang:=Pi/6",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "coslaw:=sqrt(OA^2+OB^2-2*OA*OB*cos(theta))",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "s30:=evalf(subs(theta=ang, coslaw))",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "s30 := 1.239313675"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "thetadot:=solve(2*s*sdot=2*OA*OB*sin(theta)*thetadot, thetadot)",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "thetadot := 1/2*s*sdot/sin(theta)"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "thetadot30:=evalf(subs([theta=ang, s=s30, sdot=.5], thetadot))",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "thetadot30 := .6196568373"
+    }
+   ]
+  }
+ ]
+}

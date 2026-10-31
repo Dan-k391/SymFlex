@@ -1,0 +1,39 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_11",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_11.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "sum(1/n, n=1..5)",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "137/60"
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "src": "product(n, n=1..5)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "120"
+    }
+   ]
+  }
+ ]
+}

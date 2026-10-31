@@ -1,0 +1,32 @@
+{
+ "case": "lab3/lab3_23",
+ "file": "corpus/cases/lab3/lab3_23.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "1-.223511",
+   "terminator": ";",
+   "line": 2,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".776489"
+    }
+   ]
+  },
+  {
+   "k": 2,
+   "src": "(.223511-.050007)/.223511",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".7762660451"
+    }
+   ]
+  }
+ ]
+}

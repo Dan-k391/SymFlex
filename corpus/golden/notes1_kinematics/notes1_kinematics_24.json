@@ -1,0 +1,75 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_24",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_24.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "e2:=(vB2-v)/(v-vB1)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "e2 := (vB2-v)/(v-vB1)"
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "src": "e1:=(v-vA2)/(vA1-v)",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "e1 := (v-vA2)/(vA1-v)"
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "src": "solve(e1=e2,v)",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "(vA1*vB2-vA2*vB1)/(vA1-vA2-vB1+vB2)"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "subs(v=%, e1)",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "((vA1*vB2-vA2*vB1)/(vA1-vA2-vB1+vB2)-vA2)/(vA1-(vA1*vB2-vA2*vB1)/(vA1-vA2-vB1+vB2))"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "simplify(%)",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "(-vA2+vB2)/(vA1-vB1)"
+    }
+   ]
+  }
+ ]
+}

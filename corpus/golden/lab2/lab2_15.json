@@ -1,0 +1,93 @@
+{
+ "case": "lab2/lab2_15",
+ "file": "corpus/cases/lab2/lab2_15.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "h:=220840",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "G:=6.674e-11",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "mEarth:=5.97e24",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "rEarth:=6371e3",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "rrel:=rEarth+h",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "gtrue:=G*mEarth/rrel^2",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "gtrue := 9.169533015"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "gsurface:=9.81",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 9,
+   "src": "Deltag:=gsurface-gtrue",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Deltag := .640466985"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "gFraction:=gtrue/gsurface",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "gFraction := .9347128456"
+    }
+   ]
+  }
+ ]
+}

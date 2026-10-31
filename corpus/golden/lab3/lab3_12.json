@@ -1,0 +1,20 @@
+{
+ "case": "lab3/lab3_12",
+ "file": "corpus/cases/lab3/lab3_12.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "T=2*3.14159/sqrt(500/5)",
+   "terminator": ";",
+   "line": 2,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "T = .6283180000"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,82 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_01",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_01.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ";",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "x=5",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "x = 5"
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "src": "x+3",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "x+3"
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "src": "x:=5",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "x := 5"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "x+3",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "8"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "x:=7",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "x+3",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "10"
+    }
+   ]
+  }
+ ]
+}

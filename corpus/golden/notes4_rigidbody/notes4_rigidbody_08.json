@@ -1,0 +1,154 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_08",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_08.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "with(LinearAlgebra)",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "deg2rad:=3.14159/180",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "theta:=13.6*deg2rad",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "phi:=45*deg2rad",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "rAB:=.25",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "rBC:=.75",
+   "terminator": ":",
+   "line": 8,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "rABVec:=rAB*<-sin(phi), cos(phi),0>",
+   "terminator": ":",
+   "line": 9,
+   "outputs": []
+  },
+  {
+   "k": 9,
+   "src": "rBCVec:=rBC*<sin(theta), cos(theta),0>",
+   "terminator": ":",
+   "line": 10,
+   "outputs": []
+  },
+  {
+   "k": 10,
+   "src": "omegaAB:=10",
+   "terminator": ":",
+   "line": 11,
+   "outputs": []
+  },
+  {
+   "k": 11,
+   "src": "omegaABVec:=<0,0,-omegaAB>",
+   "terminator": ":",
+   "line": 11,
+   "outputs": []
+  },
+  {
+   "k": 12,
+   "src": "vB:=omegaABVec &x rABVec",
+   "terminator": ":",
+   "line": 12,
+   "outputs": []
+  },
+  {
+   "k": 13,
+   "src": "omegaBC:=rAB/rBC*(cos(phi)/cos(theta))*omegaAB",
+   "terminator": ";",
+   "line": 13,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omegaBC := 2.425019164"
+    }
+   ]
+  },
+  {
+   "k": 14,
+   "src": "omegaBCVec:=<0,0,omegaBC>",
+   "terminator": ":",
+   "line": 14,
+   "outputs": []
+  },
+  {
+   "k": 15,
+   "src": "alphaAB:=20",
+   "terminator": ":",
+   "line": 16,
+   "outputs": []
+  },
+  {
+   "k": 16,
+   "src": "aBVec:=<0,0,-alphaAB> &x rABVec - omegaAB^2*rABVec",
+   "terminator": ";",
+   "line": 17,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "aBVec := Vector[column](3,{1 = 21.2131940560000, 2 = -14.1421496940000},datatype = float[8],storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 17,
+   "src": "alphaBC:=solve(\ncos(phi)/rBC*(-alphaAB)-sin(phi)/rBC*(omegaAB)^2\n=cos(theta)/rAB*(-alphaBC)-sin(theta)/rAB*(omegaBC)^2)",
+   "terminator": ";",
+   "line": 18,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "alphaBC := 27.67750365"
+    }
+   ]
+  },
+  {
+   "k": 18,
+   "src": "aCVec:=aBVec + <0,0,alphaBC> &x rBCVec - omegaBC^2*rBCVec",
+   "terminator": ";",
+   "line": 21,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "aCVec := Vector[column](3,{1 = -.213368589463414e-8, 2 = -13.5479152995046},datatype = float[8],storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  }
+ ]
+}

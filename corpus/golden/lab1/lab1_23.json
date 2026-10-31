@@ -1,0 +1,220 @@
+{
+ "case": "lab1/lab1_23",
+ "file": "corpus/cases/lab1/lab1_23.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "with(VectorCalculus)",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "BasisFormat(false)",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "rho:=2",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "m:=1e-3",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "q1q2:=-3*3e-9",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "ke:=8.99e9",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "FC:=abs(ke*q1q2/rho^2)",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "FC := 20.22750000"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "an:=FC/m",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "an := 20227.50000"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "at:=0",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "at := 0"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "v:=sqrt(rho*an)",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "v := 201.1342835"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "omega:=v/rho",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 13,
+   "src": "rvec:=rho*<cos(omega*t),sin(omega*t)>",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "rvec := Vector[column](2,{1 = 2*cos(100.5671418*t), 2 = 2*sin(100.5671418*t)},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 14,
+   "src": "vvec:=diff(rvec,t)",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vvec := Vector[column](2,{1 = -201.1342836*sin(100.5671418*t), 2 = 201.1342836*cos(100.5671418*t)},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 15,
+   "src": "avec:=diff(vvec,t)",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "avec := Vector[column](2,{1 = -20227.50002*cos(100.5671418*t), 2 = -20227.50002*sin(100.5671418*t)},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 16,
+   "src": "ut:=Normalize(vvec)",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "ut := Vector[column](2,{1 = -1.000000000*sin(100.5671418*t), 2 = 1.*cos(100.5671418*t)},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 17,
+   "src": "atvec:=(avec.ut)*ut",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "atvec := Vector[column](2,{},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 18,
+   "src": "anvec:=avec-atvec",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "anvec := Vector[column](2,{1 = -20227.50002*cos(100.5671418*t), 2 = -20227.50002*sin(100.5671418*t)},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 19,
+   "src": "un:=Normalize(anvec)",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "un := Vector[column](2,{1 = -1.000000000*cos(100.5671418*t), 2 = -1.000000000*sin(100.5671418*t)},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 20,
+   "src": "diff(ut,t)",
+   "terminator": ";",
+   "line": 13,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Vector[column](2,{1 = -100.5671418*cos(100.5671418*t), 2 = -100.5671418*sin(100.5671418*t)},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 21,
+   "src": "un*v/rho",
+   "terminator": ";",
+   "line": 14,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Vector[column](2,{1 = -100.5671418*cos(100.5671418*t), 2 = -100.5671418*sin(100.5671418*t)},datatype = anything,storage = rectangular,order = Fortran_order,attributes = [coords = cartesian],shape = [])"
+    }
+   ]
+  }
+ ]
+}

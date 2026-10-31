@@ -1,0 +1,124 @@
+{
+ "case": "lab1/lab1_02",
+ "file": "corpus/cases/lab1/lab1_02.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "m:=40",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "P:=400",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "mu_k:=0.3",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "theta:=15*Pi/180",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "g:=9.81",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "W:=m*g",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "W := 392.40"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "ff:=mu_k*N",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 9,
+   "src": "solve([\nP*cos(Pi/6)-ff-W*sin(theta)=m*ax,\nP*sin(Pi/6)+N-W*cos(theta)=0])",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{N = 179.0292942, ax = 4.778519499}"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "assign(%)",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 11,
+   "src": "vx:=int(ax, t=0..t)",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vx := 4.778519499*t"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "x:=int(vx, t=0..t)",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "x := 2.389259750*t^2"
+    }
+   ]
+  },
+  {
+   "k": 13,
+   "src": "x_at_3s:=subs(t=3, x)",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "x_at_3s := 21.50333775"
+    }
+   ]
+  }
+ ]
+}

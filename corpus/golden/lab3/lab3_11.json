@@ -1,0 +1,63 @@
+{
+ "case": "lab3/lab3_11",
+ "file": "corpus/cases/lab3/lab3_11.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "KE:=.5*5*1^2",
+   "terminator": ";",
+   "line": 2,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "KE := 2.5"
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "src": "omega:=sqrt(2*KE/(5*.05^2))",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omega := 20.00000000"
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "src": "T:=2*3.14159/omega",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "T := .3141590000"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "T/4",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".7853975000e-1"
+    }
+   ]
+  }
+ ]
+}

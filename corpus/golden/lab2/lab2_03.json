@@ -1,0 +1,108 @@
+{
+ "case": "lab2/lab2_03",
+ "file": "corpus/cases/lab2/lab2_03.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "G:=6.674e-11",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "M:=5.976e24",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "vA:=40e6/3600",
+   "terminator": ";",
+   "line": 2,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vA := 11111.11111"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "UA:=-G*M*m/20e6",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "UA := -19941912.00*m"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "UB:=-G*M*m/80e6",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "UB := -4985478.000*m"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "KEA:=.5*m*vA^2",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "KEB:=solve(KEA+UA=KEB+UB, KEB)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "KEB := 46771961.05*m"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "vB:=simplify(sqrt(2*KEB/m))",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vB := 9671.810694"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "vB_metres_per_hour:=vB*3600",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vB_metres_per_hour := 34818518.50"
+    }
+   ]
+  }
+ ]
+}

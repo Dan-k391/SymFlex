@@ -1,0 +1,134 @@
+{
+ "case": "notes3_damped/notes3_damped_12",
+ "file": "corpus/cases/notes3_damped/notes3_damped_12.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ";",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "omega0:=10",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "x0:=1",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "zeta:=1/16",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "ode:= diff(x(t), t,t)+2*zeta*omega0*diff(x(t),t)\n+omega0^2*x(t)=x0*omega0^2*sin(omega*t)",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "ics:=x(0)=0, D(x)(0)=0",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "ics := x(0) = 0, D(x)(0) = 0"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "dsolve({ode, ics})",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "x(t) = (512*exp(-5/8*t)*(omega^2-3175/32)*255^(1/2)*omega*sin(5/8*255^(1/2)*t)-81600*sin(omega*t)*omega^2+102000*exp(-5/8*t)*cos(5/8*255^(1/2)*t)*omega-102000*omega*cos(omega*t)+8160000*sin(omega*t))/(816*omega^4-161925*omega^2+8160000)"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "x:=rhs(%)",
+   "terminator": ":",
+   "line": 9,
+   "outputs": []
+  },
+  {
+   "k": 9,
+   "src": "omega_d:=evalf(omega0*sqrt(1-zeta^2))",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omega_d := 9.980449638"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "omega_max:=evalf(omega0*sqrt(1-2*zeta^2))",
+   "terminator": ";",
+   "line": 11,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omega_max := 9.960860906"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "evalf(subs(omega=omega0,x))",
+   "terminator": ";",
+   "line": 12,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".5009794328*exp(-.6250000000*t)*sin(9.980449638*t)+8.*exp(-.6250000000*t)*cos(9.980449638*t)-8.*cos(10.*t)"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "evalf(subs(omega=omega_d, x))",
+   "terminator": ";",
+   "line": 13,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".2507345627*exp(-.6250000000*t)*sin(9.980449638*t)+.2507345913*sin(9.980449638*t)+8.007820173*exp(-.6250000000*t)*cos(9.980449638*t)-8.007820173*cos(9.980449638*t)"
+    }
+   ]
+  },
+  {
+   "k": 13,
+   "src": "evalf(subs(omega=omega_max, x))",
+   "terminator": ";",
+   "line": 14,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "-.6412487437e-8*exp(-.6250000000*t)*sin(9.980449638*t)+.5019607927*sin(9.960860906*t)+7.999938489*exp(-.6250000000*t)*cos(9.980449638*t)-7.999938489*cos(9.960860906*t)"
+    }
+   ]
+  }
+ ]
+}

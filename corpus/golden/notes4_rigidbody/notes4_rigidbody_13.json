@@ -1,0 +1,103 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_13",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_13.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "k:=.6",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "w:=50",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "g:=32.2",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "rG:=.5",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "m:=w/g",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "m := 1.552795031"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "IG:=m*k^2",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "IG := .5590062112"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "omega:=0",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omega := 0"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "solve([\nOn = m*omega^2*rG,\nw-Ot = m*rG*alpha,\nrG*Ot = IG*alpha])",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{On = 0., Ot = 29.50819672, alpha = 26.39344262}"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "solve([\nOn = m*omega^2*rG,\nw-Ot = m*rG*alpha,\nrG*w = (IG+m*rG^2)*alpha])",
+   "terminator": ";",
+   "line": 12,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{On = 0., Ot = 29.50819672, alpha = 26.39344262}"
+    }
+   ]
+  }
+ ]
+}

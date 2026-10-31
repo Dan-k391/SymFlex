@@ -1,0 +1,53 @@
+{
+ "case": "lab4/lab4_26",
+ "file": "corpus/cases/lab4/lab4_26.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "rOP:=5/100",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "wOP:=-40*Pi",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "vP0:=-wOP*rOP",
+   "terminator": ";",
+   "line": 2,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vP0 := 2*Pi"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "vD0:=(vP0+0)/2",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vD0 := Pi"
+    }
+   ]
+  }
+ ]
+}

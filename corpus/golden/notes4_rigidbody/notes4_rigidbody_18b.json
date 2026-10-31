@@ -1,0 +1,72 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_18b",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_18b.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "m:=8",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "k:=.35",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "IG:=k^2*m",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "IG := .9800"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "g:=9.81",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "IIC:=m*.5^2+IG",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "IIC := 2.9800"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "solve(.5*78.48-(.5+.2)*100=IIC*alpha)",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "-10.32214765"
+    }
+   ]
+  }
+ ]
+}

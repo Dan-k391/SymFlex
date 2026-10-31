@@ -1,0 +1,141 @@
+{
+ "case": "lab4/lab4_10",
+ "file": "corpus/cases/lab4/lab4_10.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "m:=12",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "L:=.6",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "k:=3e3",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "b:=200",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "F0:=30",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "omega:=6",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "omega0:=sqrt(k/m)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omega0 := 15.81138830"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "Q:=omega0/(b/m)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Q := .9486832980"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "Q2:=sqrt(m*k)/b",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Q2 := .9486832980"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "wr:=omega/omega0",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "wr := .3794733192"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "q0:=6/(m*L)*F0/omega0^2",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "q0 := .1000000000"
+    }
+   ]
+  },
+  {
+   "k": 13,
+   "src": "H:=Q/sqrt(Q^2*(1-wr^2)^2+wr^2)",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "H := 1.058372327"
+    }
+   ]
+  },
+  {
+   "k": 14,
+   "src": "qss:=q0*H",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "qss := .1058372327"
+    }
+   ]
+  }
+ ]
+}

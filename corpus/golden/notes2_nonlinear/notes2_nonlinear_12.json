@@ -1,0 +1,1 @@
+{"case": "notes2_nonlinear/notes2_nonlinear_12", "file": "corpus/cases/notes2_nonlinear/notes2_nonlinear_12.pde", "status": "error", "errors": ["Line 26 Col 10: Undefined Name: MBMTOTAL"], "title": "RocketMisaligned", "end_time": null, "halted": false, "reports": [], "history": [], "fields": {}}

@@ -1,0 +1,135 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_02",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_02.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "lam1:=(s(t))=sqrt(2^2+1^2-2*2*1*cos(theta(t)))",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "lam1 := s(t) = (5-4*cos(theta(t)))^(1/2)"
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "src": "diff(lam1, t)",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "diff(s(t),t) = 2/(5-4*cos(theta(t)))^(1/2)*diff(theta(t),t)*sin(theta(t))"
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "src": "omega(t):=subs(diff(s(t),t)=.5, solve(%, diff(theta(t),t)))",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omega(t) := .2500000000*(5-4*cos(theta(t)))^(1/2)/sin(theta(t))"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "s30:=solve(subs(theta(t)=30*Pi/180, lam1), s(t))",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "s30 := (5-4*cos(1/6*Pi))^(1/2)"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "1.239313675"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "omega30:=subs([theta(t)=30*Pi/180], omega(t))",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omega30 := .2500000000*(5-4*cos(1/6*Pi))^(1/2)/sin(1/6*Pi)"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".6196568375"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "alpha(t):=diff(omega(t),t)",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "alpha(t) := .5000000000/(5-4*cos(theta(t)))^(1/2)*diff(theta(t),t)-.2500000000*(5-4*cos(theta(t)))^(1/2)/sin(theta(t))^2*diff(theta(t),t)*cos(theta(t))"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "alpha30:=subs([theta(t)=30*Pi/180, diff(theta(t),t)=omega30],\nalpha(t))",
+   "terminator": ";",
+   "line": 11,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "alpha30 := .2500000000/(5-4*cos(1/6*Pi))^(1/2)*(5-2*3^(1/2))^(1/2)-.1250000000*(5-4*cos(1/6*Pi))^(1/2)/sin(1/6*Pi)^2*(5-2*3^(1/2))^(1/2)*cos(1/6*Pi)"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 12,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "-.4150635092"
+    }
+   ]
+  }
+ ]
+}

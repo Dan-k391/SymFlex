@@ -1,0 +1,58 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_05",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_05.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "yA:=1/5*cos(Pi/4)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "yA := 1/10*2^(1/2)"
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "src": "vA:=2",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "vB:=5/sqrt(1-(5*yA)^2)*(yA*vA)",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vB := 2"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "2."
+    }
+   ]
+  }
+ ]
+}

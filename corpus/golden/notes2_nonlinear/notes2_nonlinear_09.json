@@ -1,0 +1,15 @@
+{
+ "case": "notes2_nonlinear/notes2_nonlinear_09",
+ "file": "corpus/cases/notes2_nonlinear/notes2_nonlinear_09.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "mbooster:=piecewise(t<60, 400000-3500*t, t>=60, 0)",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  }
+ ]
+}

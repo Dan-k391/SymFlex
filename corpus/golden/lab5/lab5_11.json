@@ -1,0 +1,113 @@
+{
+ "case": "lab5/lab5_11",
+ "file": "corpus/cases/lab5/lab5_11.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "r:=.25",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "L:=1",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "omega:=2*Pi",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "theta:=omega*t",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "phi:=arcsin(r/L*sin(theta))",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "omegaBC:=diff(-phi,t)",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "alphaBC:=diff(omegaBC,t)",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 9,
+   "src": "alpha:=diff(omega,t)",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 10,
+   "src": "xC:=r*cos(theta)+L*cos(phi)",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 11,
+   "src": "vCx:=diff(xC,t)",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 12,
+   "src": "aCx:=diff(vCx,t)",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 13,
+   "src": "xD:=r*cos(theta)+L/2*cos(phi)",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 14,
+   "src": "vDx:=diff(xD,t)",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 15,
+   "src": "aDx:=diff(vDx,t)",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  }
+ ]
+}

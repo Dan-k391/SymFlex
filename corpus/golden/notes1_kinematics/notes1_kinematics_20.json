@@ -1,0 +1,68 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_20",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_20.mpl",
+ "maple": "2024",
+ "status": "timeout",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "g:=9.81",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "r:=0.1",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "muk:=0.3",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "DE:=diff(q(t),t,t)=muk*((diff(q(t),t))^2+g/r*cos(q(t))-g/r*sin(q(t)))",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "DE := diff(q(t),t $ 2) = .3*diff(q(t),t)^2+29.43000000*cos(q(t))-29.43000000*sin(q(t))"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "ICs:=[q(0)=Pi/2, D(q)(0)=0]",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "ICs := [q(0) = 1/2*Pi, D(q)(0) = 0]"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "dsolve({DE, op(ICs)})",
+   "terminator": ";",
+   "line": 7,
+   "outputs": []
+  }
+ ],
+ "tail": "@@STMT 1\r\n@@STMT 2\r\n@@STMT 3\r\n@@STMT 4\r\n@@STMT 5\r\nDE := diff(q(t),t $ 2) = .3*diff(q(t),t)^2+29.43000000*cos(q(t))-29.43000000*sin(q(t))\r\n@@STMT 6\r\nICs := [q(0) = 1/2*Pi, D(q)(0) = 0]\r\n@@STMT 7\r\n"
+}

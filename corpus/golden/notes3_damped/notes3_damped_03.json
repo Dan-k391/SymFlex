@@ -1,0 +1,97 @@
+{
+ "case": "notes3_damped/notes3_damped_03",
+ "file": "corpus/cases/notes3_damped/notes3_damped_03.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ";",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "m:=1",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "k:=1",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "x0:=1",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "ode:= m*diff(x(t), t,t)+b*diff(x(t),t)+k*x(t)=0",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "ode := diff(x(t),t $ 2)+b*diff(x(t),t)+x(t) = 0"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "ics:= x(0)=x0, D(x)(0)=0",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "ics := x(0) = 1, D(x)(0) = 0"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "assign(dsolve(subs([x=overdamped, b=4], {ode, ics})))",
+   "terminator": ";",
+   "line": 9,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "assign(dsolve(subs([x=critdamped, b=2], {ode, ics})))",
+   "terminator": ";",
+   "line": 10,
+   "outputs": []
+  },
+  {
+   "k": 9,
+   "src": "assign(dsolve(subs([x=underdamped,b=1], {ode, ics})))",
+   "terminator": ";",
+   "line": 11,
+   "outputs": []
+  },
+  {
+   "k": 10,
+   "src": "plot([overdamped(t), critdamped(t), underdamped(t)], t=0..20, , legend =\n[\"overdamped\", \"critdamped\", \"underdamped\"])",
+   "terminator": ";",
+   "line": 12,
+   "outputs": [
+    {
+     "kind": "error",
+     "text": "Error, syntax error, `,` unexpected:"
+    },
+    {
+     "kind": "error",
+     "text": "Error, syntax error, `)` unexpected:"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+{
+ "case": "lab1/lab1_01",
+ "file": "corpus/cases/lab1/lab1_01.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "T:=74",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "FNetx:=T-FA",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "FNetx := 74-FA"
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "src": "solve([FNetx=0])",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{FA = 74}"
+    }
+   ]
+  }
+ ]
+}

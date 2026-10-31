@@ -1,0 +1,27 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_04",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_04.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "solve([\nvBx=omega*0.2/sqrt(2),\n0=-2+omega*0.2/sqrt(2)])",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{omega = 14.14213562, vBx = 2.}"
+    }
+   ]
+  }
+ ]
+}

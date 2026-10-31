@@ -1,0 +1,115 @@
+{
+ "case": "notes5_energy_lagrange/notes5_energy_lagrange_02",
+ "file": "corpus/cases/notes5_energy_lagrange/notes5_energy_lagrange_02.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "m:=10",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "g:=9.81",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "deltaH:=.4-(0.4/sqrt(2.))",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "deltaH := .1171572874"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "WG:=m*g*deltaH",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "WG := 11.49312989"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "P:=50",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "WP:=50*.8/sqrt(2.)",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "WP := 28.28427126"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "vG:=.4*omega",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 9,
+   "src": "IG:=1/12*m*.8^2",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "IG := .5333333333"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "T:=.5*(m*vG^2+IG*omega^2)",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "T := 1.066666667*omega^2"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "solve(T=WP+WG)",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "6.106661409, -6.106661409"
+    }
+   ]
+  }
+ ]
+}

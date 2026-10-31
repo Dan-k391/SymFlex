@@ -1,0 +1,157 @@
+{
+ "case": "lab5/lab5_27",
+ "file": "corpus/cases/lab5/lab5_27.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "R:=.2",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "m:=5",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "kG:=.15",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "IG:=m*kG^2",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "h:=.03",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "v1:=3",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "w1:=v1/R",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 9,
+   "src": "w2:=v2/R",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 10,
+   "src": "w3:=v3/R",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 11,
+   "src": "HC1:=(R-h)*m*v1+IG*w1",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "HC1 := 4.237500000"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "HC2:=R*m*v2+IG*w2",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "HC2 := 1.562500000*v2"
+    }
+   ]
+  },
+  {
+   "k": 13,
+   "src": "v2:=solve(HC1=HC2)",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "v2 := 2.712000000"
+    }
+   ]
+  },
+  {
+   "k": 14,
+   "src": "T2:=1/2*(m*v2^2+IG*w2^2)",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "T2 := 28.73025000"
+    }
+   ]
+  },
+  {
+   "k": 15,
+   "src": "T3:=1/2*(m*v3^2+IG*w3^2)",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "T3 := 3.906250000*v3^2"
+    }
+   ]
+  },
+  {
+   "k": 16,
+   "src": "g:=9.81",
+   "terminator": ":",
+   "line": 9,
+   "outputs": []
+  },
+  {
+   "k": 17,
+   "src": "solve([T2=T3+m*g*h, v3>0])",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{v3 = 2.641635857}"
+    }
+   ]
+  }
+ ]
+}

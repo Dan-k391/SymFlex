@@ -1,0 +1,124 @@
+{
+ "case": "lab5/lab5_24",
+ "file": "corpus/cases/lab5/lab5_24.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "IA:=.4",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "m:=6",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "R:=.2",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "omega:=vB/R",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "HA:=IA*omega",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "HB:=R*m*vB",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "Htotal:=HA+HB",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Htotal := 3.200000000*vB"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "H0:=subs(vB=2, Htotal)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "H0 := 6.400000000"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "torque:=m*9.81*R - 5",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "torque := 6.772"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "AngImp:=torque*3",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "AngImp := 20.316"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "H3:=H0+AngImp",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 13,
+   "src": "v3:=solve(H3=Htotal)",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "v3 := 8.348750000"
+    }
+   ]
+  }
+ ]
+}

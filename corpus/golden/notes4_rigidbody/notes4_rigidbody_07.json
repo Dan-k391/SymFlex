@@ -1,0 +1,86 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_07",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_07.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "deg2rad:=3.14159/180",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "rBC:=.75",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "vB:=.25*10",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vB := 2.50"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "ic:=45*deg2rad",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "c:=(90-13.6)*deg2rad",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "b:=3.14159-ic-c",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "b/deg2rad",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "58.60000001"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "solve([\nrBIC/sin(c)=rBC/sin(ic),\nrCIC/sin(b)=rBC/sin(ic),\nvB=omegaBC*rBIC,\nvC=omegaBC*rCIC\n])",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{omegaBC = 2.425016726, rBIC = 1.030920724, rCIC = .9053274586, vC = 2.195434230}"
+    }
+   ]
+  }
+ ]
+}

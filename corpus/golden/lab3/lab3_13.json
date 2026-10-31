@@ -1,0 +1,27 @@
+{
+ "case": "lab3/lab3_13",
+ "file": "corpus/cases/lab3/lab3_13.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "A=evalf(sqrt(2*100/500))",
+   "terminator": ";",
+   "line": 2,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "A = .6324555320"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_14",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_14.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "simplify(int(exp(-2*mu_k*theta)*gr*(mu_k*cos(theta)-sin(theta)), theta))",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "-gr*exp(-2*mu_k*theta)*(2*cos(theta)*mu_k^2-3*mu_k*sin(theta)-cos(theta))/(4*mu_k^2+1)"
+    }
+   ]
+  }
+ ]
+}

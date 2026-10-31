@@ -1,0 +1,139 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_08",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_08.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ";",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "Eqn1:=x^2+3*x*y=0",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "Eqn2:=y-2*x = 7",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "solve([Eqn1, Eqn2])",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{x = 0, y = 7}, {x = -3, y = 1}"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "solve([Eqn1, Eqn2], [x,y])",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "[[x = 0, y = 7], [x = -3, y = 1]]"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "solve(Eqn2, x)",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "1/2*y-7/2"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "Eqn3:=z*2+x*y-y^2=1",
+   "terminator": ":",
+   "line": 8,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "solve([Eqn2, Eqn3], [x,z])",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "[[x = 1/2*y-7/2, z = 1/4*y^2+7/4*y+1/2]]"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "op(%)",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "[x = 1/2*y-7/2, z = 1/4*y^2+7/4*y+1/2]"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "%[1]",
+   "terminator": ";",
+   "line": 11,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "x = 1/2*y-7/2"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "x",
+   "terminator": ";",
+   "line": 12,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "x"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "assign(%%)",
+   "terminator": ";",
+   "line": 13,
+   "outputs": []
+  },
+  {
+   "k": 13,
+   "src": "x",
+   "terminator": ";",
+   "line": 14,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "1/2*y-7/2"
+    }
+   ]
+  }
+ ]
+}

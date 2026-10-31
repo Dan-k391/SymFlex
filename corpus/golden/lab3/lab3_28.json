@@ -1,0 +1,20 @@
+{
+ "case": "lab3/lab3_28",
+ "file": "corpus/cases/lab3/lab3_28.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "evalf(exp(-1/(2*1)*5))",
+   "terminator": ";",
+   "line": 2,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".8208499862e-1"
+    }
+   ]
+  }
+ ]
+}

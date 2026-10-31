@@ -1,0 +1,98 @@
+{
+ "case": "lab5/lab5_07",
+ "file": "corpus/cases/lab5/lab5_07.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "mC:=5/10",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "mPC:=8/10",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "LPG:=4/100",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "kG_PC:=3/100",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "mOP:=6/10",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "kG_OP:=3/100",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "IG_PC:=mPC*kG_PC^2",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "IG_PC := 9/12500"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".7200000000e-3"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "IG_OP:=mOP*kG_OP^2",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "IG_OP := 27/50000"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "evalf(%)",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".5400000000e-3"
+    }
+   ]
+  }
+ ]
+}

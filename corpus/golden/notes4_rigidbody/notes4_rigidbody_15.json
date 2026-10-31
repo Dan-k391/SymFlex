@@ -1,0 +1,93 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_15",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_15.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "k:=.25",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "mD:=60",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "IG:=mD*k^2",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "IG := 3.7500"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "mB:=20",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "g:=9.81",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "r:=.4",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "a:=alpha*r",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 9,
+   "src": "solve([\nmB*g-T = mB*a,\nT*r = IG*alpha])",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{T = 105.8633094, alpha = 11.29208633}"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "solve([\nmB*g*r = IG*alpha+mB*a*r])",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{alpha = 11.29208633}"
+    }
+   ]
+  }
+ ]
+}

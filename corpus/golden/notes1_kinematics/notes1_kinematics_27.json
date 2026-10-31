@@ -1,0 +1,34 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_27",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_27.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ";",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "xbar:=M*L/(2*M+m)",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "MoI:=simplify((M+m)*xbar^2+M*(L-xbar)^2)",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "MoI := (M+m)*M*L^2/(2*M+m)"
+    }
+   ]
+  }
+ ]
+}

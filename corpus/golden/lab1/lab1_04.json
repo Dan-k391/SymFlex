@@ -1,0 +1,112 @@
+{
+ "case": "lab1/lab1_04",
+ "file": "corpus/cases/lab1/lab1_04.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "m:=40",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "g:=9.81",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "mu_s:=.8",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "mu_k:=.3",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "P:=369.71",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "fsMax:=mu_s*N",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "W:=m*g",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "W := 392.40"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "ff:=mu_k*N",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 10,
+   "src": "FNetx:=P*cos(Pi/6)-W*sin(Pi/6)-ff",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "FNetx := 184.8550000*3^(1/2)-196.2000000-.3*N"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "FNety:=P*sin(Pi/6)-W*cos(Pi/6)+N",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "FNety := 184.8550000-196.2000000*3^(1/2)+N"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "solve([FNetx=m*ax,FNety])",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "{N = 154.9733684, ax = 1.937156037}"
+    }
+   ]
+  }
+ ]
+}

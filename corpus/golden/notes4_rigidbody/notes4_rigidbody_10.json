@@ -1,0 +1,65 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_10",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_10.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "vbus:=120*1e3/3600",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vbus := 33.33333333"
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "src": "t_turn:=4",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "s_turn:=vbus*t_turn",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "Omega:=(Pi/2.)/t_turn",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Omega := .3926990818"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "R:=vbus/Omega",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "R := 84.88263629"
+    }
+   ]
+  }
+ ]
+}

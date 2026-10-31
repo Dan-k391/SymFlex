@@ -1,0 +1,20 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_23",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_23.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "dsolve({m*diff(x(t),t,t)+b*(diff(x(t),t)+k*x(t)=Fext(t),\nx(0)=0, D(x)(0)=0});",
+   "terminator": "",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "error",
+     "text": "Error, syntax error, `}` unexpected:"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,171 @@
+{
+ "case": "notes1_kinematics/notes1_kinematics_12",
+ "file": "corpus/cases/notes1_kinematics/notes1_kinematics_12.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ";",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "x:=t->t^3+3*t^2+t+7",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "x := t -> t^3+3*t^2+t+7"
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "src": "v:=D(x)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "v := t -> 3*t^2+6*t+1"
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "src": "v(t)",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "3*t^2+6*t+1"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "v0:=D(x)(0)",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "v0 := 1"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "a:=D[1,1](x)",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "a := t -> 6*t+6"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "a0:=D[1,1](x)(0)",
+   "terminator": ";",
+   "line": 8,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "a0 := 6"
+    }
+   ]
+  },
+  {
+   "k": 8,
+   "src": "f:=(x,y)->x^2+2*x*y^2+y^3",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "f := (x, y) -> x^2+2*x*y^2+y^3"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "f(1,y)",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "y^3+2*y^2+1"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "fsubx:=D[1](f)",
+   "terminator": ";",
+   "line": 11,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "fsubx := (x, y) -> 2*y^2+2*x"
+    }
+   ]
+  },
+  {
+   "k": 11,
+   "src": "fsuby:=D[2](f)",
+   "terminator": ";",
+   "line": 12,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "fsuby := (x, y) -> 4*x*y+3*y^2"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "fsubxyy:=D[1,2,2](f)",
+   "terminator": ";",
+   "line": 13,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "fsubxyy := 4"
+    }
+   ]
+  },
+  {
+   "k": 13,
+   "src": "D[1,2,2](g)(x,y)",
+   "terminator": ";",
+   "line": 14,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "D[1,2,2](g)(x,y)"
+    }
+   ]
+  },
+  {
+   "k": 14,
+   "src": "convert(%,diff)",
+   "terminator": ";",
+   "line": 15,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "diff(g(x,y),x,y $ 2)"
+    }
+   ]
+  }
+ ]
+}

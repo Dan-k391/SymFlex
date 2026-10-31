@@ -1,0 +1,86 @@
+{
+ "case": "notes5_energy_lagrange/notes5_energy_lagrange_01",
+ "file": "corpus/cases/notes5_energy_lagrange/notes5_energy_lagrange_01.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 2,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "M:=5",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "k:=10",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "R:=.2",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "m:=30",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "IG:=1/2*m*R^2",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "IG := .6000000000"
+    }
+   ]
+  },
+  {
+   "k": 7,
+   "src": "omegaF:=2",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "U:=M*theta-.5*k*(R*theta)^2",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "U := 5*theta-.200*theta^2"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "solve(U=.5*IG*omegaF^2)",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": ".2423493279, 24.75765067"
+    }
+   ]
+  }
+ ]
+}

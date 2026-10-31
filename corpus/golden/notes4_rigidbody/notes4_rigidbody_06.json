@@ -1,0 +1,143 @@
+{
+ "case": "notes4_rigidbody/notes4_rigidbody_06",
+ "file": "corpus/cases/notes4_rigidbody/notes4_rigidbody_06.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "restart",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 2,
+   "src": "with(LinearAlgebra)",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "deg2rad:=3.14159/180",
+   "terminator": ":",
+   "line": 4,
+   "outputs": []
+  },
+  {
+   "k": 4,
+   "src": "theta:=13.6*deg2rad",
+   "terminator": ":",
+   "line": 5,
+   "outputs": []
+  },
+  {
+   "k": 5,
+   "src": "phi:=45*deg2rad",
+   "terminator": ":",
+   "line": 6,
+   "outputs": []
+  },
+  {
+   "k": 6,
+   "src": "rAB:=.25",
+   "terminator": ":",
+   "line": 7,
+   "outputs": []
+  },
+  {
+   "k": 7,
+   "src": "rBC:=.75",
+   "terminator": ":",
+   "line": 8,
+   "outputs": []
+  },
+  {
+   "k": 8,
+   "src": "rABVec:=rAB*<-sin(phi), cos(phi),0>",
+   "terminator": ";",
+   "line": 9,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "rABVec := Vector[column](3,{1 = -.176776578050000, 2 = .176776812550000},datatype = float[8],storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 9,
+   "src": "rBCVec:=rBC*<sin(theta), cos(theta),0>",
+   "terminator": ";",
+   "line": 10,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "rBCVec := Vector[column](3,{1 = .176356438725000, 2 = .728970785775000},datatype = float[8],storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 10,
+   "src": "omegaAB:=10",
+   "terminator": ":",
+   "line": 11,
+   "outputs": []
+  },
+  {
+   "k": 11,
+   "src": "omegaABVec:=<0,0,-omegaAB>",
+   "terminator": ";",
+   "line": 11,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omegaABVec := Vector[column](3,{3 = -10},datatype = anything,storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 12,
+   "src": "vB:=omegaABVec &x rABVec",
+   "terminator": ";",
+   "line": 12,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vB := Vector[column](3,{1 = 1.76776812550000, 2 = 1.76776578050000},datatype = anything,storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  },
+  {
+   "k": 13,
+   "src": "omegaBC:=rAB/rBC*(cos(phi)/cos(theta))*omegaAB",
+   "terminator": ";",
+   "line": 13,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "omegaBC := 2.425019164"
+    }
+   ]
+  },
+  {
+   "k": 14,
+   "src": "omegaBCVec:=<0,0,omegaBC>",
+   "terminator": ":",
+   "line": 14,
+   "outputs": []
+  },
+  {
+   "k": 15,
+   "src": "vC:=vB+omegaBCVec &x rBCVec",
+   "terminator": ";",
+   "line": 15,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "vC := Vector[column](3,{1 = -.513811215796522e-12, 2 = 2.19543352410292},datatype = float[8],storage = rectangular,order = Fortran_order,shape = [])"
+    }
+   ]
+  }
+ ]
+}

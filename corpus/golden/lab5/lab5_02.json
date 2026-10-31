@@ -1,0 +1,75 @@
+{
+ "case": "lab5/lab5_02",
+ "file": "corpus/cases/lab5/lab5_02.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "v:=360/3.6",
+   "terminator": ";",
+   "line": 2,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "v := 100.0000000"
+    }
+   ]
+  },
+  {
+   "k": 2,
+   "src": "r:=1e3",
+   "terminator": ":",
+   "line": 3,
+   "outputs": []
+  },
+  {
+   "k": 3,
+   "src": "Omega:=v/r",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Omega := .1000000000"
+    }
+   ]
+  },
+  {
+   "k": 4,
+   "src": "acent:=Omega^2*r",
+   "terminator": ";",
+   "line": 5,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "acent := 10.00000000"
+    }
+   ]
+  },
+  {
+   "k": 5,
+   "src": "aCorr:=2*Omega*5",
+   "terminator": ";",
+   "line": 6,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "aCorr := 1.000000000"
+    }
+   ]
+  },
+  {
+   "k": 6,
+   "src": "acentMod:=(v+5)^2/r",
+   "terminator": ";",
+   "line": 7,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "acentMod := 11.02500000"
+    }
+   ]
+  }
+ ]
+}

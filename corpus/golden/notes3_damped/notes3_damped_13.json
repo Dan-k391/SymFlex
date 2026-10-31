@@ -1,0 +1,44 @@
+{
+ "case": "notes3_damped/notes3_damped_13",
+ "file": "corpus/cases/notes3_damped/notes3_damped_13.mpl",
+ "maple": "2024",
+ "status": "ok",
+ "statements": [
+  {
+   "k": 1,
+   "src": "Amp_omega0:=8",
+   "terminator": ";",
+   "line": 2,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Amp_omega0 := 8"
+    }
+   ]
+  },
+  {
+   "k": 2,
+   "src": "Amp_omega_d:=sqrt(.2507345739^2+8.007820122^2)",
+   "terminator": ";",
+   "line": 3,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Amp_omega_d := 8.011744563"
+    }
+   ]
+  },
+  {
+   "k": 3,
+   "src": "Amp_omega_m:=sqrt(.5019607843^2+7.999938484^2)",
+   "terminator": ";",
+   "line": 4,
+   "outputs": [
+    {
+     "kind": "math",
+     "text": "Amp_omega_m := 8.015670925"
+    }
+   ]
+  }
+ ]
+}
