@@ -1,0 +1,8 @@
+{
+  "name": "symflex",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Notebook-style web emulator of Maple and FlexPDE for EP 2CD4",
+  "scripts": {}
+}

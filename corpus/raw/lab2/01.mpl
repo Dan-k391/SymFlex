@@ -1,0 +1,7 @@
+> restart:
+W:=300: T:=100: theta:=10*Pi/180: phi:=45*Pi/180: s:=5:
+Wx:=-300*sin(theta);
+Tx:=T*cos(phi);
+WorkW:=Wx*s; evalf(%);
+WorkT:=Tx*s; evalf(%);
+DeltaKE:=WorkW+WorkT; evalf(%);

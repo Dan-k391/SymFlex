@@ -1,0 +1,2542 @@
+[
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/01.pde",
+  "kind": "pde",
+  "loc": 2,
+  "context": "initial conditions on position and velocity then setting a halt condition as when yd < 0:",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/02.mpl",
+  "kind": "mpl",
+  "loc": 5,
+  "context": "functions of time.  Find the rocket's maximum height.",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/03.mpl",
+  "kind": "mpl",
+  "loc": 7,
+  "context": "Let's find the height the rocket reaches by integrating:",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/04.mpl",
+  "kind": "mpl",
+  "loc": 10,
+  "context": "is in the -i direction, etc.)",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/05.mpl",
+  "kind": "mpl",
+  "loc": 10,
+  "context": "definitions or a clever subs as follows:",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/06.mpl",
+  "kind": "mpl",
+  "loc": 11,
+  "context": "expressions, and Maple gives a warning message about not knowing the t-range:",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/07.mpl",
+  "kind": "mpl",
+  "loc": 11,
+  "context": "to it to see what's going on:",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/08.mpl",
+  "kind": "mpl",
+  "loc": 11,
+  "context": "booster has negative mass before this happens!)",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/09.mpl",
+  "kind": "mpl",
+  "loc": 11,
+  "context": "the mass only decreases until the booster runs out of fuel, at which point it detaches:",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/10.mpl",
+  "kind": "mpl",
+  "loc": 11,
+  "context": "and m are the ones found in the rotational problem above.",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/11.pde",
+  "kind": "pde",
+  "loc": 14,
+  "context": "Here is the result of using FlexPDE to solve for the angles:",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/12.pde",
+  "kind": "pde",
+  "loc": 15,
+  "context": "displacement & y-displacement).",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/13.mpl",
+  "kind": "mpl",
+  "loc": 23,
+  "context": "with a FlexPDE conditional on time directly:",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/14.pde",
+  "kind": "pde",
+  "loc": 23,
+  "context": "what each line does!",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/15.pde",
+  "kind": "pde",
+  "loc": 24,
+  "context": "2.8.1. V3 Rocket example with Vectors",
+  "output_images": []
+ },
+ {
+  "source": "notes2_nonlinear",
+  "file": "3b4500f91479342ec85300a4c6d3b6b5.pdf",
+  "id": "notes2_nonlinear/16.pde",
+  "kind": "pde",
+  "loc": 26,
+  "context": "that solution).",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/01.mpl",
+  "kind": "mpl",
+  "loc": 6,
+  "context": "Sets up variables, solve the DEs, and assigns the results:",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/02.mpl",
+  "kind": "mpl",
+  "loc": 6,
+  "context": "Demonstrate that it worked:",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/03.mpl",
+  "kind": "mpl",
+  "loc": 6,
+  "context": "Plots the solutions:",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/04.mpl",
+  "kind": "mpl",
+  "loc": 7,
+  "context": "than critically damping:",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/05.mpl",
+  "kind": "mpl",
+  "loc": 8,
+  "context": "In Maple:",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/06.mpl",
+  "kind": "mpl",
+  "loc": 11,
+  "context": "Check this result with maple:",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/07.mpl",
+  "kind": "mpl",
+  "loc": 14,
+  "context": ".",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/08.mpl",
+  "kind": "mpl",
+  "loc": 15,
+  "context": "Example code:",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/09.mpl",
+  "kind": "mpl",
+  "loc": 16,
+  "context": "Solution:",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/10.mpl",
+  "kind": "mpl",
+  "loc": 23,
+  "context": "becomes more complicated, but we can solve it with maple and compare:",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/11.mpl",
+  "kind": "mpl",
+  "loc": 27,
+  "context": "(Code for this follows.  Note that the gridlines might not work for all maple worksheet modes.)",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/12.mpl",
+  "kind": "mpl",
+  "loc": 28,
+  "context": ":",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/13.mpl",
+  "kind": "mpl",
+  "loc": 28,
+  "context": "we can find the total response amplitude:",
+  "output_images": []
+ },
+ {
+  "source": "notes3_damped",
+  "file": "3c8ee59aca1b42926048f9d1eafaf866.pdf",
+  "id": "notes3_damped/14.mpl",
+  "kind": "mpl",
+  "loc": 30,
+  "context": "Typically solving a DE for a linear system will work like this:",
+  "output_images": []
+ },
+ {
+  "source": "notes5_energy_lagrange",
+  "file": "3e9fe007f0a8688b3d68361810605b44.pdf",
+  "id": "notes5_energy_lagrange/01.mpl",
+  "kind": "mpl",
+  "loc": 4,
+  "context": "Soln:",
+  "output_images": []
+ },
+ {
+  "source": "notes5_energy_lagrange",
+  "file": "3e9fe007f0a8688b3d68361810605b44.pdf",
+  "id": "notes5_energy_lagrange/02.mpl",
+  "kind": "mpl",
+  "loc": 6,
+  "context": "point:",
+  "output_images": []
+ },
+ {
+  "source": "notes5_energy_lagrange",
+  "file": "3e9fe007f0a8688b3d68361810605b44.pdf",
+  "id": "notes5_energy_lagrange/03.mpl",
+  "kind": "mpl",
+  "loc": 9,
+  "context": "5.2.2.1 eg 19.3",
+  "output_images": []
+ },
+ {
+  "source": "notes5_energy_lagrange",
+  "file": "3e9fe007f0a8688b3d68361810605b44.pdf",
+  "id": "notes5_energy_lagrange/04.mpl",
+  "kind": "mpl",
+  "loc": 9,
+  "context": "what that is:",
+  "output_images": []
+ },
+ {
+  "source": "notes5_energy_lagrange",
+  "file": "3e9fe007f0a8688b3d68361810605b44.pdf",
+  "id": "notes5_energy_lagrange/05.mpl",
+  "kind": "mpl",
+  "loc": 10,
+  "context": "Method 1: FBD for each:",
+  "output_images": []
+ },
+ {
+  "source": "notes5_energy_lagrange",
+  "file": "3e9fe007f0a8688b3d68361810605b44.pdf",
+  "id": "notes5_energy_lagrange/06.mpl",
+  "kind": "mpl",
+  "loc": 13,
+  "context": "If we sub this into the collision result above we get a condition on v1:",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/01.mpl",
+  "kind": "mpl",
+  "loc": 4,
+  "context": ", so",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/02.mpl",
+  "kind": "mpl",
+  "loc": 5,
+  "context": "Solution in general worked out with Maple:",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/03.mpl",
+  "kind": "mpl",
+  "loc": 6,
+  "context": "most of the motion:",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/04.mpl",
+  "kind": "mpl",
+  "loc": 9,
+  "context": "This gives an equation we can solve for omega:",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/05.mpl",
+  "kind": "mpl",
+  "loc": 10,
+  "context": "which gives the same result as above:",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/06.mpl",
+  "kind": "mpl",
+  "loc": 16,
+  "context": "So then, (since BC and AB are fixed lengths)",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/07.mpl",
+  "kind": "mpl",
+  "loc": 18,
+  "context": ":",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/08.mpl",
+  "kind": "mpl",
+  "loc": 20,
+  "context": "So then, modifying the previous solution we can find",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/09.mpl",
+  "kind": "mpl",
+  "loc": 21,
+  "context": "make C only move vertically, e.g.,",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/10.mpl",
+  "kind": "mpl",
+  "loc": 25,
+  "context": "First, work out the bus's angular velocity and radius of the turn it's taking:",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/11.mpl",
+  "kind": "mpl",
+  "loc": 29,
+  "context": "b) the MoI of this about its centre of mass G",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/12.mpl",
+  "kind": "mpl",
+  "loc": 35,
+  "context": "IG = m*k^2.",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/13.mpl",
+  "kind": "mpl",
+  "loc": 35,
+  "context": "CoM) OR \u2211\u03c4 P=I P\u03b1+r PG\u00d7maP (equated to MoI about point O plus kinetic moment:",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/14.mpl",
+  "kind": "mpl",
+  "loc": 36,
+  "context": "Solution:",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/15.mpl",
+  "kind": "mpl",
+  "loc": 37,
+  "context": "from rest.",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/16.mpl",
+  "kind": "mpl",
+  "loc": 38,
+  "context": "Attempting to solve the 2nd-order in time DE:",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/17.mpl",
+  "kind": "mpl",
+  "loc": 39,
+  "context": "Method solving the first order in theta DE:",
+  "output_images": []
+ },
+ {
+  "source": "notes4_rigidbody",
+  "file": "83cf0da792dec282396df1289846dcb5.pdf",
+  "id": "notes4_rigidbody/18.mpl",
+  "kind": "mpl",
+  "loc": 41,
+  "context": "Soln:",
+  "output_images": []
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/01.mpl",
+  "kind": "mpl",
+  "loc": 22,
+  "context": "(What it would look like for a maple solution):",
+  "output_images": [
+   "media/image5.wmf",
+   "media/image6.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/02.mpl",
+  "kind": "mpl",
+  "loc": 95,
+  "context": "First find  by solving the equations above, then integrate to find position(t), then sub in t = 3 s:",
+  "output_images": [
+   "media/image16.wmf",
+   "media/image17.wmf",
+   "media/image18.wmf",
+   "media/image19.wmf",
+   "media/image20.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/03.mpl",
+  "kind": "mpl",
+  "loc": 146,
+  "context": "b)",
+  "output_images": [
+   "media/image16.wmf",
+   "media/image24.wmf",
+   "media/image25.wmf",
+   "media/image26.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/04.mpl",
+  "kind": "mpl",
+  "loc": 160,
+  "context": "Applying that force to overcome static friction, we instead have kinetic friction opposing motion and can find the acceleration by setting :",
+  "output_images": [
+   "media/image16.wmf",
+   "media/image27.wmf",
+   "media/image28.wmf",
+   "media/image29.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/05.mpl",
+  "kind": "mpl",
+  "loc": 176,
+  "context": "Then solve to get the time when s = 3:",
+  "output_images": [
+   "media/image16.wmf",
+   "media/image27.wmf",
+   "media/image28.wmf",
+   "media/image29.wmf",
+   "media/image30.wmf",
+   "media/image31.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/06.mpl",
+  "kind": "mpl",
+  "loc": 218,
+  "context": "In this situation we can modify the previous solution by changing the force balance equations to only have P in x:",
+  "output_images": [
+   "media/image16.wmf",
+   "media/image32.wmf",
+   "media/image33.wmf",
+   "media/image34.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/07.mpl",
+  "kind": "mpl",
+  "loc": 232,
+  "context": "This then leads to higher acceleration (4.25 m/s2) & shorter time (1.19 s):",
+  "output_images": [
+   "media/image35.wmf",
+   "media/image36.wmf",
+   "media/image37.wmf",
+   "media/image38.wmf",
+   "media/image39.wmf",
+   "media/image40.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/08.mpl",
+  "kind": "mpl",
+  "loc": 252,
+  "context": "Repeat if the coefficient of kinetic friction were doubled.",
+  "output_images": [
+   "media/image16.wmf",
+   "media/image41.wmf",
+   "media/image42.wmf",
+   "media/image43.wmf",
+   "media/image44.wmf",
+   "media/image45.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/09.mpl",
+  "kind": "mpl",
+  "loc": 289,
+  "context": "Fixed:",
+  "output_images": [
+   "media/image47.wmf",
+   "media/image48.wmf",
+   "media/image49.png"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/10.mpl",
+  "kind": "mpl",
+  "loc": 313,
+  "context": "plot(T2, t=0..1);",
+  "output_images": [
+   "media/image54.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/11.mpl",
+  "kind": "mpl",
+  "loc": 318,
+  "context": "Alternatively the interpretation we had in lecture was just to find out when the main cable had a tension > 5 kN, and that\u2019s this later time of 1.19 s.",
+  "output_images": [
+   "media/image55.wmf",
+   "media/image56.wmf",
+   "media/image57.wmf",
+   "media/image58.wmf",
+   "media/image59.wmf",
+   "media/image60.png",
+   "media/image61.wmf",
+   "media/image62.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/12.mpl",
+  "kind": "mpl",
+  "loc": 358,
+  "context": "We know the cylinder speed, but not the motor speed.  The FBD above tells you that  (since pulley is massless), and that , therefore",
+  "output_images": [
+   "media/image65.wmf",
+   "media/image66.wmf",
+   "media/image67.wmf",
+   "media/image68.wmf",
+   "media/image69.wmf",
+   "media/image70.png"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/13.mpl",
+  "kind": "mpl",
+  "loc": 374,
+  "context": "This is actually easier and doesn\u2019t rely on part b being correct:",
+  "output_images": [
+   "media/image71.wmf",
+   "media/image72.wmf",
+   "media/image73.wmf",
+   "media/image74.png"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/14.mpl",
+  "kind": "mpl",
+  "loc": 387,
+  "context": "To find when it would reach this tension, plot its tension instead of the tension at the top:",
+  "output_images": [
+   "media/image75.wmf",
+   "media/image76.wmf",
+   "media/image77.wmf",
+   "media/image78.wmf",
+   "media/image79.png"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/15.mpl",
+  "kind": "mpl",
+  "loc": 399,
+  "context": "It looks like it first exceeds 2300 N between 3 and 4 s, so fsolve in this interval:",
+  "output_images": [
+   "media/image80.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/16.mpl",
+  "kind": "mpl",
+  "loc": 417,
+  "context": "just change the code for that part in the part that indicates cylinder speed:",
+  "output_images": [
+   "media/image65.wmf",
+   "media/image81.wmf",
+   "media/image82.wmf",
+   "media/image83.wmf",
+   "media/image84.wmf",
+   "media/image85.png"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/17.mpl",
+  "kind": "mpl",
+  "loc": 438,
+  "context": "Now we need to adjust the range a bit to see which part it first goes above this; plotting from 4 to 4.1 gives:",
+  "output_images": [
+   "media/image86.wmf",
+   "media/image87.wmf",
+   "media/image88.wmf",
+   "media/image89.wmf",
+   "media/image90.png"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/18.mpl",
+  "kind": "mpl",
+  "loc": 450,
+  "context": "Therefore, Tc = 2400 is to the left of t = 4, so use fsolve on the range t=3 to 4 (or any time range left of 4) with Tc = 2400:",
+  "output_images": []
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/19.mpl",
+  "kind": "mpl",
+  "loc": 453,
+  "context": "(correct)",
+  "output_images": []
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/20.mpl",
+  "kind": "mpl",
+  "loc": 493,
+  "context": "And we know that  (and is attractive since charges are opposite sign).",
+  "output_images": [
+   "media/image97.wmf",
+   "media/image98.wmf",
+   "media/image99.wmf",
+   "media/image100.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/21.mpl",
+  "kind": "mpl",
+  "loc": 503,
+  "context": "b & c)",
+  "output_images": [
+   "media/image101.wmf",
+   "media/image102.wmf",
+   "media/image103.wmf",
+   "media/image104.wmf",
+   "media/image105.wmf",
+   "media/image106.wmf",
+   "media/image107.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/22.mpl",
+  "kind": "mpl",
+  "loc": 516,
+  "context": "d) 95% of one circle would be 95%T, which is 95%*2*Pi/omega:",
+  "output_images": [
+   "media/image108.png"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/23.mpl",
+  "kind": "mpl",
+  "loc": 520,
+  "context": "This isn\u2019t part of the question, but in class we also showed that , so some students might do this too:",
+  "output_images": [
+   "media/image109.wmf",
+   "media/image110.wmf"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/24.pde",
+  "kind": "pde",
+  "loc": 574,
+  "context": "Use the FlexPDE code we developed in class starting with the IVP template:",
+  "output_images": [
+   "media/image119.png"
+  ]
+ },
+ {
+  "source": "lab1",
+  "file": "EP2CD4 Lab1_TA_SolutionFile.docx",
+  "id": "lab1/25.pde",
+  "kind": "pde",
+  "loc": 633,
+  "context": "Solution:",
+  "output_images": [
+   "media/image122.png"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/01.mpl",
+  "kind": "mpl",
+  "loc": 6,
+  "context": "Need components of forces parallel to direction of motion (where they exist), then work is the force component multiplied with displacement.",
+  "output_images": [
+   "media/image3.wmf",
+   "media/image4.wmf"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/02.mpl",
+  "kind": "mpl",
+  "loc": 23,
+  "context": "This makes the force to pull the cart much more effective:",
+  "output_images": [
+   "media/image11.wmf",
+   "media/image12.wmf"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/03.mpl",
+  "kind": "mpl",
+  "loc": 54,
+  "context": "Solution, use that total energy is conserved:",
+  "output_images": [
+   "media/image19.wmf",
+   "media/image20.wmf",
+   "media/image21.wmf",
+   "media/image22.wmf",
+   "media/image23.wmf",
+   "media/image24.wmf"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/04.mpl",
+  "kind": "mpl",
+  "loc": 88,
+  "context": "L11 - Main Lecture Problem (1 mark)",
+  "output_images": [
+   "media/image26.wmf",
+   "media/image27.wmf",
+   "media/image28.wmf"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/05.mpl",
+  "kind": "mpl",
+  "loc": 97,
+  "context": "Alternate solution: OK to also answer with the actual velocity:",
+  "output_images": [
+   "media/image29.wmf",
+   "media/image30.wmf",
+   "media/image31.wmf"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/06.mpl",
+  "kind": "mpl",
+  "loc": 119,
+  "context": "That is (using left as positive),",
+  "output_images": [
+   "media/image35.wmf",
+   "media/image36.wmf"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/07.mpl",
+  "kind": "mpl",
+  "loc": 136,
+  "context": "since mass doubles but momentum stays the same the speed must halve:",
+  "output_images": [
+   "media/image37.wmf",
+   "media/image38.wmf",
+   "media/image39.wmf"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/08.mpl",
+  "kind": "mpl",
+  "loc": 147,
+  "context": "Now the two collide elastically, and all the velocity will end up in springy steve (since he\u2019s the same mass as the toboggan + gail:",
+  "output_images": [
+   "media/image40.wmf",
+   "media/image38.wmf",
+   "media/image41.wmf"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/09.mpl",
+  "kind": "mpl",
+  "loc": 181,
+  "context": "Solution:",
+  "output_images": [
+   "media/image43.wmf",
+   "media/image44.png"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/10.mpl",
+  "kind": "mpl",
+  "loc": 190,
+  "context": "(rightward velocity of each in m/s after the collision; A in red, B in blue)",
+  "output_images": [
+   "media/image45.png"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/11.pde",
+  "kind": "pde",
+  "loc": 218,
+  "context": "Incorporate into FlexPDE:",
+  "output_images": []
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/12.mpl",
+  "kind": "mpl",
+  "loc": 282,
+  "context": "This is totally solved with the example we did in lecture:",
+  "output_images": [
+   "media/image49.wmf",
+   "media/image50.png",
+   "media/image51.wmf"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/13.pde",
+  "kind": "pde",
+  "loc": 301,
+  "context": "Same with the FlexPDE version:",
+  "output_images": [
+   "media/image52.png"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/14.pde",
+  "kind": "pde",
+  "loc": 360,
+  "context": "Just switch the Fg lines in the code above:",
+  "output_images": [
+   "media/image55.png"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/15.mpl",
+  "kind": "mpl",
+  "loc": 430,
+  "context": "(e.g., at the final height we found of 221 km, actual universal gravitational acceleration corresponds to only 93% of g at the surface:",
+  "output_images": [
+   "media/image70.wmf",
+   "media/image71.wmf",
+   "media/image72.wmf"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/16.pde",
+  "kind": "pde",
+  "loc": 461,
+  "context": "Solution:",
+  "output_images": [
+   "media/image75.png"
+  ]
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/17.pde",
+  "kind": "pde",
+  "loc": 519,
+  "context": "Example code for this:",
+  "output_images": []
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/18.mpl",
+  "kind": "mpl",
+  "loc": 581,
+  "context": "To incorporate this into FlexPDE, we can proceed just like for 1D rocketry, except define \"Ftmag\" instead of Ft:",
+  "output_images": []
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/19.mpl",
+  "kind": "mpl",
+  "loc": 590,
+  "context": "Then define  with the help of the velocity unit vector:",
+  "output_images": []
+ },
+ {
+  "source": "lab2",
+  "file": "EP2CD4 Lab2_TA_SolutionFile.docx",
+  "id": "lab2/20.pde",
+  "kind": "pde",
+  "loc": 595,
+  "context": "Code:",
+  "output_images": [
+   "media/image80.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/01.mpl",
+  "kind": "mpl",
+  "loc": 15,
+  "context": "Check this in Maple:",
+  "output_images": [
+   "media/image1.wmf",
+   "media/image2.wmf",
+   "media/image3.wmf",
+   "media/image4.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/02.mpl",
+  "kind": "mpl",
+  "loc": 28,
+  "context": "Same (believe it or not).  Putting in the constants gives:",
+  "output_images": [
+   "media/image5.wmf",
+   "media/image6.wmf",
+   "media/image7.wmf",
+   "media/image8.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/03.mpl",
+  "kind": "mpl",
+  "loc": 50,
+  "context": "Set",
+  "output_images": [
+   "media/image9.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/04.pde",
+  "kind": "pde",
+  "loc": 62,
+  "context": "Example code to get it:",
+  "output_images": []
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/05.pde",
+  "kind": "pde",
+  "loc": 127,
+  "context": "Sample code:",
+  "output_images": []
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/06.mpl",
+  "kind": "mpl",
+  "loc": 182,
+  "context": "Soln: Change code to add this force by adding one line and changing one other:",
+  "output_images": [
+   "media/image13.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/07.mpl",
+  "kind": "mpl",
+  "loc": 207,
+  "context": "The position & acceleration don't affect the drag force, just the velocity (relative to the fluid's velocity):",
+  "output_images": [
+   "media/image23.wmf",
+   "media/image24.wmf",
+   "media/image25.wmf",
+   "media/image26.wmf",
+   "media/image27.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/08.mpl",
+  "kind": "mpl",
+  "loc": 219,
+  "context": "Now the drag force should be based on the relative velocity of the object to the fluid; that is, , and , i.e.,",
+  "output_images": [
+   "media/image31.wmf",
+   "media/image32.wmf",
+   "media/image33.wmf",
+   "media/image34.wmf",
+   "media/image35.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/09.pde",
+  "kind": "pde",
+  "loc": 261,
+  "context": "Code:",
+  "output_images": []
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/10.mpl",
+  "kind": "mpl",
+  "loc": 299,
+  "context": "Maple Method:",
+  "output_images": [
+   "media/image38.wmf",
+   "media/image39.wmf",
+   "media/image40.wmf",
+   "media/image41.png",
+   "media/image42.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/11.mpl",
+  "kind": "mpl",
+  "loc": 325,
+  "context": "No difference; both points are with KE = 0 so U has all the energy at both points.",
+  "output_images": [
+   "media/image45.wmf",
+   "media/image46.wmf",
+   "media/image47.wmf",
+   "media/image48.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/12.mpl",
+  "kind": "mpl",
+  "loc": 341,
+  "context": "a) mg = kx \u2192 x = mg/k = 9.81/100 = 0.0981 m",
+  "output_images": [
+   "media/image49.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/13.mpl",
+  "kind": "mpl",
+  "loc": 346,
+  "context": "Know that peak energy is , so using either lets us figure out the amplitude.  e.g.,",
+  "output_images": [
+   "media/image51.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/14.pde",
+  "kind": "pde",
+  "loc": 362,
+  "context": "Code:",
+  "output_images": []
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/15.mpl",
+  "kind": "mpl",
+  "loc": 412,
+  "context": "Maple with dsolve:",
+  "output_images": [
+   "media/image54.wmf",
+   "media/image55.wmf",
+   "media/image56.wmf",
+   "media/image57.wmf",
+   "media/image58.wmf",
+   "media/image59.wmf",
+   "media/image60.png",
+   "media/image61.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/16.mpl",
+  "kind": "mpl",
+  "loc": 432,
+  "context": "Option 3: Maple with direct solution form writing:",
+  "output_images": [
+   "media/image54.wmf",
+   "media/image55.wmf",
+   "media/image56.wmf",
+   "media/image57.wmf",
+   "media/image62.wmf",
+   "media/image63.wmf",
+   "media/image64.wmf",
+   "media/image65.png",
+   "media/image66.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/17.mpl",
+  "kind": "mpl",
+  "loc": 455,
+  "context": "Determine the damped period  and change the final solve time to  instead:",
+  "output_images": []
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/18.mpl",
+  "kind": "mpl",
+  "loc": 460,
+  "context": "Then change the time line to:",
+  "output_images": []
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/19.mpl",
+  "kind": "mpl",
+  "loc": 475,
+  "context": "where",
+  "output_images": [
+   "media/image74.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/20.pde",
+  "kind": "pde",
+  "loc": 485,
+  "context": "In flex, proceed like this:",
+  "output_images": [
+   "media/image76.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/21.mpl",
+  "kind": "mpl",
+  "loc": 526,
+  "context": "Maple solution:",
+  "output_images": [
+   "media/image77.wmf",
+   "media/image78.wmf",
+   "media/image79.wmf",
+   "media/image80.wmf",
+   "media/image81.wmf",
+   "media/image82.wmf",
+   "media/image83.wmf",
+   "media/image84.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/22.pde",
+  "kind": "pde",
+  "loc": 556,
+  "context": "One cycle:",
+  "output_images": []
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/23.mpl",
+  "kind": "mpl",
+  "loc": 608,
+  "context": "and fraction of energy lost during second cycle is  (22.35%-5%)/22.35%:",
+  "output_images": [
+   "media/image87.wmf",
+   "media/image88.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/24.mpl",
+  "kind": "mpl",
+  "loc": 615,
+  "context": "After previous maple code:",
+  "output_images": []
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/25.mpl",
+  "kind": "mpl",
+  "loc": 622,
+  "context": "Continue with the following:",
+  "output_images": [
+   "media/image89.wmf",
+   "media/image90.wmf",
+   "media/image91.png",
+   "media/image92.wmf",
+   "media/image93.wmf",
+   "media/image94.wmf",
+   "media/image95.wmf",
+   "media/image96.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/26.mpl",
+  "kind": "mpl",
+  "loc": 647,
+  "context": "Could also solve this analytically:",
+  "output_images": [
+   "media/image101.wmf",
+   "media/image102.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/27.mpl",
+  "kind": "mpl",
+  "loc": 677,
+  "context": "Find the natural [angular] frequency & damped natural [angular] frequency in a mass spring damper system with m = 1 kg, b = 1 N-s/m, k = 10 N/m.",
+  "output_images": []
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/28.mpl",
+  "kind": "mpl",
+  "loc": 691,
+  "context": "amplitude decays with , therefore, amplitude fraction remaining is:",
+  "output_images": [
+   "media/image109.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/29.mpl",
+  "kind": "mpl",
+  "loc": 694,
+  "context": "And energy goes like square of this, i.e.,",
+  "output_images": [
+   "media/image110.wmf"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/30.mpl",
+  "kind": "mpl",
+  "loc": 708,
+  "context": "Low frequency, :",
+  "output_images": [
+   "media/image112.wmf",
+   "media/image113.wmf",
+   "media/image114.wmf",
+   "media/image115.wmf",
+   "media/image116.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/31.mpl",
+  "kind": "mpl",
+  "loc": 721,
+  "context": "Resonance,",
+  "output_images": [
+   "media/image112.wmf",
+   "media/image117.wmf",
+   "media/image118.wmf",
+   "media/image119.wmf",
+   "media/image120.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/32.mpl",
+  "kind": "mpl",
+  "loc": 748,
+  "context": "After modifying the code, get this to be much smaller, because now we're starting with the steady state solution already:",
+  "output_images": [
+   "media/image123.wmf",
+   "media/image124.wmf",
+   "media/image125.wmf",
+   "media/image126.wmf",
+   "media/image127.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/33.mpl",
+  "kind": "mpl",
+  "loc": 801,
+  "context": "Method using the known frequency response for this type of system gives the same plots:",
+  "output_images": [
+   "media/image129.wmf",
+   "media/image137.wmf",
+   "media/image138.wmf",
+   "media/image139.wmf",
+   "media/image140.wmf",
+   "media/image141.wmf",
+   "media/image142.png",
+   "media/image143.png"
+  ]
+ },
+ {
+  "source": "lab3",
+  "file": "EP2CD4 Lab3_TA_SolutionFile.docx",
+  "id": "lab3/34.mpl",
+  "kind": "mpl",
+  "loc": 824,
+  "context": "Solution:",
+  "output_images": []
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/01.mpl",
+  "kind": "mpl",
+  "loc": 18,
+  "context": "Speficially,",
+  "output_images": [
+   "media/image2.wmf",
+   "media/image3.wmf",
+   "media/image4.wmf",
+   "media/image5.wmf",
+   "media/image6.wmf",
+   "media/image7.wmf",
+   "media/image8.wmf",
+   "media/image9.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/02.mpl",
+  "kind": "mpl",
+  "loc": 36,
+  "context": "Check: Table response",
+  "output_images": [
+   "media/image10.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/03.mpl",
+  "kind": "mpl",
+  "loc": 42,
+  "context": "Now use the theoretical table response as the input to determine the block response with dsolve:",
+  "output_images": [
+   "media/image11.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/04.mpl",
+  "kind": "mpl",
+  "loc": 50,
+  "context": "We can also verify by plotting the theoretical block response along with this:",
+  "output_images": [
+   "media/image12.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/05.mpl",
+  "kind": "mpl",
+  "loc": 61,
+  "context": "Without the table, we'd just put the floor's oscillation directly onto the 1 kg block:",
+  "output_images": [
+   "media/image13.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/06.mpl",
+  "kind": "mpl",
+  "loc": 100,
+  "context": "Note: unlike L21, don\u2019t ignore the reverse coupling in this problem.",
+  "output_images": []
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/07.pde",
+  "kind": "pde",
+  "loc": 110,
+  "context": "Set up system in FlexPDE to solve the coupled DEs",
+  "output_images": [
+   "media/image15.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/08.mpl",
+  "kind": "mpl",
+  "loc": 150,
+  "context": "To see what\u2019s going on better, plot the 25th to 30th cycles with a window, and scale the plots:",
+  "output_images": [
+   "media/image16.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/09.mpl",
+  "kind": "mpl",
+  "loc": 201,
+  "context": "with",
+  "output_images": [
+   "media/image21.wmf",
+   "media/image22.wmf",
+   "media/image23.wmf",
+   "media/image24.wmf",
+   "media/image25.wmf",
+   "media/image26.wmf",
+   "media/image27.wmf",
+   "media/image28.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/10.mpl",
+  "kind": "mpl",
+  "loc": 229,
+  "context": "Comparing to ,",
+  "output_images": [
+   "media/image35.wmf",
+   "media/image36.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/11.mpl",
+  "kind": "mpl",
+  "loc": 293,
+  "context": "So solution proceeds just as before with that change to k:",
+  "output_images": [
+   "media/image56.wmf",
+   "media/image57.wmf",
+   "media/image58.wmf",
+   "media/image59.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/12.mpl",
+  "kind": "mpl",
+  "loc": 340,
+  "context": "Derivative method: just differentiate  now that we\u2019ve worked it out",
+  "output_images": [
+   "media/image78.wmf",
+   "media/image79.wmf",
+   "media/image80.wmf",
+   "media/image81.wmf",
+   "media/image82.wmf",
+   "media/image83.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/13.mpl",
+  "kind": "mpl",
+  "loc": 355,
+  "context": "Vector method: first, make sure we\u2019re in 3d, then use the following relations:",
+  "output_images": [
+   "media/image78.wmf",
+   "media/image79.wmf",
+   "media/image80.wmf",
+   "media/image84.wmf",
+   "media/image85.wmf",
+   "media/image86.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/14.mpl",
+  "kind": "mpl",
+  "loc": 370,
+  "context": "Or, using fractions,",
+  "output_images": [
+   "media/image87.wmf",
+   "media/image88.wmf",
+   "media/image89.wmf",
+   "media/image90.wmf",
+   "media/image91.wmf",
+   "media/image92.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/15.mpl",
+  "kind": "mpl",
+  "loc": 411,
+  "context": "Any method is fine for 5 & 6 for this one.  e.g., trig identity & derivative method:",
+  "output_images": [
+   "media/image109.wmf",
+   "media/image110.wmf",
+   "media/image111.wmf",
+   "media/image112.wmf",
+   "media/image113.png",
+   "media/image114.wmf",
+   "media/image115.wmf",
+   "media/image116.wmf",
+   "media/image117.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/16.mpl",
+  "kind": "mpl",
+  "loc": 434,
+  "context": "Derivative method after using vector method to get positions:",
+  "output_images": [
+   "media/image118.wmf",
+   "media/image119.wmf",
+   "media/image120.wmf",
+   "media/image121.wmf",
+   "media/image122.png",
+   "media/image117.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/17.mpl",
+  "kind": "mpl",
+  "loc": 454,
+  "context": "Vector method with rotation matrices for cross products:",
+  "output_images": [
+   "media/image118.wmf",
+   "media/image123.wmf",
+   "media/image119.wmf",
+   "media/image120.wmf",
+   "media/image124.wmf",
+   "media/image122.png",
+   "media/image117.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/18.mpl",
+  "kind": "mpl",
+  "loc": 477,
+  "context": "Plotting  instead of  makes these look like this:",
+  "output_images": [
+   "media/image118.wmf",
+   "media/image123.wmf",
+   "media/image119.wmf",
+   "media/image120.wmf",
+   "media/image125.wmf",
+   "media/image124.wmf",
+   "media/image126.png",
+   "media/image127.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/19.mpl",
+  "kind": "mpl",
+  "loc": 507,
+  "context": "so",
+  "output_images": [
+   "media/image135.wmf",
+   "media/image136.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/20.mpl",
+  "kind": "mpl",
+  "loc": 513,
+  "context": "b)\n and .  Plotting both:",
+  "output_images": [
+   "media/image139.wmf",
+   "media/image140.wmf",
+   "media/image141.wmf",
+   "media/image142.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/21.mpl",
+  "kind": "mpl",
+  "loc": 520,
+  "context": "c & d)",
+  "output_images": [
+   "media/image143.wmf",
+   "media/image144.wmf",
+   "media/image145.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/22.mpl",
+  "kind": "mpl",
+  "loc": 524,
+  "context": "c & d)",
+  "output_images": [
+   "media/image146.wmf",
+   "media/image147.wmf",
+   "media/image148.wmf",
+   "media/image149.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/23.mpl",
+  "kind": "mpl",
+  "loc": 538,
+  "context": "Complete code block:",
+  "output_images": []
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/24.mpl",
+  "kind": "mpl",
+  "loc": 557,
+  "context": "Can modify the previous code to find position & velocity of point D, then sub in t = 0, e.g. (for the version with rotation matrices for derivatives),",
+  "output_images": [
+   "media/image118.wmf",
+   "media/image123.wmf",
+   "media/image119.wmf",
+   "media/image120.wmf",
+   "media/image124.wmf",
+   "media/image151.wmf",
+   "media/image152.wmf",
+   "media/image153.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/25.mpl",
+  "kind": "mpl",
+  "loc": 576,
+  "context": "Or write , noticing that when  both cross products point horizontally left, so",
+  "output_images": [
+   "media/image154.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/26.mpl",
+  "kind": "mpl",
+  "loc": 581,
+  "context": "Or notice that  and  and reason , so",
+  "output_images": [
+   "media/image155.wmf",
+   "media/image156.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/27.mpl",
+  "kind": "mpl",
+  "loc": 587,
+  "context": "2. Modify P25.1 to find the position of point D, located at the midpoint of bar BC, and add it to your implicit plot of the trajectories from part b.",
+  "output_images": [
+   "media/image135.wmf",
+   "media/image157.png",
+   "media/image139.wmf",
+   "media/image140.wmf",
+   "media/image141.wmf",
+   "media/image158.wmf",
+   "media/image159.wmf",
+   "media/image160.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/28.mpl",
+  "kind": "mpl",
+  "loc": 606,
+  "context": "After finding positions like before, then just take derivatives of them:",
+  "output_images": [
+   "media/image135.wmf",
+   "media/image161.png",
+   "media/image139.wmf",
+   "media/image140.wmf",
+   "media/image141.wmf",
+   "media/image158.wmf",
+   "media/image159.wmf",
+   "media/image162.wmf",
+   "media/image163.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/29.mpl",
+  "kind": "mpl",
+  "loc": 625,
+  "context": "Now proceed like part d\u2019s angle calc and find vD just like vD except with half the length of bar BC:",
+  "output_images": [
+   "media/image135.wmf",
+   "media/image146.wmf",
+   "media/image164.wmf",
+   "media/image165.wmf",
+   "media/image166.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/30.mpl",
+  "kind": "mpl",
+  "loc": 663,
+  "context": "Can do vector relations in 2d noting that .",
+  "output_images": [
+   "media/image167.wmf",
+   "media/image168.wmf",
+   "media/image169.wmf",
+   "media/image170.wmf",
+   "media/image171.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/31.mpl",
+  "kind": "mpl",
+  "loc": 684,
+  "context": "Alternate solution, using differentiation of position (probably the easiest method here:",
+  "output_images": [
+   "media/image169.wmf",
+   "media/image172.wmf",
+   "media/image173.png"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/32.mpl",
+  "kind": "mpl",
+  "loc": 703,
+  "context": "Just like the L25 modification question, we can do this by adjusting the code to find aD instead then sub in t =0:",
+  "output_images": [
+   "media/image169.wmf",
+   "media/image172.wmf",
+   "media/image175.wmf"
+  ]
+ },
+ {
+  "source": "lab4",
+  "file": "EP2CD4 Lab4_TA_SolutionFile.docx",
+  "id": "lab4/33.mpl",
+  "kind": "mpl",
+  "loc": 725,
+  "context": "Alternate soln:",
+  "output_images": [
+   "media/image178.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/01.mpl",
+  "kind": "mpl",
+  "loc": 30,
+  "context": "outwards",
+  "output_images": [
+   "media/image1.wmf",
+   "media/image2.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/02.mpl",
+  "kind": "mpl",
+  "loc": 39,
+  "context": "Specifically, we get Coriolis acceleration of 1 m/s2:",
+  "output_images": [
+   "media/image3.wmf",
+   "media/image4.wmf",
+   "media/image2.wmf",
+   "media/image5.wmf",
+   "media/image6.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/03.mpl",
+  "kind": "mpl",
+  "loc": 62,
+  "context": "Specifically,",
+  "output_images": [
+   "media/image8.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/04.mpl",
+  "kind": "mpl",
+  "loc": 76,
+  "context": "Specifically,",
+  "output_images": [
+   "media/image10.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/05.mpl",
+  "kind": "mpl",
+  "loc": 127,
+  "context": "Or, in maple:",
+  "output_images": [
+   "media/image13.wmf",
+   "media/image14.wmf",
+   "media/image15.wmf",
+   "media/image16.wmf",
+   "media/image17.wmf",
+   "media/image18.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/06.mpl",
+  "kind": "mpl",
+  "loc": 161,
+  "context": "Can find  and , then position, velocity, and accelerations (as-needed) (just like in L26), e.g.,",
+  "output_images": [
+   "media/image22.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/07.mpl",
+  "kind": "mpl",
+  "loc": 178,
+  "context": "Can find MoIs about CoM for OP & PC by  as-needed, e.g.,",
+  "output_images": []
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/08.mpl",
+  "kind": "mpl",
+  "loc": 204,
+  "context": "(These also involve , , and  but we can get those similarly to the other accelerations & positions with kinematics)",
+  "output_images": [
+   "media/image27.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/09.mpl",
+  "kind": "mpl",
+  "loc": 231,
+  "context": "Or, using 3D vectors to make the cross products simpler to write:",
+  "output_images": [
+   "media/image28.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/10.mpl",
+  "kind": "mpl",
+  "loc": 242,
+  "context": "Or, using 3D vectors to make the cross products simpler to write:",
+  "output_images": [
+   "media/image29.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/11.mpl",
+  "kind": "mpl",
+  "loc": 288,
+  "context": "Note that the CoM of BC has an x coordinate of , and we can use this to get its acceleration.",
+  "output_images": []
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/12.mpl",
+  "kind": "mpl",
+  "loc": 297,
+  "context": "Or, with vectors:",
+  "output_images": [
+   "media/image46.wmf",
+   "media/image47.wmf",
+   "media/image48.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/13.mpl",
+  "kind": "mpl",
+  "loc": 303,
+  "context": "Either way, now that we\u2019ve got the positions, velocities, and accelerations, we can work to get the forces we need.",
+  "output_images": [
+   "media/image49.wmf",
+   "media/image50.wmf",
+   "media/image51.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/14.mpl",
+  "kind": "mpl",
+  "loc": 320,
+  "context": "Putting it all together:",
+  "output_images": []
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/15.mpl",
+  "kind": "mpl",
+  "loc": 337,
+  "context": "with vector methods closer to lecture solution:",
+  "output_images": [
+   "media/image52.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/16.mpl",
+  "kind": "mpl",
+  "loc": 360,
+  "context": "This changes the force and torque eqns for member BC (unless you took the torque about G, in which case it just changes the force eqn):",
+  "output_images": [
+   "media/image53.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/17.mpl",
+  "kind": "mpl",
+  "loc": 424,
+  "context": "All together:",
+  "output_images": [
+   "media/image65.png",
+   "media/image66.png",
+   "media/image67.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/18.mpl",
+  "kind": "mpl",
+  "loc": 446,
+  "context": "Solution writeup shown in class:",
+  "output_images": [
+   "media/image68.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/19.mpl",
+  "kind": "mpl",
+  "loc": 469,
+  "context": "Calculating MoIs and inputting masses, we can find these and plot them:",
+  "output_images": [
+   "media/image70.wmf",
+   "media/image71.wmf",
+   "media/image72.wmf",
+   "media/image73.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/20.mpl",
+  "kind": "mpl",
+  "loc": 491,
+  "context": "For this sytem, that\u2019s work done by the axle (it\u2019s the only external force that does work):",
+  "output_images": []
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/21.mpl",
+  "kind": "mpl",
+  "loc": 511,
+  "context": "c) Since work is done by the moment  applied by the axle multiplied by the angle traversed, we have",
+  "output_images": [
+   "media/image78.png",
+   "media/image79.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/22.mpl",
+  "kind": "mpl",
+  "loc": 535,
+  "context": "1. Repeat parts b & c of P30.1 if the system is impacted by  acting downwards.",
+  "output_images": [
+   "media/image80.png",
+   "media/image81.png"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/23.mpl",
+  "kind": "mpl",
+  "loc": 600,
+  "context": "and",
+  "output_images": [
+   "media/image87.wmf",
+   "media/image88.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/24.mpl",
+  "kind": "mpl",
+  "loc": 609,
+  "context": "Solution:",
+  "output_images": [
+   "media/image89.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/25.mpl",
+  "kind": "mpl",
+  "loc": 675,
+  "context": "With the specific numbers of this example,",
+  "output_images": [
+   "media/image97.wmf",
+   "media/image98.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/26.mpl",
+  "kind": "mpl",
+  "loc": 681,
+  "context": "With the specific numbers of this example,",
+  "output_images": [
+   "media/image99.wmf",
+   "media/image100.wmf",
+   "media/image101.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/27.mpl",
+  "kind": "mpl",
+  "loc": 686,
+  "context": "With the specific numbers of this example,",
+  "output_images": [
+   "media/image102.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/28.mpl",
+  "kind": "mpl",
+  "loc": 695,
+  "context": "L32 Modification Questions",
+  "output_images": [
+   "media/image103.wmf",
+   "media/image104.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/29.mpl",
+  "kind": "mpl",
+  "loc": 701,
+  "context": "L32 Modification Questions",
+  "output_images": [
+   "media/image105.wmf",
+   "media/image106.wmf",
+   "media/image101.wmf"
+  ]
+ },
+ {
+  "source": "lab5",
+  "file": "EP2CD4 Lab5_TA_SolutionFile.docx",
+  "id": "lab5/30.mpl",
+  "kind": "mpl",
+  "loc": 706,
+  "context": "L32 Modification Questions",
+  "output_images": [
+   "media/image107.wmf",
+   "media/image108.wmf"
+  ]
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/01.mpl",
+  "kind": "mpl",
+  "loc": 19,
+  "context": "Basic Assignment:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/02.mpl",
+  "kind": "mpl",
+  "loc": 19,
+  "context": "Using % in equations:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/03.mpl",
+  "kind": "mpl",
+  "loc": 20,
+  "context": "evalf & simplify",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/04.mpl",
+  "kind": "mpl",
+  "loc": 20,
+  "context": "Differentiating and integrating:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/05.mpl",
+  "kind": "mpl",
+  "loc": 20,
+  "context": "Basic plotting & lists",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/06.mpl",
+  "kind": "mpl",
+  "loc": 20,
+  "context": "Basic equation solving & root finding",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/07.mpl",
+  "kind": "mpl",
+  "loc": 20,
+  "context": "Parametric plotting & sublisting",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/08.mpl",
+  "kind": "mpl",
+  "loc": 20,
+  "context": "Solving multiple equations in multiple unknowns",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/09.mpl",
+  "kind": "mpl",
+  "loc": 21,
+  "context": "Function declaration & Multiple assignment",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/10.mpl",
+  "kind": "mpl",
+  "loc": 21,
+  "context": "Substitute; an alternative to function declaration",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/11.mpl",
+  "kind": "mpl",
+  "loc": 21,
+  "context": "Sums & Products; discrete math",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/12.mpl",
+  "kind": "mpl",
+  "loc": 21,
+  "context": "differential equations)",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/13.mpl",
+  "kind": "mpl",
+  "loc": 22,
+  "context": "Differential Equation Solving:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/14.mpl",
+  "kind": "mpl",
+  "loc": 43,
+  "context": "We'll use Maple to speed this up:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/15.mpl",
+  "kind": "mpl",
+  "loc": 43,
+  "context": "Apply the initial condition:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/16.mpl",
+  "kind": "mpl",
+  "loc": 44,
+  "context": "0.5:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/17.mpl",
+  "kind": "mpl",
+  "loc": 44,
+  "context": "command:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/18.mpl",
+  "kind": "mpl",
+  "loc": 44,
+  "context": "to the component of gravity directed down the ramp,",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/19.mpl",
+  "kind": "mpl",
+  "loc": 45,
+  "context": "Maple can solve it very easily.  Consider what each line here does.  Comments greened.",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/20.mpl",
+  "kind": "mpl",
+  "loc": 46,
+  "context": "(Try this, if you dare:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/21.pde",
+  "kind": "pde",
+  "loc": 47,
+  "context": "name) and replace what's there with this   ('w' = omega and 'q' = theta):",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/22.mpl",
+  "kind": "mpl",
+  "loc": 48,
+  "context": "solve the system for whatever variable limits you want.  Here is an example:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/23.mpl",
+  "kind": "mpl",
+  "loc": 49,
+  "context": "Which IVP is this code solving?",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/24.mpl",
+  "kind": "mpl",
+  "loc": 51,
+  "context": "Can rewrite eliminating v:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/25.mpl",
+  "kind": "mpl",
+  "loc": 55,
+  "context": "Solving:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/26.mpl",
+  "kind": "mpl",
+  "loc": 56,
+  "context": ", we have:",
+  "output_images": []
+ },
+ {
+  "source": "notes1_kinematics",
+  "file": "bc6c5aa905f62d0877618b0324f235a3.pdf",
+  "id": "notes1_kinematics/27.mpl",
+  "kind": "mpl",
+  "loc": 66,
+  "context": "velocity.",
+  "output_images": []
+ }
+]

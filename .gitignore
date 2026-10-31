@@ -1,0 +1,11 @@
+node_modules/
+dist/
+public/pyodide/
+public/symflex_maple.zip
+corpus/media/
+corpus/pages/
+__pycache__/
+*.pyc
+*_output/
+.work/
+tests/out/
