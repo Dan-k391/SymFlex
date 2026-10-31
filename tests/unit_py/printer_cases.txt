@@ -1,0 +1,160 @@
+1/3.
+1.0
+2.5e-3
+1.5e3
+0.0000012
+123456789012.
+1e20
+-0.5
+3/2
+-y^2*cos(y)+2*cos(y)
+f := 1/2*exp(-t)*(sin(2*t)+2*cos(2*t))
+piecewise(t<1,t,2)
+diff(y(t),t)
+diff(y(t),t,t)
+D(y)(0)
+D(D(y))(0)
+arcsin(z)
+{1,2,3}
+[a,b]
+a=b
+a<>b
+a<=b
+a>b
+Vector([1,2,3])
+Vector([-3,0,1])
+Matrix([[1,2],[3,4]])
+<1|2>
+<1,0,2>
+"hello"
+x..y
+a,b,c
+evalf(Pi)
+evalf[4](Pi)
+sqrt(2)
+2^(1/3)
+exp(1)
+I
+2+3*I
+infinity
+-infinity
+a*b/c
+-a/b
+a-b
+(a+b)^2
+a^(-1)
+a^(-2)*b
+1/(a+b)
+x^(1/2)
+-x
+-2*x
+2*x/3
+x/3
+-x/3
+x^2/y^3
+a/(b*c)
+exp(-t)/2
+3*x^2*y
+(x+1)/(x-1)
+1/sqrt(x)
+2*sqrt(3)
+-sqrt(2)/2
+x^(2*n)
+(-1)^n
+(1/2)^x
+(-2)^x
+f(x,y)
+a[1]
+a[i,j]
+sin(x)^2
+not a
+a and b
+a or b
+true
+FAIL
+x->x^2
+(x,y)->x+y
+proc(x) x end proc
+evalf(1/30)
+evalf(1/3000)
+0.012
+0.12
+evalf(1200)
+evalf(2^40)
+evalf(2^30)
+evalf(exp(20))
+evalf(exp(-20))
+3.0*2
+0.1+0.2
+9.81*40
+evalf(sqrt(2)*1000)
+evalf(sqrt(2)/1000)
+y := -0.001
+0.
+int(sin(x)^2,x)
+diff(f(x,y),x,y)
+Int(g(x),x=0..1)
+Sum(i^2,i=1..n)
+Limit(sin(x)/x,x=0)
+solve(x^2=4)
+solve({x+y=1,x-y=0})
+solve({x^2=y, y=1})
+solve(x^2+1=0)
+solve([x+y=1,x-y=0],[x,y])
+solve(a*x=b, x)
+fsolve(x^2=2, x=0..5)
+fsolve({x+y=1.,x-y=0})
+evalf(sqrt(2)*x+1/3)
+L := [1,2,3]
+op([1,2,3])
+nops([1,2,3])
+seq(i^2, i=1..4)
+[seq(k, k=1..3)]
+x$3
+$1..4
+add(i, i=1..10)
+mul(i,i=1..5)
+sum(1/2^k, k=0..infinity)
+map(sin, [a,b])
+zip((a,b)->a+b, [1,2],[3,4])
+select(type, [1,x,2.5], numeric)
+whattype(a+b)
+whattype([1])
+whattype(a=b)
+whattype(3.1)
+convert(1/3, float)
+evalb(1<2)
+abs(-3)
+signum(-2.)
+floor(2.5)
+round(2.5)
+trunc(-2.5)
+frac(2.5)
+irem(17,5)
+iquo(17,5)
+17 mod 5
+gcd(12,18)
+ifactor(60)
+numer(3/4)
+max(1,2,3)
+evalc(exp(I*x))
+argument(I)
+binomial(5,2)
+cat("a", 1, b)
+length("hello")
+`a b`
+'x'
+x := 'x'
+sprintf("%a", 1/3)
+simplify(sin(x)^2+cos(x)^2)
+expand((x+1)^2)
+factor(x^2-1)
+coeff(a*x^2+b*x, x, 2)
+maximize(-x^2+2*x, x=0..3)
+series(exp(x), x=0, 3)
+evalf(exp(1)*10^(-12))
+-.3*N
+2.0*x
+1.*x
+-1.5*x^2
+x^2*1.0e-5

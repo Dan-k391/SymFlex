@@ -71,6 +71,29 @@ Internals (owned by the core; library modules plug in):
   `plots.py` (plot, loglogplot, semilogplot, logplot, odeplot, display, pointplot, animate, plot3d, ...).
 - Floats: `Digits` (default 10) governs evalf precision and display.
 
+### Maple engine core: contract extensions (owner: Maple core, `py/symflex_maple`)
+
+- **Output dicts**: `print` outputs from `print(...)` also carry `latex`. `printf` without a
+  trailing `\n` is appended to the previous `print` output of the same cell (one line per `\n`).
+- **Plots**: an assignment whose value is a plot (`p := plot(...);`) emits a `plot` output, like
+  the GUI, rather than `PLOT(...)` text.
+- **Vector/Matrix text** uses cmaple's exact lprint form
+  `Vector[column](3,{1 = -3, 3 = 1},datatype = anything,storage = rectangular,order = Fortran_order,shape = [])`
+  (zero entries omitted); VectorCalculus' `attributes = [...]` field is not printed.
+- **Known text differences** (the comparator must be semantic about these): floats are binary
+  (SymPy) so a computed `392.40` prints `392.4` and the last digit can differ by one ulp; term and
+  factor order follows SymPy; repeated roots are listed with multiplicity like Maple.
+- **Builtins registry** (`py/symflex_maple/builtins/__init__.py`, documented in
+  `py/symflex_maple/builtins/README.md`): each area module defines `lib = Library()`,
+  decorates `fn(ctx, *args, **options)` with `@lib.builtin(name, sig=, doc=, options=,
+  evaluate=, indexed=, package=)`, can register operators (`@lib.operator('.')`), types
+  (`@lib.type('numeric')`) and `with()` hooks (`@lib.on_with('VectorCalculus')`), and exports
+  `register(env)`. `ctx` is the `Evaluator` (API listed in the README).
+- **Package export lists** shown by `with(...)` come from real Maple
+  (`builtins/packages_data.py`); exports not implemented yet raise
+  `Error, Pkg:-name is not implemented in SymFlex` when called via `Pkg:-name`, and are simply
+  not bound by `with()`.
+
 ## FlexPDE engine (JS, `src/flex`)
 
 ```js
@@ -87,6 +110,23 @@ TIME a TO b [by dt] [halt cond], PLOTS/MONITORS/SUMMARY with `for t = a by d to 
 history(...) at (...) [vs ...], report, elevation, contour, surface, vector plots, END.
 ODE-style problems (ngrid=1) integrate the time system with an adaptive integrator; real 2-D
 steady/transient PDEs (e.g. the default `div(grad(u))=0` template) use a simple P1 FEM.
+
+### FlexPDE engine: contract extensions (owned by `src/flex`)
+
+- `import { lintFlex } from './src/flex/index.js'`; `lintFlex(text) -> [{line, col, msg, severity}]`
+  (`severity` is `'error'` or `'warning'`), for editor diagnostics; it never solves.
+- `BUILTIN_NAMES` (exported from `src/flex/index.js`): built-in function/constant names for completion.
+- `errors[]` entries also carry `col` (1-based, as FlexPDE prints `Line L Col C:`).
+- `reports[]` entries also carry `expr` (source text of the reported expression; `label` is the
+  `AS` string when given, else the expression text, as in FlexPDE). `REPORT 'text'` gives
+  `{label: 'text', value: null}`.
+- `final.range = {var: [min, max]}` over the run (ODE mode); `final.values` holds every variable
+  component at the final time (ODE mode).
+- `fields = {var: {x:[], y:[], tri:[[i,j,k]], values:[]}}` nodal FEM solution at the final time
+  (FEM mode only; 1D meshes have `tri` pairs `[i,j]`).
+- History PlotSpec curves also carry `t: []` (sample times, also for `vs` plots); histories are
+  sampled at every time step, which always includes every `for t = ...` plot time and the end.
+- Vector PlotSpecs with `NORM` have unit `arrows.u/v` plus `arrows.magnitude` and `arrows.norm: true`.
 
 ## PlotSpec (shared by both engines, rendered by `src/ui/plot.js` with Plotly)
 
@@ -116,3 +156,36 @@ steady/transient PDEs (e.g. the default `div(grad(u))=0` template) use a simple 
   and compare semantically (numbers to ~1e-6 relative for exact/symbolic, looser for numeric
   ODE/FEM; symbolic expressions by random-point evaluation; plots by sampled curves).
 - `npm test` runs everything and prints a pass/fail table (`tests/report.md`).
+
+## UI (`src/ui`, `src/maple`): extensions to the contracts above
+
+Added by the web-app component; engines do not need to change for any of this.
+
+- **Maple worker protocol** (`src/maple/worker.js`, client `MapleKernel` in `src/ui/kernel.js`):
+  in `{type:'init', baseUrl, interruptBuffer?}`, `{type:'run', id, code}`, `{type:'complete', id, prefix}`,
+  `{type:'reset', id}`, `{type:'reload', id}`; out `{type:'progress', pct, msg}`, `{type:'ready'}`,
+  `{type:'fatal', message}`, `{type:'result', id, outputs}`, `{type:'items', id, items}`, `{type:'done', id}`.
+  The worker imports Pyodide at runtime from `public/pyodide/` and unpacks `public/symflex_maple.zip`
+  (built from `py/symflex_maple` by `scripts/bundle_py.mjs`) into `/home/pyodide/symflex`.
+  `Session.run` results are passed through `json.dumps(default=str)`, so output dicts must be JSON-able.
+  Exceptions escaping `Session.run` become `{kind:'error', text:'Error, (internal) ...'}`; anything the
+  engine prints to stdout is prepended as a `print` output. `reload` drops all `symflex_maple*`
+  modules and builds a new `Session` (used by `npm run dev` when files under `py/` change).
+- **Interrupt**: when the page is cross-origin isolated (COOP/COEP headers are set by vite dev and
+  preview), `pyodide.setInterruptBuffer` is used and an interrupt raises `KeyboardInterrupt` inside
+  `Session.run` (the engine should let it propagate). Otherwise the worker is terminated and restarted.
+- **FlexPDE worker** (`src/ui/flexWorker.js`): in `{type:'run', id, code}` / `{type:'lint', id, code}`;
+  out `{type:'progress', id, msg}` (msg = whatever `onProgress` receives: a string, or an object with
+  `msg`/`message`/`t`), `{type:'result', id, result}`, `{type:'lint', id, diagnostics}`.
+  Uses `lintFlex(text)` when `src/flex/index.js` exports it; diagnostics are `{line, col?, endCol?, msg, severity?}`
+  (1-based line/col). Errors in `result.errors` with a `line` are clickable and shown as editor squiggles.
+- **PlotSpec details assumed by the renderer**: `grid.z[j][i]` is the value at `(x[i], y[j])`
+  (Plotly orientation; `z[i][j]` is detected and transposed when the shape makes it unambiguous).
+  `type:'contour'` with `mesh` is resampled to a 60x60 grid; `type:'surface'` with `mesh` is a Plotly
+  `mesh3d`. `frames[k]` fields override the parent spec for frame k; 2-D animation axes are fixed
+  to the union of all frames. Colors are any CSS color (Maple names like `red`, `"Orange"` work).
+- **Notebook file** `.symflex.json`: `{format:'symflex', version:1, name, cells:[{type:'maple'|'flexpde'|'markdown',
+  source, outputs, execCount, collapsed}]}`; FlexPDE cells store `outputs: [{kind:'flex', result}]`.
+- **Examples** `public/examples.json` (from `scripts/build_examples.py`):
+  `[{source, title, items:[{id, title, context, kind:'mpl'|'pde', code}]}]`; corpus header comment lines
+  (`# SOURCE:`, `# DEPENDS:`, `# NOTE:`, `{ SOURCE: ... }`) are stripped from `code`.

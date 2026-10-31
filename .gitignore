@@ -9,3 +9,4 @@ __pycache__/
 *_output/
 .work/
 tests/out/
+public/examples.json

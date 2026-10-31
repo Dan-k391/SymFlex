@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SymFlex: a notebook for Maple and FlexPDE, for EP 2CD4 dynamics">
+  <title>SymFlex</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563eb'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='18' font-style='italic' fill='white' text-anchor='middle'%3E%E2%88%AB%3C/text%3E%3C/svg%3E">
+  <script>
+    // Apply the saved theme before first paint to avoid a flash.
+    try {
+      const t = JSON.parse(localStorage.getItem('symflex.setting.theme'))
+      if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t
+    } catch {}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#notebook">Skip to notebook</a>
+  <header class="topbar">
+    <button type="button" class="icon-btn" id="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="sidebar">☰</button>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">∫</span>SymFlex</div>
+    <label class="visually-hidden" for="nb-name">Notebook name</label>
+    <input id="nb-name" class="nb-name" spellcheck="false" autocomplete="off">
+    <nav class="menus" aria-label="Main menu">
+      <div class="menu" data-menu="file">
+        <button type="button" class="menu-btn" aria-haspopup="true" aria-expanded="false">File</button>
+        <div class="menu-pop" role="menu">
+          <button role="menuitem" data-cmd="new">New notebook</button>
+          <button role="menuitem" data-cmd="open">Open / import…<kbd>.symflex.json .mpl .mw .pde .txt</kbd></button>
+          <hr>
+          <button role="menuitem" data-cmd="save-json">Save as .symflex.json</button>
+          <button role="menuitem" data-cmd="export-mpl">Export Maple (.mpl)</button>
+          <button role="menuitem" data-cmd="export-pde">Export FlexPDE (.pde)</button>
+          <button role="menuitem" data-cmd="export-html">Export static HTML</button>
+        </div>
+      </div>
+      <div class="menu" data-menu="edit">
+        <button type="button" class="menu-btn" aria-haspopup="true" aria-expanded="false">Edit</button>
+        <div class="menu-pop" role="menu">
+          <button role="menuitem" data-cmd="insert-above">Insert cell above<kbd>A</kbd></button>
+          <button role="menuitem" data-cmd="insert-below">Insert cell below<kbd>B</kbd></button>
+          <button role="menuitem" data-cmd="duplicate">Duplicate cell</button>
+          <button role="menuitem" data-cmd="move-up">Move cell up<kbd>Alt+↑</kbd></button>
+          <button role="menuitem" data-cmd="move-down">Move cell down<kbd>Alt+↓</kbd></button>
+          <button role="menuitem" data-cmd="delete">Delete cell<kbd>D,D</kbd></button>
+          <button role="menuitem" data-cmd="undo-delete">Undo delete<kbd>Z</kbd></button>
+          <hr>
+          <button role="menuitem" data-cmd="type-maple">Make Maple cell<kbd>Y</kbd></button>
+          <button role="menuitem" data-cmd="type-flexpde">Make FlexPDE cell<kbd>F</kbd></button>
+          <button role="menuitem" data-cmd="type-markdown">Make text cell<kbd>M</kbd></button>
+          <hr>
+          <button role="menuitem" data-cmd="collapse">Toggle output<kbd>O</kbd></button>
+          <button role="menuitem" data-cmd="clear">Clear all outputs</button>
+        </div>
+      </div>
+      <div class="menu" data-menu="run">
+        <button type="button" class="menu-btn" aria-haspopup="true" aria-expanded="false">Run</button>
+        <div class="menu-pop" role="menu">
+          <button role="menuitem" data-cmd="run">Run cell<kbd>Ctrl+Enter</kbd></button>
+          <button role="menuitem" data-cmd="run-advance">Run and advance<kbd>Shift+Enter</kbd></button>
+          <button role="menuitem" data-cmd="run-all">Run all</button>
+          <button role="menuitem" data-cmd="run-above">Run all above</button>
+          <button role="menuitem" data-cmd="run-below">Run selected and below</button>
+          <hr>
+          <button role="menuitem" data-cmd="interrupt">Interrupt<kbd>I,I</kbd></button>
+          <button role="menuitem" data-cmd="restart">Restart kernel<kbd>0,0</kbd></button>
+          <button role="menuitem" data-cmd="restart-run-all">Restart and run all</button>
+        </div>
+      </div>
+      <div class="menu" data-menu="view">
+        <button type="button" class="menu-btn" aria-haspopup="true" aria-expanded="false">View</button>
+        <div class="menu-pop" role="menu">
+          <button role="menuitem" data-cmd="toggle-theme">Toggle dark theme</button>
+          <button role="menuitem" data-cmd="toggle-lines">Toggle line numbers</button>
+          <button role="menuitem" data-cmd="shortcuts">Keyboard shortcuts<kbd>H</kbd></button>
+        </div>
+      </div>
+    </nav>
+    <div class="toolbar" role="toolbar" aria-label="Notebook actions">
+      <button type="button" class="btn btn-primary" data-cmd="run-advance" title="Run cell and advance (Shift+Enter)">▶ Run</button>
+      <button type="button" class="btn" data-cmd="run-all" title="Run all cells">Run all</button>
+      <button type="button" class="btn" data-cmd="interrupt" id="btn-stop" title="Interrupt (I,I)" disabled>■ Stop</button>
+      <button type="button" class="btn" data-cmd="restart" title="Restart kernel (0,0)">↻ Restart</button>
+    </div>
+    <div class="status-area">
+      <span id="mode-pill" class="pill pill-mode" title="Esc: command mode, Enter: edit mode">Command</span>
+      <span id="kernel-pill" class="pill" role="status" aria-live="polite">Maple: starting</span>
+      <button type="button" class="icon-btn" data-cmd="toggle-theme" aria-label="Toggle dark theme" title="Toggle theme">◐</button>
+      <button type="button" class="icon-btn" data-cmd="shortcuts" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (H)">?</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="Sidebar">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tab-notebooks" aria-controls="panel-notebooks" aria-selected="true">Notebooks</button>
+        <button role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false">Examples</button>
+        <button role="tab" id="tab-help" aria-controls="panel-help" aria-selected="false">Reference</button>
+      </div>
+      <section class="panel" id="panel-notebooks" role="tabpanel" aria-labelledby="tab-notebooks">
+        <div class="panel-actions">
+          <button type="button" class="btn btn-small" data-cmd="new">+ New</button>
+          <button type="button" class="btn btn-small" data-cmd="open">Open…</button>
+        </div>
+        <ul class="nb-list" id="nb-list"></ul>
+      </section>
+      <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples" hidden>
+        <input type="search" class="search" id="ex-search" placeholder="Search course examples" aria-label="Search course examples">
+        <div id="ex-list" class="ex-list"><p class="muted">Loading…</p></div>
+      </section>
+      <section class="panel" id="panel-help" role="tabpanel" aria-labelledby="tab-help" hidden>
+        <input type="search" class="search" id="help-search" placeholder="Search Maple and FlexPDE functions" aria-label="Search function reference">
+        <div id="help-list" class="help-list"></div>
+      </section>
+    </aside>
+    <main id="notebook" class="notebook" aria-label="Notebook cells"></main>
+  </div>
+
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  <input type="file" id="file-input" accept=".json,.mpl,.mw,.pde,.txt" hidden>
+
+  <dialog id="shortcuts" aria-labelledby="shortcuts-title">
+    <div class="dialog-head">
+      <h2 id="shortcuts-title">Keyboard shortcuts</h2>
+      <button type="button" class="icon-btn" aria-label="Close" data-close>✕</button>
+    </div>
+    <div class="shortcut-grid">
+      <section>
+        <h3>Any mode</h3>
+        <dl>
+          <dt><kbd>Shift</kbd>+<kbd>Enter</kbd></dt><dd>Run cell, select next</dd>
+          <dt><kbd>Ctrl</kbd>+<kbd>Enter</kbd></dt><dd>Run cell in place</dd>
+          <dt><kbd>Alt</kbd>+<kbd>Enter</kbd></dt><dd>Run cell, insert below</dd>
+          <dt><kbd>Ctrl</kbd>+<kbd>S</kbd></dt><dd>Save notebook</dd>
+        </dl>
+        <h3>Edit mode</h3>
+        <dl>
+          <dt><kbd>Esc</kbd></dt><dd>Command mode</dd>
+          <dt><kbd>Ctrl</kbd>+<kbd>Space</kbd></dt><dd>Autocomplete</dd>
+          <dt><kbd>Ctrl</kbd>+<kbd>/</kbd></dt><dd>Toggle comment</dd>
+          <dt><kbd>Ctrl</kbd>+<kbd>F</kbd></dt><dd>Search in cell</dd>
+          <dt><kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd></dt><dd>Indent / dedent</dd>
+          <dt><kbd>Ctrl</kbd>+<kbd>Z</kbd></dt><dd>Undo typing</dd>
+        </dl>
+      </section>
+      <section>
+        <h3>Command mode</h3>
+        <dl>
+          <dt><kbd>Enter</kbd></dt><dd>Edit cell</dd>
+          <dt><kbd>↑</kbd> <kbd>↓</kbd> / <kbd>K</kbd> <kbd>J</kbd></dt><dd>Select cell</dd>
+          <dt><kbd>Alt</kbd>+<kbd>↑</kbd> <kbd>↓</kbd></dt><dd>Move cell</dd>
+          <dt><kbd>A</kbd> / <kbd>B</kbd></dt><dd>Insert above / below</dd>
+          <dt><kbd>D</kbd>,<kbd>D</kbd></dt><dd>Delete cell</dd>
+          <dt><kbd>Z</kbd></dt><dd>Undo cell deletion</dd>
+          <dt><kbd>Y</kbd> / <kbd>F</kbd> / <kbd>M</kbd></dt><dd>Maple / FlexPDE / text cell</dd>
+          <dt><kbd>O</kbd></dt><dd>Toggle output</dd>
+          <dt><kbd>I</kbd>,<kbd>I</kbd></dt><dd>Interrupt</dd>
+          <dt><kbd>0</kbd>,<kbd>0</kbd></dt><dd>Restart kernel</dd>
+          <dt><kbd>H</kbd> / <kbd>?</kbd></dt><dd>This help</dd>
+        </dl>
+      </section>
+    </div>
+  </dialog>
+
+  <script type="module" src="/src/ui/main.js"></script>
+</body>
+</html>
