@@ -4,6 +4,9 @@ SymFlex is a Jupyter-style web notebook that emulates **Maple 2024** (1-D input)
 for the McMaster EP 2CD4 dynamics course: kinematics, Newton's laws with friction, rockets and drag
 (nonlinear ODEs), damped and driven oscillators, rigid-body planar kinetics, energy and Lagrange.
 
+**Try it:** https://dan-k391.github.io/SymFlex/ (GitHub Pages can't send cross-origin isolation headers,
+so Stop restarts the Maple kernel there instead of interrupting it.)
+
 Everything runs in the browser and works offline:
 
 - **Maple cells** run a Python/SymPy reimplementation of Maple (`py/symflex_maple`) inside Pyodide in a
