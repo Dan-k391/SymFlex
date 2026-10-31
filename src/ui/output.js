@@ -47,8 +47,14 @@ export function renderOutput(o, { toast, onJump } = {}) {
   }
 }
 
+/** A loop ended by ';' can print thousands of results; rendering or saving them all freezes the page. */
+export function capOutputs(outputs, max = 300, tail = 20) {
+  if (outputs.length <= max) return outputs
+  return [...outputs.slice(0, max - tail - 1), { kind: 'warning', text: `Warning, ${outputs.length - max + 1} outputs not shown` }, ...outputs.slice(-tail)]
+}
+
 export function renderOutputs(container, outputs, opts) {
-  container.replaceChildren(...outputs.map((o) => renderOutput(o, opts)))
+  container.replaceChildren(...capOutputs(outputs).map((o) => renderOutput(o, opts)))
 }
 
 const fmt = (v) => (typeof v === 'number' ? (Number.isInteger(v) ? String(v) : v.toPrecision(6).replace(/\.?0+(e|$)/, '$1')) : String(v))
@@ -63,7 +69,7 @@ export function renderFlexResult(r = {}, { onJump } = {}) {
   const box = el('div', 'flex-result')
   if (r.title) box.append(el('div', 'flex-title', r.title))
   for (const e of r.errors || []) {
-    const row = el('button', 'out-error flex-error')
+    const row = el('button', e.severity === 'warning' ? 'out-warning flex-error' : 'out-error flex-error')
     row.type = 'button'
     row.textContent = e.line ? `Line ${e.line}: ${e.msg}` : e.msg
     if (e.line && onJump) row.onclick = () => onJump(e.line)

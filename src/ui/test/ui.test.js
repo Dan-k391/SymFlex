@@ -13,6 +13,7 @@ import { flexSectionAt, flexStreamParser } from '../lang/flex.js'
 import { checkMapleBrackets, mapleStreamParser } from '../lang/maple.js'
 import { MAPLE_DOCS, MAPLE_PACKAGES } from '../lang/maple_docs.js'
 import { renderMarkdown } from '../markdown.js'
+import { capOutputs } from '../output.js'
 import { arrowSegments, bounds2d, gridZ, meshToGrid, specToLayout, specToTraces } from '../plot.js'
 import * as model from '../store.js'
 
@@ -209,4 +210,15 @@ test('bundle_py zip is readable by Python zipfile', () => {
   writeFileSync(file, makeZip([{ name: 'pkg/__init__.py', data: Buffer.from('X = 42\n') }, { name: 'pkg/m.py', data: Buffer.from('é = 1\n'.repeat(50)) }]))
   const out = execFileSync('python', ['-c', `import sys, zipfile; z = zipfile.ZipFile(sys.argv[1]); assert z.testzip() is None; sys.path.insert(0, sys.argv[1]); import pkg; print(pkg.X, len(z.read('pkg/m.py')))`, file]).toString()
   assert.equal(out.trim(), `42 ${Buffer.byteLength('é = 1\n'.repeat(50))}`)
+})
+
+test('capOutputs keeps the head, the tail and a count of what it drops', () => {
+  const few = [{ kind: 'math', text: 'a' }]
+  assert.equal(capOutputs(few), few)
+  const many = Array.from({ length: 1000 }, (_, i) => ({ kind: 'math', text: String(i) }))
+  const c = capOutputs(many)
+  assert.equal(c.length, 300)
+  assert.equal(c[278].text, '278')
+  assert.deepEqual(c[279], { kind: 'warning', text: 'Warning, 701 outputs not shown' })
+  assert.equal(c.at(-1).text, '999')
 })

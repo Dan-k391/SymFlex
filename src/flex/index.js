@@ -17,19 +17,19 @@ const SPATIAL = new Set(['dx', 'dy', 'dz', 'grad', 'div', 'curl', 'del2', 'dxx',
 const FIELD_MSG = 'A Scalar Evaluation has encountered a Field value with no Location Specified';
 const DEFAULT_THRESHOLD = 1e-6;
 
-export async function runFlex(scriptText, { onProgress, maxSteps } = {}) {
+export async function runFlex(scriptText, { onProgress, maxSteps, trace } = {}) {
   const result = { title: '', log: [], errors: [], reports: [], final: { t: null, values: {} }, plots: [], halted: false };
   const progress = msg => { result.log.push(msg); if (onProgress) onProgress(msg); };
   try {
-    await solveProblem(scriptText, result, progress, maxSteps);
+    await solveProblem(scriptText, result, progress, { maxSteps, trace });
   } catch (e) {
-    if (e instanceof FlexError) result.errors.push({ line: e.line || 0, col: e.col || 0, msg: e.message });
-    else result.errors.push({ line: 0, col: 0, msg: `Internal error: ${e && e.message ? e.message : e}` });
+    if (e instanceof FlexError) result.errors.push({ line: e.line || 0, col: e.col || 0, msg: e.message, severity: 'error' });
+    else result.errors.push({ line: 0, col: 0, msg: `Internal error: ${e && e.message ? e.message : e}`, severity: 'error' });
   }
   return result;
 }
 
-async function solveProblem(text, result, progress, maxSteps) {
+async function solveProblem(text, result, progress, { maxSteps, trace }) {
   const P = parseFlex(text);
   result.title = P.title;
   const model = buildModel(P);
@@ -42,7 +42,7 @@ async function solveProblem(text, result, progress, maxSteps) {
   model.domain = { centroid: geom.centroid, measure: geom.measure };
   const spatial = model.equations.some(e => usesSpatial(e.lhs, model) || usesSpatial(e.rhs, model));
   const plotBlocks = P.plots.filter(b => b.section !== 'monitors');
-  checkLocations(plotBlocks, model);
+  locateBareFields(plotBlocks, model, P, result);
 
   const T = P.time;
   const t0 = T ? model.constant(T.from) : 0;
@@ -58,7 +58,7 @@ async function solveProblem(text, result, progress, maxSteps) {
     if (T) {
       const halts = compileHalts(T, model);
       const out = integrate(sys, {
-        t0, t1, Y0, errlim, h0: T.by ? model.constant(T.by) : undefined, landTimes, maxSteps,
+        t0, t1, Y0, errlim, h0: T.by ? model.constant(T.by) : undefined, landTimes, maxSteps, trace,
         limit: T.limit ? model.constant(T.limit) : undefined, minDt: halts.minDt,
         onStep(t, Y) {
           sol.states.push({ t, Y: Float64Array.from(Y) });
@@ -84,6 +84,7 @@ async function solveProblem(text, result, progress, maxSteps) {
     });
   } else {
     const mesh = buildMesh(geom, ngrid);
+    if (!mesh.tri.length) throw new FlexError('Mesh generation failed: the BOUNDARIES enclose no area', P.regions[0]?.line);
     progress(`Mesh: ${mesh.x.length} nodes, ${mesh.tri.length} cells`);
     const sys = buildFemSystem(model, mesh, thr);
     const nv = sys.nv;
@@ -104,7 +105,7 @@ async function solveProblem(text, result, progress, maxSteps) {
     if (T) {
       const halts = compileHalts(T, model);
       const out = integrate(sys, {
-        t0, t1, Y0: U0, errlim, h0: T.by ? model.constant(T.by) : undefined, landTimes, maxSteps,
+        t0, t1, Y0: U0, errlim, h0: T.by ? model.constant(T.by) : undefined, landTimes, maxSteps, trace,
         limit: T.limit ? model.constant(T.limit) : undefined, minDt: halts.minDt,
         onStep(t, Y) {
           sol.states.push({ t, Y: Float64Array.from(Y) });
@@ -150,7 +151,7 @@ function finishRun(out, result, progress) {
   result.halted = out.halted;
   progress(`${out.steps} steps, ${out.fails} retries`);
   if (out.halted) progress(out.reason === 'mindt' ? 'Halt: timestep below minimum' : 'Halt on User Condition');
-  if (out.reason === 'maxsteps') result.errors.push({ line: 0, col: 0, msg: 'Step limit reached' });
+  if (out.reason === 'maxsteps') result.errors.push({ line: 0, col: 0, msg: 'Step limit reached', severity: 'error' });
 }
 
 function makePlot(item, sol, compile) {
@@ -182,14 +183,30 @@ function usesSpatial(node, model, seen = new Set()) {
   return ['a', 'b', 'c'].some(k => usesSpatial(node[k], model, seen));
 }
 
-// FlexPDE 8 refuses scalar output (REPORT, HISTORY without AT) of field values without a location.
-function checkLocations(blocks, model) {
+// FlexPDE 8 refuses scalar output (REPORT, HISTORY without AT) of a field value without a
+// location ("report rx"); FlexPDE 6/7, which the course scripts were written for, accepted it.
+// Run them anyway: evaluate at the first boundary START point (any point of a uniform ngrid=1
+// field), as the golden generator's patched scripts do, and warn with FlexPDE 8's message.
+function locateBareFields(blocks, model, P, result) {
   const C = model.compiler;
+  const path = P.regions.flatMap(r => r.paths)[0];
+  const p0 = path ? path.start : [{ k: 'num', v: 0 }];
+  const where = `(${p0.map(c => model.constant(c)).join(',')})`;
+  const warn = (line, col) => {
+    const msg = `${FIELD_MSG}; evaluated at ${where} as FlexPDE 6/7 did`;
+    result.errors.push({ line, col, msg, severity: 'warning' });
+    result.log.push(`Warning: Line ${line} Col ${col}: ${msg}`);
+  };
   for (const b of blocks) for (const it of b.items) {
     if (it.type === 'report') {
-      for (const e of it.exprs) if (C.fieldDep(e)) throw new FlexError(FIELD_MSG, it.line, it.col);
+      it.exprs = it.exprs.map(e => {
+        if (e.k === 'str' || !C.fieldDep(e)) return e;
+        warn(it.line, it.col);
+        return { k: 'call', f: 'val', args: [e, ...p0], tok: e.tok, label: e.label };
+      });
     } else if (it.type === 'history' && !(it.at && it.at.length)) {
-      for (const e of it.args) if (C.fieldDep(e)) throw new FlexError(FIELD_MSG, e.tok.line, e.tok.col);
+      const e = it.args.find(a => C.fieldDep(a));
+      if (e) { warn(e.tok.line, e.tok.col); it.at = [p0]; }
     }
   }
 }

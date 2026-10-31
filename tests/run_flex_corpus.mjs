@@ -4,13 +4,19 @@
 //
 // Verdicts per case:
 //   PASS  every compared quantity within the strict tolerance: reports/final values relative 1e-3
-//         or absolute 1e-6, end_time within one plot interval, history series within 1e-2 of the
-//         series range (interpolated in time), fields (sampled) within 1e-2 of their range.
+//         or absolute 1e-6 (after a HALT also 1e-4 of the range the quantity sweeps: the halt value
+//         sits near the crossing, often near zero, while the solution error scales with the
+//         variable's magnitude), end_time within one plot interval, history series within 1e-2 of
+//         the series range (interpolated in time), fields (sampled) within 1e-2 of their range.
 //   NEAR  only "trajectory" tolerances hold: values that miss the strict test are still within
 //         1e-2 of the range the quantity sweeps (golden history series or our variable range),
 //         match golden history interpolated at our end time (a HALT one step earlier/later than
-//         FlexPDE's own step sequence), or for derived reports without a series, 1e-2 relative.
+//         FlexPDE's own step sequence; one step past its end is extrapolated from its last
+//         step), or for derived reports without a series, 1e-2 relative.
 //   FAIL  anything else; ERR-OK when both engines report an error (same line = exact).
+// Goldens with "patched" come from a copy where bare-field reports ("report rx", accepted by
+// FlexPDE 6/7 but an error in FlexPDE 8) were rewritten to "report val(rx,P0)"; SymFlex runs the
+// original with a warning, so its report "rx" is matched against golden "val(rx,P0)".
 // Usage: node tests/run_flex_corpus.mjs [filter] [--json out.json] [--verbose]
 import fs from 'node:fs';
 import path from 'node:path';
@@ -44,14 +50,6 @@ function interp(xs, ys, x) {
   return ys[lo] + s * (ys[hi] - ys[lo]);
 }
 
-// Same rewrite the golden generator applies for FlexPDE 8 ("report rx" -> "report val(rx,P0)").
-function patchBareReports(src) {
-  const m = /\bstart\b\s*(?:(['"]).*?\1)?\s*\(([^)]*)\)/i.exec(src.replace(/\{[^}]*\}/g, ''));
-  const p0 = m ? m[2] : '0';
-  return src.replace(/^(\s*report\s+)(?!val\s*\()([^!'"\n]+?)(\s*(?:!.*)?)$/gim,
-    (all, a, e, c) => (e.trim().toLowerCase() === 't' ? all : `${a}val(${e},${p0})${c}`));
-}
-
 function sampleField(f, px, py) {
   const X = f.x, Y = f.y;
   if (!f.tri || !f.tri[0] || f.tri[0].length === 2) { // 1D
@@ -79,16 +77,17 @@ for (const file of files) {
   const source = path.basename(path.dirname(file)), name = path.basename(file, path.extname(file));
   const gfile = path.join(ROOT, 'corpus/golden', source, name + '.json');
   const golden = fs.existsSync(gfile) ? JSON.parse(fs.readFileSync(gfile, 'utf8')) : null;
-  let src = fs.readFileSync(file, 'latin1');
+  const src = fs.readFileSync(file, 'latin1');
   const t0 = Date.now();
-  let res = await runFlex(src);
-  const notes = [];
-  if (golden && golden.patched && res.errors.some(e => /no Location Specified/.test(e.msg))) {
-    notes.push(`FlexPDE 8 error reproduced (line ${res.errors[0].line}); compared patched script`);
-    src = patchBareReports(src);
-    res = await runFlex(src);
-  }
+  const res = await runFlex(src);
   const ms = Date.now() - t0;
+  const notes = [];
+  const warnings = res.errors.filter(e => e.severity === 'warning');
+  res.errors = res.errors.filter(e => e.severity !== 'warning');
+  if (warnings.length) notes.push(`${warnings.length} warning(s), first L${warnings[0].line}: ${warnings[0].msg.slice(0, 60)}`);
+  // golden "val(X,P0)" labels of a patched script <- our "X"
+  const p0 = golden && golden.patched ? norm((/val\(X,([^)]*)\)/.exec(golden.patched) || [])[1] || '') : null;
+  const unpatch = key => (p0 && key.startsWith('val(') && key.endsWith(`,${p0})`) ? key.slice(4, -p0.length - 2) : key);
   const row = { case: `${source}/${name}`, file: rel, verdict: 'NO-GOLDEN', ms, notes, checks: 0, strictFail: [], nearFail: [] };
   rows.push(row);
   if (!golden) {
@@ -135,7 +134,7 @@ for (const file of files) {
   for (const g of golden.reports || []) {
     if (g.value == null) continue;
     const key = norm(g.label);
-    let mine = ours.get(key);
+    let mine = ours.get(key) ?? ours.get(unpatch(key));
     const vm = /^val\(([a-z_]\w*)(?:,[^)]*)?\)$/.exec(key);
     if (mine === undefined && vm) mine = finals.get(vm[1]);
     if (mine === undefined && key === 't') mine = tEnd;
@@ -146,16 +145,21 @@ for (const file of files) {
       mine = sampleField(f, pt[0], pt[1] ?? 0);
     }
     if (mine === undefined) { strict(false, `report ${g.label} missing`); nearFail(`report ${g.label} missing`); continue; }
-    if (strict(close(mine, g.value), `${g.label}: ${fmt(mine)} vs ${fmt(g.value)}`)) continue;
-    // relaxed: same trajectory (golden history at our end time) or within 1e-2 of the range the
-    // quantity sweeps during the run (golden history series, else our own variable range)
-    const ex = oursExpr.get(key) || key;
+    const ex = oursExpr.get(key) || oursExpr.get(unpatch(key)) || key;
     const inner = (/^(?:val|eval)\((.*?)(?:,[^,()]*)+\)$/.exec(ex) || [null, ex])[1];
     const sKey = vm ? vm[1] : inner;
     const gs = gSeries.get(sKey);
+    const sweep = gs ? range(gs.v) : ranges.get(sKey);
+    const haltTol = golden.halted && sweep ? 1e-4 * sweep : 0;
+    if (strict(close(mine, g.value) || Math.abs(mine - g.value) <= haltTol, `${g.label}: ${fmt(mine)} vs ${fmt(g.value)}`)) continue;
+    // relaxed: same trajectory (golden history at our end time) or within 1e-2 of the range the
+    // quantity sweeps during the run (golden history series, else our own variable range)
     let ok = false;
     if (gs) {
-      const atOurEnd = interp(gs.t, gs.v, tEnd);
+      // a HALT one step later than FlexPDE's: extrapolate its last step (at most 1.5 steps out)
+      const m = gs.t.length - 1, dtLast = m > 0 ? gs.t[m] - gs.t[m - 1] : 0;
+      const atOurEnd = tEnd > gs.t[m] && tEnd <= gs.t[m] + 1.5 * dtLast
+        ? gs.v[m] + (gs.v[m] - gs.v[m - 1]) * (tEnd - gs.t[m]) / dtLast : interp(gs.t, gs.v, tEnd);
       ok = close(mine, atOurEnd, 1e-3, 1e-3 * range(gs.v)) || Math.abs(mine - g.value) <= 1e-2 * range(gs.v);
     }
     if (!ok && ranges.has(sKey)) ok = Math.abs(mine - g.value) <= 1e-2 * ranges.get(sKey);

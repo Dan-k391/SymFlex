@@ -90,6 +90,8 @@ export const FUNCS = {
   erf: S(erf), erfc: S(x => 1 - erf(x)),
   ustep: S(x => (x > 0 ? 1 : 0)), uramp: S(x => (x > 0 ? x : 0)), upulse: S((a, b) => (a > 0 && b <= 0 ? 1 : 0)),
   random: S(x => Math.random() * x),
+  // shortcut: STAGED problems run only their last stage (FlexPDE reports every stage)
+  staged: a => a[a.length - 1],
   vector: (a, tok) => vec(...a.map(v => scalar(v, tok))),
   magnitude: (a, tok) => a.length === 1 && isVec(a[0]) ? Math.hypot(a[0][0], a[0][1], a[0][2]) : Math.hypot(...a.map(v => scalar(v, tok))),
   dot: ([u, w]) => (isVec(u) && isVec(w) ? u[0] * w[0] + u[1] * w[1] + u[2] * w[2] : u * w),

@@ -76,6 +76,7 @@ export function buildModel(P) {
   }
   const defs = new Map();
   for (const d of P.defs) defs.set(d.key, d);
+  checkDefinitionOrder(P, defs);
   const regionDefs = new Map();
   P.regions.forEach((r, ri) => {
     const num = r.number ?? ri + 1;
@@ -95,6 +96,24 @@ export function buildModel(P) {
   for (const d of P.defs) if (d.expr && d.params) model.compiler.defEntry(d.key, { tok: { line: d.line, col: d.col } });
   if (P.time) model.endtime = model.constant(P.time.to);
   return model;
+}
+
+// FlexPDE resolves names in source order: a definition used before it appears (later in
+// DEFINITIONS, or DEFINITIONS after EQUATIONS) is "Undefined Name" at the use.
+function checkDefinitionOrder(P, defs) {
+  let first = null;
+  const before = (a, b) => a.line < b.line || (a.line === b.line && a.col < b.col);
+  const visit = (n, params) => {
+    if (!n || typeof n !== 'object') return;
+    if (Array.isArray(n)) { n.forEach(c => visit(c, params)); return; }
+    const id = n.k === 'name' ? n.id : n.k === 'call' ? n.f : null;
+    const d = id && !(params && params.includes(id)) ? defs.get(id) : null;
+    if (d && n.tok && before(n.tok, d) && (!first || before(n.tok, first.tok))) first = { tok: n.tok, id };
+    for (const [k, v] of Object.entries(n)) if (k !== 'tok' && v && typeof v === 'object') visit(v, params);
+  };
+  for (const d of P.defs) visit(d.expr, d.params);
+  for (const k of ['initial', 'equations', 'regions', 'time', 'plots']) visit(P[k]);
+  if (first) throw new FlexError(`Undefined Name: ${first.id.toUpperCase()}`, first.tok.line, first.tok.col);
 }
 
 // dt(dt(u)) -> dt(u__dt) with the extra unknown u__dt and equation dt(u) = u__dt.

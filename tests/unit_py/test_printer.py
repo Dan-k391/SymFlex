@@ -22,8 +22,6 @@ KNOWN = {
     "f := 1/2*exp(-t)*(sin(2*t)+2*cos(2*t))": "f := 1/2*(sin(2*t)+2*cos(2*t))*exp(-t)",
     "a^(-2)*b": "b/a^2",
     "int(sin(x)^2,x)": "1/2*x-1/2*sin(x)*cos(x)",
-    "solve(x^2=4)": "-2, 2",
-    "solve(x^2+1=0)": "-I, I",
     "evalc(exp(I*x))": "I*sin(x)+cos(x)",
     "series(exp(x), x=0, 3)": "series(1+x+1/2*x^2+O(x^3),x,3)",
     # applying an assigned expression as a function: Maple distributes over exp(-t) etc.

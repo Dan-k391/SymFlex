@@ -116,7 +116,8 @@ steady/transient PDEs (e.g. the default `div(grad(u))=0` template) use a simple 
 - `import { lintFlex } from './src/flex/index.js'`; `lintFlex(text) -> [{line, col, msg, severity}]`
   (`severity` is `'error'` or `'warning'`), for editor diagnostics; it never solves.
 - `BUILTIN_NAMES` (exported from `src/flex/index.js`): built-in function/constant names for completion.
-- `errors[]` entries also carry `col` (1-based, as FlexPDE prints `Line L Col C:`).
+- `errors[]` entries also carry `col` (1-based, as FlexPDE prints `Line L Col C:`) and `severity`
+  (`'error'` stops the run; `'warning'`, e.g. a FlexPDE 6-style bare-field `report rx`, does not).
 - `reports[]` entries also carry `expr` (source text of the reported expression; `label` is the
   `AS` string when given, else the expression text, as in FlexPDE). `REPORT 'text'` gives
   `{label: 'text', value: null}`.
@@ -143,6 +144,10 @@ steady/transient PDEs (e.g. the default `div(grad(u))=0` template) use a simple 
   "frames": [ PlotSpec ]                              // animations
 }
 ```
+Maple plots also use: curve `"symbol"`, `"symbolsize"`, `"filled": true` (a closed polygon to fill,
+from `filled=true`), `null` x/y entries (gaps: undefined points), spec `"texts": [{x, y, text, color}]`
+(textplot), `"axes"` (`normal|boxed|frame|none`), `"gridlines"`, `"zrange"`, and
+`{ "type": "array", "rows", "cols", "cells": [PlotSpec | null] }` (row-major, from `display(Array(...))`).
 
 ## Tests
 

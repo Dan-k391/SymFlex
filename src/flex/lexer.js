@@ -73,6 +73,7 @@ export function tokenize(src, { keepComments = false } = {}) {
     const op = OPS.find(o => src.startsWith(o, i));
     if (!op) throw new FlexError(`Unexpected character '${c}'`, sl, sc);
     adv(op.length);
+    if (op === ';') continue; // optional statement terminator (FlexPDE samples write "div(grad(u)) = 0;")
     toks.push({ type: 'op', value: op, line: sl, col: sc, pos: start, end: i });
   }
   toks.push({ type: 'eof', line, col, pos: n, end: n });
@@ -91,7 +92,7 @@ export function tokenDesc(t) {
 
 export const SECTION_WORDS = new Set(['title', 'coordinates', 'select', 'variables', 'global', 'definitions', 'initial',
   'equations', 'constraints', 'extrusion', 'boundaries', 'time', 'monitors', 'plots', 'histories', 'end',
-  'materials', 'resolve', 'mesh', 'staged']);
+  'materials', 'resolve', 'mesh']);
 
 export const KEYWORDS = new Set([...SECTION_WORDS, 'and', 'or', 'not', 'if', 'then', 'else', 'region', 'start', 'line',
   'arc', 'to', 'close', 'finish', 'value', 'natural', 'halt', 'for', 'by', 'from', 'at', 'as', 'vs', 'versus', 'report',

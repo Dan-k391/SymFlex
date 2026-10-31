@@ -30,6 +30,7 @@ export function buildGeometry(model) {
       let cur = verts[0];
       for (const s of path.segs) {
         const to = s.close ? verts[0] : s.to ? [k(s.to[0]), k(s.to[1] ?? { k: 'num', v: 0 })] : null;
+        if (s.close && verts.length > 1 && Math.hypot(cur[0] - to[0], cur[1] - to[1]) < 1e-9 * (1 + Math.hypot(...to))) continue; // e.g. ANGLE=360 TO CLOSE
         let pts;
         if (s.type === 'arc') pts = arcPoints(cur, to, s, k);
         else pts = [to];

@@ -76,9 +76,16 @@ def build():
             nn = f.stem.split("_")[-1] if not from_raw else f.stem
             raw = raw_index.get(f"{source}/{nn}{f.suffix}", {})
             context = (raw.get("context") or "").strip()
+            # The raw context is the text just before the code block, often a sentence tail ("is in the -i
+            # direction, etc.)") or a bare "Fixed:"; only whole sentences help students.
+            if not re.match(r"[A-Z0-9]", context) or len(context.split()) < 4:
+                context = ""
+            title = title_from(desc or f"x - {context}", f.stem)
+            if re.sub(r"\W", "", context.lower()) in re.sub(r"\W", "", title.lower()):
+                context = ""
             items.append({
                 "id": f"{source}/{f.stem}",
-                "title": title_from(desc or f"x - {context}", f.stem),
+                "title": title,
                 "context": context,
                 "kind": f.suffix[1:],
                 "code": code,

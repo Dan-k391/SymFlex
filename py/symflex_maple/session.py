@@ -31,6 +31,10 @@ class Session:
             ev.emit({"kind": "error", "text": e.text()})
         except RecursionError:
             ev.emit({"kind": "error", "text": "Error, too many levels of recursion"})
+        except KeyboardInterrupt:
+            # pyodide.setInterruptBuffer raises this inside whatever Python code is running
+            ev.interrupted()
+            ev.emit({"kind": "error", "text": "Error, computation interrupted"})
         except Exception as e:  # noqa: BLE001 - run must never raise
             ev.emit({"kind": "error", "text": f"Error, (internal) {type(e).__name__}: {e}"})
         out, ev.outputs = ev.outputs, []

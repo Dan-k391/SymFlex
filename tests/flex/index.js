@@ -4,3 +4,4 @@ import './expr.test.mjs';
 import './ode.test.mjs';
 import './fem.test.mjs';
 import './lint.test.mjs';
+import './samples.test.mjs';

@@ -4,6 +4,8 @@ import { parseFlex } from './parser.js';
 import { FlexError, tokenize } from './lexer.js';
 import { buildModel } from './model.js';
 
+const FIELD_MSG = 'A Scalar Evaluation has encountered a Field value with no Location Specified';
+
 export function lintFlex(text) {
   const out = [];
   const push = (e, severity = 'error') => out.push({ line: e.line || 1, col: e.col || 1, msg: e.message, severity });
@@ -18,11 +20,14 @@ export function lintFlex(text) {
   for (const e of model.equations) { tryCompile(e.lhs); tryCompile(e.rhs); }
   for (const iv of P.initial) tryCompile(iv.expr);
   if (P.time) for (const h of P.time.halt) tryCompile(h);
+  for (const b of P.plots) if (b.items[0]?.type === 'report')
+    out.push({ line: b.items[0].line, col: b.items[0].col, msg: "FlexPDE grammar does not allow 'REPORT' in this location. (FlexPDE 8 attaches REPORT to the plot before it: write e.g. SUMMARY REPORT ...)", severity: 'warning' });
   for (const b of P.plots) for (const it of b.items) {
     for (const e of it.exprs || it.args || []) if (e.k !== 'str') tryCompile(e);
     if (it.vs) tryCompile(it.vs);
-    if (it.type === 'report' && it.exprs.some(e => C.fieldDep(e)))
-      out.push({ line: it.line, col: it.col, msg: 'A Scalar Evaluation has encountered a Field value with no Location Specified (use val(expr, x) )', severity: 'error' });
+    const bare = it.type === 'report' ? it.exprs.some(e => e.k !== 'str' && C.fieldDep(e))
+      : it.type === 'history' && !(it.at && it.at.length) && it.args.some(e => C.fieldDep(e));
+    if (bare) out.push({ line: it.line, col: it.col, msg: `${FIELD_MSG} (FlexPDE 8 rejects this, FlexPDE 6/7 and SymFlex evaluate it at the START point; write val(expr, x, y))`, severity: 'warning' });
   }
   if (!P.equations.length && P.variables.length) out.push({ line: 1, col: 1, msg: 'No EQUATIONS section', severity: 'warning' });
   return out;

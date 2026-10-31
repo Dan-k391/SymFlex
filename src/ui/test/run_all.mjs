@@ -19,6 +19,7 @@ const suites = [
   ['FlexPDE unit tests', 'node', ['--test', ...flexTests], flexTests.length > 0],
   ['Maple corpus', 'python', [p('tests/run_maple_corpus.py')], existsSync(p('tests/run_maple_corpus.py'))],
   ['FlexPDE corpus', 'node', [p('tests/run_flex_corpus.mjs')], existsSync(p('tests/run_flex_corpus.mjs'))],
+  ['Pyodide parity', 'node', [p('tests/pyodide_parity.mjs')], existsSync(p('public/pyodide/pyodide.asm.wasm'))],
 ]
 
 const results = []

@@ -6,13 +6,17 @@ import time as _time
 
 import sympy as sp
 from sympy.core.function import AppliedUndef
+from sympy.functions.elementary.hyperbolic import HyperbolicFunction
+from sympy.functions.elementary.trigonometric import (
+    InverseTrigonometricFunction, TrigonometricFunction,
+)
 
 from ..errors import MapleError
 from ..printer import lprint
 from ..values import (
     FAIL, NULL, AppliedProc, BuiltinProc, ExprSeq, MEquation, MList, MLogic, MMatrix, Module,
     MRange, MRelation, MSet, MString, MTable, MUneval, MVector, PlotValue, Procedure,
-    RememberProc, UserProc, deep_map, make_seq, seq_items,
+    RememberProc, UserProc, deep_map, float_zero, make_seq, seq_items,
 )
 from . import Library, is_true
 
@@ -139,9 +143,10 @@ def subs_value(ctx, eqs, expr):
                 e = _replace_function(e, name, new, ctx)
         if plain:
             try:
-                e = e.subs(plain, simultaneous=True) if len(plain) > 1 else e.subs(plain)
+                r = e.subs(plain, simultaneous=True) if len(plain) > 1 else e.subs(plain)
             except Exception:  # noqa: BLE001
-                e = e.xreplace(plain)
+                r = e.xreplace(plain)
+            e = float_zero(r, [e, *plain.values()], ctx.digits if ctx is not None else 10)
         return e
 
     # whole-value replacement of a symbol by a non-algebraic value (x = [1,2])
@@ -236,8 +241,13 @@ def m_subs(ctx, *args):
     if len(args) < 2:
         raise MapleError("invalid input: subs expects 2 or more arguments")
     expr = args[-1]
-    for spec in args[:-1]:
-        expr = subs_value(ctx, equations_of(spec), expr)
+    for i, spec in enumerate(args[:-1], 1):
+        eqs = equations_of(spec)
+        if not all(isinstance(q, MEquation) for q in eqs):
+            from ..evaluator import ordinal
+            raise MapleError(f"invalid input: subs received {lprint(spec)}, which is not valid "
+                             f"for its {ordinal(i)} argument")
+        expr = subs_value(ctx, eqs, expr)
     return expr
 
 
@@ -454,7 +464,9 @@ def m_op(ctx, *args):
     if k < 0:
         k = len(ops) + k + 1
     if not 1 <= k <= len(ops):
-        raise MapleError(f"improper op or subscript selector")
+        err = MapleError("improper op or subscript selector")
+        err.bare = True
+        raise err
     return ops[k - 1]
 
 
@@ -469,7 +481,7 @@ def m_lhs(ctx, e):
         return e.lhs
     if isinstance(e, MRange):
         return e.lo
-    raise MapleError(f"invalid input: lhs received {lprint(e)}, which is not valid for its 1st argument")
+    raise MapleError(f"invalid input: lhs received {lprint(e)}, which is not valid for its 1st argument, expr")
 
 
 @builtin("rhs", sig="rhs(eqn)", doc="Right-hand side of an equation, inequality or range.")
@@ -478,7 +490,7 @@ def m_rhs(ctx, e):
         return e.rhs
     if isinstance(e, MRange):
         return e.hi
-    raise MapleError(f"invalid input: rhs received {lprint(e)}, which is not valid for its 1st argument")
+    raise MapleError(f"invalid input: rhs received {lprint(e)}, which is not valid for its 1st argument, expr")
 
 
 @builtin("numelems", sig="numelems(container)", doc="Number of elements of a list, set, table or rtable.")
@@ -548,7 +560,7 @@ def m_map(ctx, f, e, *extra):
     if isinstance(e, MRelation):
         return e.map_leaves(ap)
     if isinstance(e, MMatrix):
-        return e.map_leaves(ap)
+        return ctx.rtable_entries(e).map_leaves(ap)
     if isinstance(e, MTable):
         return e.map_leaves(ap)
     if isinstance(e, sp.Add):
@@ -690,6 +702,8 @@ def _range_values(rng, step=None):
         return out
     if isinstance(rng, MMatrix):
         return list(rng.m)
+    if isinstance(rng, MString):
+        return [MString(c) for c in rng]
     return as_items(rng) if isinstance(rng, (MList, MSet, ExprSeq)) else \
         list(rng.args) if isinstance(rng, (sp.Add, sp.Mul)) else [rng]
 
@@ -738,7 +752,11 @@ def _sym_sum(ctx, f, spec, fn, inert):
             vals = [ctx.full_eval(f.xreplace({var: k})) for k in range(int(lo), int(hi) + 1)]
             return sp.Add(*vals) if fn is sp.summation else sp.Mul(*vals)
         r = fn(f, (var, lo, hi))
-        return r
+        # Maple gives the generic sum, not SymPy's special cases (r = 1 for a geometric sum)
+        r = r.replace(lambda z: isinstance(z, sp.Piecewise) and z.args[-1].cond is sp.true
+                      and all(isinstance(c, sp.Eq) for _, c in z.args[:-1]), lambda z: z.args[-1].expr)
+        return r.replace(lambda z: isinstance(z, (sp.RisingFactorial, sp.FallingFactorial)),
+                         lambda z: z.rewrite(sp.gamma))
     if isinstance(spec, sp.Symbol):
         return inert(f, spec)
     raise MapleError("invalid summation range")
@@ -841,6 +859,10 @@ TYPES = {
     "polynom": lambda v: isinstance(v, sp.Basic) and not v.is_Boolean and v.is_polynomial(),
     "infinity": lambda v: v in (sp.oo, -sp.oo),
     "undefined": lambda v: v is sp.nan,
+    "radical": lambda v: isinstance(v, sp.Pow) and v.exp.is_Rational and not v.exp.is_Integer,
+    "trig": lambda v: isinstance(v, TrigonometricFunction),
+    "arctrig": lambda v: isinstance(v, InverseTrigonometricFunction),
+    "hyperbolic": lambda v: isinstance(v, HyperbolicFunction),
 }
 
 for _name, _fn in TYPES.items():
@@ -881,8 +903,11 @@ def m_type(ctx, e, t):
 
 
 @builtin("whattype", sig="whattype(expr)", doc="The basic type of an expression.")
-def m_whattype(ctx, v):
+def m_whattype(ctx, *vs):
     S = sp.Symbol
+    if len(vs) != 1:
+        return S("exprseq")
+    v = vs[0]
     if isinstance(v, ExprSeq):
         return S("exprseq")
     if isinstance(v, MList):
@@ -910,6 +935,10 @@ def m_whattype(ctx, v):
     if isinstance(v, sp.Basic):
         if v in (sp.true, sp.false):
             return S("symbol")
+        if v in (sp.oo, -sp.oo):
+            return S("extended_numeric")
+        if v.is_number and not v.is_real and v.as_real_imag()[0].is_Number                 and v.as_real_imag()[1].is_Number:
+            return sp.Function("complex")(S("extended_numeric"))
         if isinstance(v, sp.Integer):
             return S("integer")
         if isinstance(v, sp.Rational):
@@ -926,20 +955,46 @@ def m_whattype(ctx, v):
             return S("*")
         if isinstance(v, sp.Pow):
             return S("^")
-        if v is sp.pi or v is sp.oo or v is sp.E:
+        if v is sp.pi:
             return S("symbol")
         return S("function")
     return S("anything")
 
 
 # ====================================================================== conversion
+def float_to_rational(x: sp.Float, digits: int) -> sp.Rational:
+    """Maple's convert(x, rational): the first continued-fraction convergent of x that is
+    accurate to `digits` significant digits (3.14159 -> 76149/24239, 9.81 -> 981/100)."""
+    exact = sp.Rational(str(x))
+    if exact == 0:
+        return sp.Integer(0)
+    tol = abs(exact) * sp.Rational(1, 2) * sp.Integer(10) ** (1 - digits)
+    h0, h1, k0, k1 = 0, 1, 1, 0
+    y = exact
+    while True:
+        q = y.p // y.q
+        h0, h1, k0, k1 = h1, q * h1 + h0, k1, q * k1 + k0
+        r = sp.Rational(h1, k1)
+        if abs(r - exact) <= tol or y == q:
+            return r
+        y = 1 / (y - q)
+
+
+def has_symbol(v, sym) -> bool:
+    found = []
+    deep_map(lambda x: found.append(1) if isinstance(x, sp.Basic) and x.has(sym) else None, v)
+    return bool(found)
+
+
 @builtin("convert", sig="convert(expr, form)", doc="Convert between forms (float, list, set, exp, ...).")
 def m_convert(ctx, e, form, *extra):
     f = lprint(form).strip("`")
     if f == "float":
         return ctx.evalf(e)
-    if f == "rational":
-        return deep_map(lambda x: sp.nsimplify(x, rational=True) if x.has(sp.Float) else x, e)
+    if f in ("rational", "fraction"):
+        digits = int(extra[0]) if extra and isinstance(extra[0], sp.Integer) else ctx.digits
+        return deep_map(lambda x: x.xreplace({c: float_to_rational(c, digits)
+                                              for c in x.atoms(sp.Float)}), e)
     if f == "list":
         if isinstance(e, MMatrix):
             return MList(list(e.m))
@@ -972,9 +1027,12 @@ def m_convert(ctx, e, form, *extra):
     if f == "*":
         return _fold(ctx, "*", as_items(e)) if as_items(e) else sp.Integer(1)
     if f == "degrees":
-        return deep_map(lambda x: x * 180 / sp.pi, e)
+        return deep_map(lambda x: float_result(ctx, x, x * 180 / sp.pi) * sp.Symbol("degrees"), e)
     if f == "radians":
-        return deep_map(lambda x: x * sp.pi / 180, e)
+        deg = sp.Symbol("degrees")
+        if not has_symbol(e, deg):
+            raise MapleError("unable to convert", "convert/radians")
+        return deep_map(lambda x: x.subs(deg, sp.pi / 180), e)
     if f == "polynom":
         return deep_map(lambda x: x.removeO() if hasattr(x, "removeO") else x, e)
     if f in ("diff", "D"):
@@ -993,12 +1051,27 @@ def m_convert(ctx, e, form, *extra):
 
 
 # ====================================================================== elementary functions
+def float_result(ctx, args, r):
+    """A float argument makes Maple's elementary functions return a float, even where SymPy
+    finds an exact value: sin(0.) = 0., arctan(1., 0) = 1.570796327."""
+    if isinstance(r, sp.Basic) and r.is_number and not r.is_Float and has_float(args):
+        return ctx.evalf(r)
+    return r
+
+
+# integer-valued even for float arguments: floor(2.5) = 2, signum(-2.) = -1
+_EXACT_RESULT = {"floor", "ceil", "signum", "csgn"}
+
+
 def _f1(name, fn, doc, sig=None):
     @builtin(name, sig=sig or f"{name}(x)", doc=doc)
     def wrapper(ctx, x, *rest):
         if rest:
-            raise MapleError(f"invalid input: {name} expects 1 argument, but received {1 + len(rest)}")
-        return deep_map(fn, x) if not isinstance(x, sp.Basic) else fn(x)
+            raise MapleError(f"expecting 1 argument, got {1 + len(rest)}")
+        if not isinstance(x, sp.Basic):
+            raise MapleError(f"invalid input: {name} expects its 1st argument, x, to be of type "
+                             f"algebraic, but received {lprint(x)}")
+        return fn(x) if name in _EXACT_RESULT else float_result(ctx, x, fn(x))
     return wrapper
 
 
@@ -1029,26 +1102,28 @@ for _n, _fn, _doc in [
 @builtin("arctan", sig="arctan(x) or arctan(y, x)", doc="Inverse tangent (two-argument form gives the angle of (x, y)).")
 def m_arctan(ctx, y, x=None):
     if x is None:
-        return deep_map(sp.atan, y)
-    return sp.atan2(y, x)
+        return deep_map(lambda e: float_result(ctx, e, sp.atan(e)), y)
+    if y == 0 and x == 0:
+        return sp.Integer(0)
+    return float_result(ctx, MList([y, x]), sp.atan2(y, x))
 
 
 @builtin("log", sig="log(x) or log[b](x)", doc="Logarithm (natural, or base b with log[b]).", indexed=True)
 def m_log(ctx, x, b=None, index=None):
     base = index[0] if index else b
     if base is None:
-        return sp.log(x)
-    return sp.log(x) / sp.log(base)
+        return float_result(ctx, x, sp.log(x))
+    return float_result(ctx, MList([x, base]), sp.log(x) / sp.log(base))
 
 
 @builtin("log10", sig="log10(x)", doc="Base-10 logarithm.")
 def m_log10(ctx, x):
-    return sp.log(x) / sp.log(10)
+    return float_result(ctx, x, sp.log(x) / sp.log(10))
 
 
 @builtin("log2", sig="log2(x)", doc="Base-2 logarithm.")
 def m_log2(ctx, x):
-    return sp.log(x) / sp.log(2)
+    return float_result(ctx, x, sp.log(x) / sp.log(2))
 
 
 @builtin("root", sig="root(x, n)", doc="n-th root.", indexed=True)
@@ -1262,19 +1337,28 @@ def m_lprint(ctx, *args):
 _FMT = re.compile(r"%([-+ 0#]*)(\*|\d+)?(?:\.(\*|\d+))?([a-zA-Z%])")
 
 
-def maple_sprintf(fmt: str, args) -> str:
+_FMT_KIND = {"d": "integer", "i": "integer", "o": "integer", "x": "integer", "X": "integer",
+             "u": "integer", "c": "character", "s": "string", "a": "algebraic", "A": "algebraic",
+             "q": "algebraic", "f": "floating point", "e": "floating point",
+             "E": "floating point", "g": "floating point", "G": "floating point"}
+
+
+def maple_sprintf(fmt: str, args, where: str = "sprintf") -> str:
     args = list(args)
     out = []
     pos = 0
     ai = 0
 
-    def nxt():
+    def nxt(conv):
         nonlocal ai
         if ai >= len(args):
-            raise MapleError("invalid input: not enough arguments for the format string")
+            raise MapleError(f"insufficient parameters for {_FMT_KIND.get(conv, conv)} format", where)
         v = args[ai]
         ai += 1
         return v
+
+    def bad(conv, what):
+        return MapleError(f"{what} expected for {_FMT_KIND[conv]} format", where)
     for m in _FMT.finditer(fmt):
         out.append(fmt[pos:m.start()])
         pos = m.end()
@@ -1283,34 +1367,32 @@ def maple_sprintf(fmt: str, args) -> str:
             out.append("%")
             continue
         if width == "*":
-            width = str(int(nxt()))
+            width = str(int(nxt("d")))
         if prec == "*":
-            prec = str(int(nxt()))
+            prec = str(int(nxt("d")))
         spec = "%" + flags + (width or "") + ("." + prec if prec is not None else "")
         if conv == "q":
             rest = args[ai:]
             ai = len(args)
             out.append(", ".join(lprint(a) for a in rest))
             continue
-        v = nxt()
+        v = nxt(conv)
         if conv in "aA":
             out.append((spec + "s") % lprint(v))
         elif conv == "s":
-            out.append((spec + "s") % (str(v) if isinstance(v, MString) else lprint(v)))
+            if not isinstance(v, (MString, sp.Symbol)):
+                raise bad(conv, "string")
+            out.append((spec + "s") % str(v if isinstance(v, MString) else v.name))
         elif conv == "c":
             out.append(str(v)[:1])
         elif conv in "dioxXu":
-            try:
-                iv = int(v) if not isinstance(v, sp.Float) else int(round(float(v)))
-            except (TypeError, ValueError):
-                out.append(lprint(v))
-                continue
-            out.append((spec + ("d" if conv in "iu" else conv)) % iv)
+            if not isinstance(v, sp.Integer):
+                raise bad(conv, "integer")
+            out.append((spec + ("d" if conv in "iu" else conv)) % int(v))
         elif conv in "feEgG":
-            try:
-                out.append((spec + conv) % float(sp.N(v) if isinstance(v, sp.Basic) else v))
-            except (TypeError, ValueError):
-                out.append(lprint(v))
+            if not (isinstance(v, sp.Basic) and v.is_number and v.is_real is not False):
+                raise bad(conv, "number")
+            out.append((spec + conv) % float(sp.N(v)))
         else:
             out.append(m.group(0))
     out.append(fmt[pos:])
@@ -1319,7 +1401,7 @@ def maple_sprintf(fmt: str, args) -> str:
 
 @builtin("printf", sig='printf("fmt", args)', doc="Formatted printing (C-style %d %f %e %g %s %a %q).")
 def m_printf(ctx, fmt, *args):
-    text = maple_sprintf(str(fmt), args)
+    text = maple_sprintf(str(fmt), args, "fprintf")
     outs = ctx.outputs
     if outs and outs[-1].get("kind") == "print" and ctx._printf_open is outs[-1]:
         outs[-1]["text"] += text
@@ -1388,16 +1470,28 @@ def m_restart(ctx):
 
 @builtin("interface", sig="interface(option = value)", doc="Set interface options (displayprecision, ...).")
 def m_interface(ctx, *args):
-    prev = NULL
+    """interface(k = v, ...) returns the previous values; interface(k) the current one."""
+    prev = []
     for a in args:
         if isinstance(a, MEquation) and isinstance(a.lhs, sp.Symbol):
             key = a.lhs.name
-            prev = ctx.settings.get(key, NULL)
+            prev.append(_interface_value(ctx.settings.get(key, _INTERFACE_DEFAULTS.get(key))))
             val = a.rhs
             ctx.settings[key] = int(val) if isinstance(val, sp.Integer) else val
         elif isinstance(a, sp.Symbol):
-            return ctx.settings.get(a.name, NULL)
-    return NULL if prev is None else NULL
+            return _interface_value(ctx.settings.get(a.name, _INTERFACE_DEFAULTS.get(a.name)))
+    return make_seq(prev)
+
+
+# GUI defaults of interface variables the engine does not store until they are set
+_INTERFACE_DEFAULTS = {"prettyprint": 3, "warnlevel": 3, "screenwidth": 79, "rtablesize": 10,
+                       "showassumed": 1, "labelling": sp.true, "typesetting": sp.Symbol("extended")}
+
+
+def _interface_value(v):
+    if v is None:
+        return NULL
+    return sp.Integer(v) if isinstance(v, int) else v
 
 
 @builtin("kernelopts", sig="kernelopts(...)", doc="Kernel options (ignored).")

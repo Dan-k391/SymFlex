@@ -151,6 +151,8 @@ kbd {
 #kernel-pill[data-state="error"]::before { background: var(--error); }
 .pill-mode[data-mode="edit"] { color: var(--accent); border-color: var(--accent); }
 @keyframes pulse { 50% { opacity: .35; } }
+.boot-progress { height: 2px; flex: none; margin-top: -2px; z-index: 21; background: linear-gradient(var(--accent), var(--accent)) no-repeat; background-size: var(--pct, 3%) 100%; transition: background-size .4s ease-out; }
+.boot-progress[hidden] { display: none; }
 
 /* ---- layout */
 .layout { flex: 1; display: flex; min-height: 0; }
@@ -328,11 +330,25 @@ dialog::backdrop { background: rgba(10, 14, 20, .45); }
   .toolbar .btn:not(.btn-primary) { display: none; }
 }
 @media (max-width: 800px) {
-  .sidebar { position: fixed; top: 52px; bottom: 0; left: 0; z-index: 25; box-shadow: var(--shadow); }
+  /* The top bar wraps to several rows here, so the overlay is anchored to the layout, not the viewport. */
+  .layout { position: relative; }
+  .sidebar { position: absolute; top: 0; bottom: 0; left: 0; z-index: 25; box-shadow: var(--shadow); max-width: 85vw; }
+  .pill-mode { display: none; }
   .notebook { padding: 14px 16px 40vh; }
   .cell-gutter { width: 36px; }
   .add-bar { padding-left: 36px; }
   .shortcut-grid { grid-template-columns: 1fr; }
   .nb-name { max-width: 40vw; }
   .out-math { padding: 4px 56px 4px 4px; }
+}
+@media (max-width: 600px) {
+  /* Two rows: notebook name + status, then menus + Run. */
+  .topbar { gap: 6px; padding: 6px 10px; }
+  .brand-name { display: none; }
+  .nb-name { flex: 1 1 80px; min-width: 0; width: auto; max-width: none; }
+  .status-area { margin-left: 0; min-width: 0; }
+  #kernel-pill { overflow: hidden; max-width: 38vw; }
+  .status-area [data-cmd="shortcuts"] { display: none; }
+  .menus { width: auto; }
+  .toolbar { order: 6; margin-left: auto; }
 }

@@ -13,3 +13,10 @@ test('lint reports syntax errors, undefined names and missing END', () => {
   const e3 = lintFlex('VARIABLES u\nEQUATIONS dt(u)=1\nBOUNDARIES REGION 1 START(0) LINE TO (1)\nTIME 0 TO 1');
   assert.ok(e3.some(e => e.severity === 'warning' && /END/.test(e.msg)));
 });
+
+test('lint warns (not errors) about bare fields in REPORT and HISTORY', () => {
+  const src = 'VARIABLES u\nEQUATIONS dt(u)=1\nBOUNDARIES REGION 1 START(0) LINE TO (1)\nTIME 0 TO 1\nPLOTS\nhistory(u)\nreport u\nreport val(u,0)\nEND';
+  const w = lintFlex(src);
+  assert.deepEqual(w.map(e => [e.line, e.severity]), [[6, 'warning'], [7, 'warning']]);
+  assert.match(w[1].msg, /no Location Specified/);
+});

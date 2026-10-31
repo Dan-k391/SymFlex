@@ -360,3 +360,10 @@ def deep_map(f, v):
     if isinstance(v, (MValue, MString, str)) or v is None:
         return v
     return f(v)
+
+
+def float_zero(r, operands, digits):
+    """SymPy collapses 0.*x and 1.*x-1.*x to an exact 0; Maple keeps the float 0."""
+    if r is sp.S.Zero and any(isinstance(o, sp.Basic) and o.has(sp.Float) for o in operands):
+        return sp.Float(0, digits)
+    return r

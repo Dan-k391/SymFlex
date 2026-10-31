@@ -164,6 +164,11 @@ def check_arity(proc: BuiltinProc, args, kw):
         sig.bind(None, *args, **kw)
     except TypeError:
         n = len(args)
+        params = list(sig.parameters.values())[1:]
+        if all(p.kind == p.POSITIONAL_OR_KEYWORD and p.default is p.empty for p in params):
+            k = len(params)
+            raise MapleError(f"invalid input: {proc.name} expects {k} argument"
+                             f"{'s' if k != 1 else ''}, but received {n}")
         raise MapleError(f"invalid input: {proc.name} does not accept {n} argument"
                          f"{'s' if n != 1 else ''} here")
 

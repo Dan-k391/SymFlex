@@ -51,6 +51,8 @@ export async function createKernel({ loadPyodide, indexURL, fetchEngine, onProgr
   onProgress(5, 'Loading Python runtime')
   const pyodide = await loadPyodide({
     indexURL,
+    // SymPy results can depend on set iteration order; a fixed seed gives the same output on every reload.
+    env: { PYTHONHASHSEED: '0' },
     stdout: (s) => stray.push(s),
     stderr: (s) => stray.push(s),
   })

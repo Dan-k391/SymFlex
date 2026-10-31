@@ -6,6 +6,9 @@ import { tokenize, tokenDesc, FlexError, SECTION_WORDS } from './lexer.js';
 // Expression AST nodes: {k:'num',v} {k:'name',id,text} {k:'str',v} {k:'call',f,args}
 // {k:'neg',a} {k:'not',a} {k:'bin',op,a,b} {k:'if',c,a,b}; every node carries tok (for line/col).
 
+// a section name misspelled at the start of a line otherwise reads as one more variable name
+const MISSPELLED_SECTIONS = { equation: 'EQUATIONS', definition: 'DEFINITIONS', boundary: 'BOUNDARIES', plot: 'PLOTS',
+  monitor: 'MONITORS', variable: 'VARIABLES', constraint: 'CONSTRAINTS', history: 'HISTORIES', coordinate: 'COORDINATES' };
 const PLOT_CMDS = new Set(['history', 'histories', 'contour', 'surface', 'elevation', 'vector', 'grid', 'summary',
   'report', 'table', 'tecplot', 'vtk', 'vtklin', 'transfer', 'transfer6', 'cdf', 'print', 'export', 'modes', 'fieldmap']);
 const SEGMENT_WORDS = new Set(['line', 'arc', 'spline', 'to', 'close', 'finish', 'curve', 'adapt']);
@@ -184,7 +187,13 @@ class Parser {
           break;
         }
         case 'select': this.selectSection(P); break;
-        case 'global': this.acceptId('variables'); this.variablesSection(P, true); break;
+        case 'global': {
+          const vt = this.t;
+          this.acceptId('variables');
+          if (!P.variables.length) throw new FlexError('Section Must follow VARIABLES', vt.line, vt.col);
+          this.variablesSection(P, true);
+          break;
+        }
         case 'variables': this.variablesSection(P, false); break;
         case 'definitions': this.definitions(P.defs); break;
         case 'initial':
@@ -193,7 +202,7 @@ class Parser {
           this.initialSection(P);
           break;
         case 'equations': this.equationsSection(P, false); break;
-        case 'constraints': case 'extrusion': case 'materials': case 'resolve': case 'mesh': case 'staged':
+        case 'constraints': case 'extrusion': case 'materials': case 'resolve': case 'mesh':
           this.skipSection(); break;
         case 'boundaries': this.boundaries(P); break;
         case 'time': this.timeSection(P, t); break;
@@ -222,6 +231,8 @@ class Parser {
   variablesSection(P, global) {
     while (!this.atSection()) {
       const name = this.expectId();
+      const fix = MISSPELLED_SECTIONS[name.key];
+      if (fix) throw new FlexError(`FlexPDE grammar does not allow '${name.text.toUpperCase()}' in this location. (Did you mean ${fix}?)`, name.line, name.col);
       const v = { name: name.text, key: name.key, thr: null, comps: null, line: name.line, col: name.col, global };
       const thresh = () => {
         if (this.isOp('(')) {

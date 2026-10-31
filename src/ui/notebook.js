@@ -4,7 +4,7 @@ import { EditorSelection } from '@codemirror/state'
 import { createEditor, setLineNumbers } from './editor.js'
 import { mapleUserNames, toDiagnostics } from './lang/assist.js'
 import { renderMarkdown } from './markdown.js'
-import { renderOutputs } from './output.js'
+import { capOutputs, renderOutputs } from './output.js'
 import * as model from './store.js'
 
 const TYPE_LABEL = { maple: 'Maple', flexpde: 'FlexPDE', markdown: 'Text' }
@@ -397,8 +397,7 @@ export class NotebookView extends EventTarget {
   }
 
   async #runMaple(cell) {
-    const outputs = await this.kernel.run(cell.source)
-    cell.outputs = outputs
+    cell.outputs = capOutputs(await this.kernel.run(cell.source))
     cell.execCount = ++this.counter
   }
 

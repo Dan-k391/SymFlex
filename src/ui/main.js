@@ -55,6 +55,8 @@ const view = new NotebookView({
 const pill = $('#kernel-pill')
 kernel.addEventListener('status', ({ detail: d }) => {
   pill.dataset.state = d.status
+  $('#boot-progress').hidden = d.status !== 'loading'
+  $('#boot-progress').style.setProperty('--pct', `${Math.max(3, d.pct ?? 0)}%`)
   pill.textContent = d.status === 'loading' ? `Maple: ${d.msg || 'loading'} ${Math.round(d.pct ?? 0)}%`
     : d.status === 'error' ? 'Maple: failed' : `Maple: ${d.status}`
   pill.title = d.status === 'error' ? d.msg : kernel.interruptible ? 'Interrupts supported' : 'Interrupt restarts the kernel'
@@ -72,6 +74,7 @@ view.addEventListener('mode', () => {
 // ---- notebooks
 
 function openNotebook(nb) {
+  if (narrow.matches) setSidebarHidden(true)
   view.open(nb)
   $('#nb-name').value = nb.name
   store.setSetting('last', nb.id)
@@ -235,15 +238,15 @@ $('#shortcuts').addEventListener('click', (e) => {
   if (e.target.closest('[data-close]') || e.target === e.currentTarget) e.currentTarget.close()
 })
 
-$('#sidebar-toggle').addEventListener('click', (e) => {
-  const hidden = document.body.classList.toggle('sidebar-hidden')
-  e.currentTarget.setAttribute('aria-expanded', String(!hidden))
-  store.setSetting('sidebarHidden', hidden)
-})
-if (store.getSetting('sidebarHidden', matchMedia('(max-width: 800px)').matches)) {
-  document.body.classList.add('sidebar-hidden')
-  $('#sidebar-toggle').setAttribute('aria-expanded', 'false')
+const narrow = matchMedia('(max-width: 800px)')
+// On narrow screens the sidebar is an overlay: it starts closed and its state is not remembered.
+function setSidebarHidden(hidden) {
+  document.body.classList.toggle('sidebar-hidden', hidden)
+  $('#sidebar-toggle').setAttribute('aria-expanded', String(!hidden))
+  if (!narrow.matches) store.setSetting('sidebarHidden', hidden)
 }
+$('#sidebar-toggle').addEventListener('click', () => setSidebarHidden(!document.body.classList.contains('sidebar-hidden')))
+if (narrow.matches || store.getSetting('sidebarHidden', false)) setSidebarHidden(true)
 
 // ---- sidebar
 
@@ -258,14 +261,20 @@ const sidebar = initSidebar({
 // ---- dev: hot-reload the Python engine when py/ changes (vite plugin event)
 
 if (import.meta.hot) {
-  import.meta.hot.on('symflex:py-updated', async () => {
-    if (kernel.status !== 'idle') return toast('Maple engine changed: restart the kernel to load it', 'warn')
+  let stale = false
+  const reloadEngine = async () => {
+    // Never swap the engine under a running notebook; retry when both kernel and queue are idle.
+    if (!stale || kernel.status !== 'idle' || view.running) return
+    stale = false
     try {
       await kernel.reloadEngine()
       view.counter = 0
       toast('Maple engine reloaded (kernel state reset)')
     } catch (e) { toast(`Engine reload failed: ${e.message}`, 'error') }
-  })
+  }
+  import.meta.hot.on('symflex:py-updated', () => { stale = true; reloadEngine() })
+  kernel.addEventListener('status', reloadEngine)
+  view.addEventListener('idle', reloadEngine)
 }
 
 // ---- boot

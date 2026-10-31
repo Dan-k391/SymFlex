@@ -1,17 +1,19 @@
-"""ODEs: dsolve (symbolic via SymPy, numeric via an adaptive Dormand-Prince RK45).
-First working version; the numeric solution object is an AppliedProc so it can be called
-like Maple's `proc(x_rkf45) ... end proc`."""
+"""ODEs: dsolve (symbolic: ode_linear's closed forms first, then SymPy; numeric via an adaptive
+Dormand-Prince RK45) and odetest. Numeric solutions are AppliedProcs callable like Maple's
+`proc(x_rkf45) ... end proc`."""
 from __future__ import annotations
 
+import itertools
 import math
 
 import sympy as sp
 from sympy.core.function import AppliedUndef
 
 from ..errors import MapleError
-from ..values import AppliedProc, ExprSeq, MEquation, MList, MSet, make_seq, seq_items
+from ..values import NULL, AppliedProc, ExprSeq, MEquation, MList, MSet, make_seq, seq_items
 from . import Library, is_true
 from .core import equations_of, has_float
+from .ode_linear import apply_ics, linear_coeffs, ode_order, solve_autonomous, solve_linear
 
 lib = Library()
 builtin = lib.builtin
@@ -26,7 +28,7 @@ def _split(eqs):
     for e in equations_of(eqs):
         if not isinstance(e, MEquation):
             e = MEquation(e, sp.Integer(0))
-        if isinstance(e.lhs, (AppliedUndef, sp.Subs)) and not e.rhs.has(sp.Derivative):
+        if _is_ic(e):
             ics.append(e)
         else:
             odes.append(e)
@@ -47,8 +49,26 @@ def _rename_constants(expr):
     reps = {}
     for s in expr.free_symbols:
         if s.name.startswith("C") and s.name[1:].isdigit():
-            reps[s] = sp.Symbol("_C" + s.name[1:])
+            reps[s] = sp.Symbol("c__" + s.name[1:])
     return expr.xreplace(reps) if reps else expr
+
+
+def _ic_parts(e):
+    """y(t0) = v -> (y, 0, t0, v); D(y)(t0) = v -> (y, 1, t0, v); None for anything else."""
+    lhs = e.lhs
+    if isinstance(lhs, AppliedUndef) and len(lhs.args) == 1:
+        return lhs.func, 0, lhs.args[0], e.rhs
+    if isinstance(lhs, sp.Subs) and isinstance(lhs.expr, sp.Derivative):
+        der = lhs.expr
+        return der.expr.func, sum(int(c) for _, c in der.variable_count), lhs.point[0], e.rhs
+    return None
+
+
+def _plus_first(sols):
+    """Maple lists y = +r before y = -r; SymPy gives the negative branch first."""
+    if len(sols) == 2 and sp.expand(sols[0].rhs + sols[1].rhs) == 0             and sols[0].rhs.could_extract_minus_sign():
+        return sols[::-1]
+    return sols
 
 
 @builtin("dsolve", sig="dsolve({ode, ics}, y(t), options)",
@@ -59,35 +79,43 @@ def m_dsolve(ctx, eqs, *rest, numeric=False, output=None, method=None, range=Non
     odes, ics = _split(eqs)
     if not odes:
         raise MapleError("no differential equations found")
-    if is_true(numeric):
+    if is_true(numeric) or str(opts.get("type")) == "numeric":
         return _numeric(ctx, odes, ics, output)
     funcs = _funcs_of(odes)
-    sym_eqs = [sp.Eq(e.lhs, e.rhs) for e in odes]
-    floats = has_float(eqs)
-    if floats:
-        sym_eqs = [sp.nsimplify(e, rational=True) for e in sym_eqs]
-    ic_map = {}
-    t = funcs[0].args[0] if funcs else None
-    for e in ics:
-        lhs, rhs = _ic_lhs(e.lhs, t), e.rhs
-        ic_map[lhs] = sp.nsimplify(rhs, rational=True) if floats else rhs
+    t = funcs[0].args[0]
+    # Maple converts floats to rationals and answers exactly
+    rat = (lambda e: sp.nsimplify(e, rational=True)) if has_float(eqs) else (lambda e: e)
+    exprs = [rat(e.lhs - e.rhs) for e in odes]
+    ics = [MEquation(rat(e.lhs), rat(e.rhs)) for e in ics]
+    ic_parts = [p for p in map(_ic_parts, ics) if p is not None]
+    if len(exprs) == 1 and len(funcs) == 1:
+        y = funcs[0]
+        conds = [(k, t0, v) for f, k, t0, v in ic_parts if f == y.func]
+        consts = (sp.Symbol(f"c__{i}") for i in itertools.count(1))
+        gen = solve_linear(exprs[0], y, t, consts, conds[0][1] if conds else None)
+        if gen is not None:
+            sol = apply_ics(*gen, conds, t) if conds else gen[0]
+            return NULL if sol is None else MEquation(y, sol)
+        if linear_coeffs(exprs[0], y, t) is None and ode_order(exprs[0], y, t) > 1:
+            roots = solve_autonomous(exprs[0], y, t, conds)
+            # higher-order nonlinear ODEs: give up quietly (SymPy may not return)
+            return make_seq([MEquation(y, r) for r in roots]) if roots else NULL
+    ic_map = {_ic_lhs(e.lhs, t): e.rhs for e in ics}
+    sym_eqs = [sp.Eq(e, 0) for e in exprs]
     try:
         if len(sym_eqs) == 1:
-            sol = sp.dsolve(sym_eqs[0], funcs[0], ics=ic_map or None)
+            try:    # Bernoulli gives explicit answers (like Maple) where 'separable' is implicit
+                sol = sp.dsolve(sym_eqs[0], funcs[0], hint="Bernoulli", ics=ic_map or None)
+            except ValueError:
+                sol = sp.dsolve(sym_eqs[0], funcs[0], ics=ic_map or None)
         else:
             sol = sp.dsolve(sym_eqs, funcs, ics=ic_map or None)
-    except NotImplementedError as e:
-        raise MapleError(f"unable to solve: {e}")
-    sols = sol if isinstance(sol, list) else [sol]
-    out = []
-    for s in sols:
-        rhs = _rename_constants(s.rhs)
-        if floats:
-            rhs = ctx.evalf(rhs)
-        out.append(MEquation(s.lhs, rhs))
+    except NotImplementedError:
+        return NULL
+    sols = [MEquation(s.lhs, _rename_constants(s.rhs)) for s in (sol if isinstance(sol, list) else [sol])]
     if len(sym_eqs) > 1:
-        return MSet(out)
-    return make_seq(out)
+        return MSet(sols)
+    return make_seq(_plus_first(sols))
 
 
 def _ic_lhs(lhs, t):
@@ -98,6 +126,30 @@ def _ic_lhs(lhs, t):
         n = sum(int(c) for _, c in der.variable_count)
         return sp.Subs(sp.Derivative(f(t), (t, n)), t, lhs.point[0])
     return lhs
+
+
+def _is_ic(e):
+    return isinstance(e.lhs, (AppliedUndef, sp.Subs)) and not e.rhs.has(sp.Derivative)
+
+
+@builtin("odetest", sig="odetest(sol, ode)",
+         doc="Residual of an ODE (and initial conditions) at a dsolve solution: 0 when satisfied.")
+def m_odetest(ctx, sol, ode):
+    reps = {e.lhs.func: (e.lhs.args[0], e.rhs) for e in equations_of(sol)
+            if isinstance(e, MEquation) and isinstance(e.lhs, AppliedUndef) and len(e.lhs.args) == 1}
+
+    def plug(e):
+        e = e.replace(lambda a: isinstance(a, AppliedUndef) and a.func in reps,
+                      lambda a: reps[a.func][1].subs(reps[a.func][0], a.args[0]))
+        return sp.simplify(e.doit())
+    res = []
+    rat = (lambda e: sp.nsimplify(e, rational=True)) if has_float(ode) else (lambda e: e)
+    for e in equations_of(ode):
+        e = MEquation(rat(e.lhs), rat(e.rhs)) if isinstance(e, MEquation) else MEquation(rat(e), sp.Integer(0))
+        res.append(plug(e.rhs - e.lhs) if _is_ic(e) else plug(e.lhs - e.rhs))
+    if isinstance(ode, MSet):
+        return MSet(res)
+    return MList(res) if isinstance(ode, MList) else make_seq(res)
 
 
 # ====================================================================== numeric
@@ -209,15 +261,39 @@ class NumericSolution:
     def __init__(self, t, funcs, states, F, t0, y0):
         self.t, self.funcs, self.states, self.F = t, funcs, states, F
         self.t0, self.y0 = t0, y0
+        self.last = (t0, list(y0))
 
     def at(self, tv):
-        return rk45(self.F, self.t0, self.y0, float(tv))
+        tv = float(tv)
+        # plots and fsolve sample nearby points in turn: restart from the closest known state
+        ts, ys = self.last if abs(tv - self.last[0]) < abs(tv - self.t0) else (self.t0, self.y0)
+        y = rk45(self.F, ts, ys, tv)
+        self.last = (tv, y)
+        return y
 
     def labels(self):
         out = []
         for f, k in self.states:
             out.append(f if k == 0 else sp.Derivative(f, (self.t, k)) if k > 1 else sp.Derivative(f, self.t))
         return out
+
+
+_numeric_ids = itertools.count(1)
+
+
+def _numeric_function(fn):
+    """The call of a numeric-solution procedure on a non-number stays unevaluated (as in Maple);
+    it evaluates as soon as the argument becomes a number, and through `_imp_` in lambdify/evalf
+    (plot, fsolve). Names are unique because lambdify keys implementations by name."""
+    def eval_(cls, x):
+        if x.is_number and x.is_extended_real:
+            return sp.Float(fn(float(x)), 15)
+    return type(f"dsolve_numeric{next(_numeric_ids)}", (sp.Function,),
+                {"nargs": 1, "eval": classmethod(eval_), "_imp_": staticmethod(fn)})
+
+
+def _proc_label(param):
+    return f"proc ({param}) `...` end proc"
 
 
 def _numeric(ctx, odes, ics, output):
@@ -227,31 +303,27 @@ def _numeric(ctx, odes, ics, output):
     t0, y0 = _ic_values(ics, states, t)
     ns = NumericSolution(t, funcs, states, F, t0, y0)
     labels = ns.labels()
+    if output is not None and str(output) == "listprocedure":
+        items = [MEquation(t, AppliedProc(lambda c, a: a[0], name=_proc_label(t)))]
+        for i, l in enumerate(labels):
+            items.append(MEquation(l, _component_proc(ns, i)))
+        return MList(items)
 
     def at_point(ctx_, args):
         tv = args[0]
         if not (isinstance(tv, sp.Basic) and tv.is_number):
             return sp.Function("dsolve_numeric")(tv)
-        ys = ns.at(float(sp.N(tv)))
-        return MList([MEquation(t, sp.Float(float(sp.N(tv)), 15))] +
-                     [MEquation(l, sp.Float(v, 15)) for l, v in zip(labels, ys)])
-    if output is not None and str(output) == "listprocedure":
-        items = [MEquation(t, AppliedProc(lambda c, a: a[0], label=sp.Symbol("proc(t) ... end proc")))]
-        for i, l in enumerate(labels):
-            items.append(MEquation(l, _component_proc(ns, i)))
-        return MList(items)
-    p = AppliedProc(at_point, label=sp.Symbol("proc(x_rkf45) ... end proc"))
+        tv = float(sp.N(tv))
+        return MList([MEquation(t, sp.Float(tv, 15))] +
+                     [MEquation(l, sp.Float(v, 15)) for l, v in zip(labels, ns.at(tv))])
+    p = AppliedProc(at_point, name=_proc_label("x_rkf45"))
     p.numeric_solution = ns
     return p
 
 
 def _component_proc(ns, i):
-    def fn(ctx, args):
-        tv = args[0]
-        if not (isinstance(tv, sp.Basic) and tv.is_number):
-            return sp.Function("dsolve_numeric")(tv)
-        return sp.Float(ns.at(float(sp.N(tv)))[i], 15)
-    p = AppliedProc(fn, label=sp.Symbol("proc(t) ... end proc"))
+    f = _numeric_function(lambda tv: ns.at(tv)[i])
+    p = AppliedProc(lambda ctx, args: f(*args), name=_proc_label(ns.t))
     p.numeric_solution = ns
     p.component = i
     return p

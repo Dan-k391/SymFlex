@@ -97,16 +97,19 @@ export function specToTraces(spec) {
       x: c.x, y: c.y, name: c.legend || '', showlegend: !!c.legend,
       mode: points ? 'markers' : 'lines',
       line: { color, width: three ? 4 : Math.max(1, (c.thickness ?? 1) * 1.6), dash: DASH[c.dash] || 'solid' },
-      marker: { color, size: three ? 3 : 6 },
+      marker: { color, size: three ? 3 : c.symbolsize ? c.symbolsize * 0.6 : 6 },
       hovertemplate: three ? undefined : '(%{x:.4g}, %{y:.4g})<extra></extra>',
     }
+    if (c.filled) Object.assign(base, { fill: 'toself', opacity: 0.6, line: { ...base.line, width: 0 }, hoverinfo: 'skip', hovertemplate: undefined })
     traces.push(three && c.z?.length ? { ...base, type: 'scatter3d', z: c.z } : { ...base, type: 'scatter' })
   })
+  for (const t of spec.texts || [])
+    traces.push({ type: 'scatter', mode: 'text', x: [t.x], y: [t.y], text: [t.text], textfont: t.color ? { color: t.color } : undefined, showlegend: false, hoverinfo: 'skip' })
   const scale = 'Viridis'
   if (spec.grid?.z?.length) {
     const z = gridZ(spec.grid)
     if (spec.type === 'contour') traces.push({ type: 'contour', x: spec.grid.x, y: spec.grid.y, z, colorscale: scale, contours: { coloring: 'heatmap', showlabels: true } })
-    else traces.push({ type: 'surface', x: spec.grid.x, y: spec.grid.y, z, colorscale: scale, showscale: true })
+    else traces.push({ type: 'surface', x: spec.grid.x, y: spec.grid.y, z, colorscale: scale, showscale: false })  // Maple draws no colour bar
   }
   if (spec.mesh?.tri?.length) {
     const m = spec.mesh
@@ -145,13 +148,23 @@ export function specToLayout(spec, colors = themeColors(), fixed = null) {
   }
   if (is3d(spec)) {
     const a = (t) => ({ title: axisTitle(t), gridcolor: colors.grid, color: colors.fg, backgroundcolor: colors.bg })
-    layout.scene = { xaxis: a(spec.xlabel), yaxis: a(spec.ylabel), zaxis: a(spec.zlabel), aspectmode: spec.scaling === 'constrained' ? 'data' : 'cube' }
+    layout.scene = { xaxis: a(spec.xlabel), yaxis: a(spec.ylabel), zaxis: a(spec.zlabel), aspectmode: spec.scaling === 'constrained' ? 'data' : 'cube',
+      camera: { eye: { x: 1.45, y: -1.45, z: 1.0 } } }  // front-left view, x running to the right like Maple's default
+    if (spec.scaling === 'constrained' && spec.mesh?.x?.length) {
+      // A FEM surface: true x/y proportions, but z is a field value, not a length.
+      const [x0, x1] = extent(spec.mesh.x), [y0, y1] = extent(spec.mesh.y), s = Math.max(x1 - x0, y1 - y0) || 1
+      Object.assign(layout.scene, { aspectmode: 'manual', aspectratio: { x: (x1 - x0) / s, y: (y1 - y0) / s, z: 0.6 } })
+    }
     layout.margin = { l: 0, r: 0, t: spec.title ? 40 : 0, b: 0 }
   } else {
     const xr = spec.xrange ?? (fixed && [fixed[0], fixed[1]]), yr = spec.yrange ?? (fixed && [fixed[2], fixed[3]])
     layout.xaxis = axis(spec.xlabel, spec.xlog, xr)
     layout.yaxis = axis(spec.ylabel, spec.ylog, yr)
-    if (spec.scaling === 'constrained') Object.assign(layout.yaxis, { scaleanchor: 'x', scaleratio: 1 })
+    if (spec.scaling === 'constrained') {
+      // Shrink the plot area to the data's aspect instead of padding one axis with empty range.
+      Object.assign(layout.yaxis, { scaleanchor: 'x', scaleratio: 1, constrain: 'domain' })
+      layout.xaxis.constrain = 'domain'
+    }
   }
   return layout
 }
@@ -162,6 +175,18 @@ const CONFIG = { responsive: true, displaylogo: false, modeBarButtonsToRemove: [
 export async function renderPlot(el, spec) {
   const Plotly = await loadPlotly()
   el.replaceChildren()
+  if (spec.type === 'array') {  // display(Array(...)): row-major grid of plots, null cells empty
+    const grid = document.createElement('div')
+    grid.className = 'sf-plot-array'
+    Object.assign(grid.style, { display: 'grid', gridTemplateColumns: `repeat(${spec.cols || 1}, minmax(0, 1fr))` })
+    el.append(grid)
+    for (const cell of spec.cells || []) {
+      const box = document.createElement('div')
+      grid.append(box)
+      if (cell) await renderPlot(box, cell)
+    }
+    return grid
+  }
   const div = document.createElement('div')
   div.className = 'sf-plot'
   div.style.height = is3d(spec) ? '440px' : '380px'

@@ -20,13 +20,23 @@ test('operator precedence and built-in functions match FlexPDE', async () => {
   for (const [k, v] of Object.entries(want)) assert.ok(Math.abs(report(res, k) - v) < 1e-12, `${k}=${report(res, k)}`);
 });
 
-test('undefined names and bare fields are reported like FlexPDE 8', async () => {
-  let res = await runFlex(ivp({ vars: 's v', defs: 'xcm = xb*mbmtotal  xb = 1', eqs: 's: dt(s)=v v: dt(v)=-s', time: '0 TO 1' }));
+test('undefined names are reported like FlexPDE 8; bare fields run like FlexPDE 6/7 with a warning', async () => {
+  let res = await runFlex(ivp({ vars: 's v', defs: 'xb = 1  xcm = xb*mbmtotal', eqs: 's: dt(s)=v v: dt(v)=-s', time: '0 TO 1' }));
   assert.equal(res.errors.length, 1);
   assert.match(res.errors[0].msg, /Undefined Name: MBMTOTAL/);
   assert.equal(res.errors[0].line, 7);
-  res = await runFlex(ivp({ vars: 's v', init: 's=1', eqs: 's: dt(s)=v v: dt(v)=-s', time: '0 TO 1', plots: 'for t=0 by 0.1 to endtime\nreport s' }));
-  assert.match(res.errors[0].msg, /Field value with no Location Specified/);
-  assert.equal(res.errors[0].line, 17);
-  assert.equal(res.errors[0].col, 8);
+  // names resolve in source order (FlexPDE 8: "Line 7 Col 10: Undefined Name: B", "... K")
+  res = await runFlex(ivp({ vars: 's v', defs: 'a = 1 + b  b = 2', eqs: 's: dt(s)=v v: dt(v)=-a*s', time: '0 TO 1' }));
+  assert.deepEqual([res.errors[0].msg, res.errors[0].line, res.errors[0].col], ['Undefined Name: B', 7, 9]);
+  res = await runFlex(ivp({ vars: 's v', eqs: 's: dt(s)=v v: dt(v)=-k*s\nDEFINITIONS k = 2', time: '0 TO 1' }));
+  assert.deepEqual([res.errors[0].msg, res.errors[0].line], ['Undefined Name: K', 11]);
+  res = await runFlex(ivp({ vars: 's v', init: 's=1', eqs: 's: dt(s)=v v: dt(v)=-s', time: '0 TO 1',
+    plots: 'for t=0 by 0.1 to endtime\nreport s\nreport val(s,0)\nhistory(v)' }));
+  assert.equal(res.errors.length, 2);
+  assert.ok(res.errors.every(e => e.severity === 'warning' && /Field value with no Location Specified/.test(e.msg)));
+  assert.deepEqual([res.errors[0].line, res.errors[0].col], [17, 8]);
+  assert.equal(res.errors[1].line, 19);
+  assert.equal(report(res, 's'), report(res, 'val(s,0)'));
+  assert.ok(Math.abs(report(res, 's') - Math.cos(1)) < 1e-2);
+  assert.equal(res.plots[0].curves[0].y.length, res.plots[0].curves[0].t.length);
 });

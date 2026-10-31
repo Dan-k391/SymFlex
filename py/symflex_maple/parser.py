@@ -251,11 +251,7 @@ class Parser:
             return ExprSeqN([])
         items = [self.expr()]
         while self.accept(","):
-            if self._at_seq_end():     # Maple tolerates empty items like f(a, , b)
-                break
-            if self.at(","):
-                continue
-            items.append(self.expr())
+            items.append(self.expr())      # f(a, , b) and f(a,) are syntax errors
         return items[0] if len(items) == 1 else ExprSeqN(items)
 
     def _at_seq_end(self) -> bool:

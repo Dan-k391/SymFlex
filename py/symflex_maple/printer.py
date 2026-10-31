@@ -6,10 +6,11 @@ import re
 
 import mpmath.libmp as mlib
 import sympy as sp
-from sympy.core.function import AppliedUndef
+from sympy.core.function import AppliedUndef, Application
 from sympy.printing.latex import LatexPrinter
 
 from . import nodes as N
+from .lexer import KEYWORDS
 from .values import (
     AppliedProc, BuiltinProc, ExprSeq, MList, MLogic, MMatrix, Module, MRange, MRelation, MSet,
     MString, MTable, MUneval, MValue, MVector, PlotValue, RememberProc, UserProc,
@@ -36,7 +37,7 @@ _IDENT = re.compile(r"^[A-Za-z_][A-Za-z_0-9]*$")
 
 def name_str(name: str) -> str:
     """A Maple name, back-quoted when it is not a plain identifier."""
-    if _IDENT.match(name):
+    if _IDENT.match(name) and name not in KEYWORDS:
         return name
     return "`" + name.replace("`", "``") + "`"
 
@@ -138,13 +139,13 @@ class TextPrinter:
 
     def v_MVector(self, v, prec):
         entries = ", ".join(f"{i} = {self.p(x, PREC_REL + 1)}" for i, x in enumerate(v.m, 1)
-                            if x != 0)
-        return (f"Vector[{v.orient}]({len(v.m)},{{{entries}}},datatype = anything,"
+                            if not _is_zero(x))
+        return (f"Vector[{v.orient}]({len(v.m)},{{{entries}}},datatype = {getattr(v, 'datatype', 'anything')},"
                 f"storage = rectangular,order = Fortran_order,shape = [])")
 
     def v_MMatrix(self, v, prec):
         r, c = v.m.shape
-        return (f"Matrix({r},{c},{{{_row_major(self, v)}}},datatype = anything,"
+        return (f"Matrix({r},{c},{{{_row_major(self, v)}}},datatype = {getattr(v, 'datatype', 'anything')},"
                 f"storage = rectangular,order = Fortran_order,shape = [])")
 
     def v_MTable(self, v, prec):
@@ -222,7 +223,8 @@ class TextPrinter:
                 else:
                     parts.append(f"[{self.p(val, PREC_SEQ + 1)}, {self.p(cond, PREC_SEQ + 1)}]")
             return "PIECEWISE(" + ",".join(parts) + ")"
-        inert = type(e).__name__ in ("Int", "Sum", "Product", "Limit")
+        # inert forms are the library's subclasses named like Maple's (plain sp.Sum is sum(...))
+        inert = type(e).__name__ in ("Int", "Sum", "Product", "Limit") and type(e).__module__[:5] != "sympy"
         if isinstance(e, sp.Integral):
             return self.limits_call("Int" if inert else "int", e.function, e.limits)
         if isinstance(e, sp.Sum):
@@ -248,7 +250,7 @@ class TextPrinter:
             return "[" + ", ".join(self.p(a, PREC_SEQ + 1) for a in e.args) + "]"
         if isinstance(e, sp.exp):
             return f"exp({self.p(e.args[0], 0)})"
-        if isinstance(e, sp.Function) or isinstance(e, AppliedUndef):
+        if isinstance(e, (Application, AppliedUndef)):     # Application covers Min/Max too
             return self.function(e)
         if isinstance(e, sp.Lambda):
             vs = e.variables
@@ -299,7 +301,8 @@ class TextPrinter:
         for i, t in enumerate(terms + [o]):
             s = f"O({self.p(o.expr, 0)})" if t is o else self.p(t, PREC_ADD)
             body += ("+" if i and not s.startswith("-") else "") + s
-        return f"series({body},{self.p(x, 0)},{n})"
+        at = self.p(x, 0) if not o.point or o.point[0] == 0 else f"{self.p(x, 0)} = {self.p(o.point[0], 0)}"
+        return f"series({body},{at},{n})"
 
     def mul(self, e, prec):
         c, rest = e.as_coeff_Mul()
@@ -354,7 +357,8 @@ class TextPrinter:
             fname = name_str(name)
         else:
             fname = FUNC_NAMES.get(name, name)
-        args = ",".join(self.p(a, 0) for a in e.args)
+        # SymPy's Heaviside carries its value at 0 as a second argument
+        args = ",".join(self.p(a, 0) for a in (e.args[:1] if isinstance(e, sp.Heaviside) else e.args))
         return f"{fname}({args})"
 
     def derivative(self, e):
@@ -362,7 +366,8 @@ class TextPrinter:
         for v, n in e.variable_count:
             vs = self.p(v, 0)
             parts.append(vs if n == 1 else f"{vs} $ {self.p(n, 0)}")
-        return f"diff({self.p(e.expr, 0)},{','.join(parts)})"
+        name = "Diff" if type(e).__name__ == "Diff" else "diff"
+        return f"{name}({self.p(e.expr, 0)},{','.join(parts)})"
 
     def subs(self, e):
         d = d_operator_form(e)
@@ -372,14 +377,16 @@ class TextPrinter:
         return f"eval({self.p(e.expr, 0)},{eqs})"
 
     def limits_call(self, name, f, limits):
-        parts = []
+        # SymPy merges nested integrals/sums into one with several limits; Maple nests them
+        text = self.p(f, 0)
         for lim in limits:
             if len(lim) == 1:
-                parts.append(self.p(lim[0], 0))
+                part = self.p(lim[0], 0)
             else:
-                parts.append(f"{self.p(lim[0], 0)} = {self.p(lim[1], PREC_RANGE + 1)} .. "
-                             f"{self.p(lim[2], PREC_RANGE + 1)}")
-        return f"{name}({self.p(f, 0)},{','.join(parts)})"
+                part = (f"{self.p(lim[0], 0)} = {self.p(lim[1], PREC_RANGE + 1)} .. "
+                        f"{self.p(lim[2], PREC_RANGE + 1)}")
+            text = f"{name}({text},{part})"
+        return text
 
     def relational(self, e, prec):
         op = {"==": "=", "!=": "<>", "<": "<", "<=": "<=", ">": "<", ">=": "<="}[e.rel_op]
@@ -395,7 +402,12 @@ def _unkey(k):
 def _row_major(pr, v):
     r, c = v.m.shape
     return ", ".join(f"({i + 1}, {j + 1}) = {pr.p(v.m[i, j], PREC_REL + 1)}"
-                     for i in range(r) for j in range(c) if v.m[i, j] != 0)
+                     for i in range(r) for j in range(c) if not _is_zero(v.m[i, j]))
+
+
+def _is_zero(x) -> bool:
+    """rtable lprint omits 0 and 0. entries alike."""
+    return isinstance(x, sp.Basic) and x.is_Number and x.is_zero
 
 
 def _ordered_factors(e):

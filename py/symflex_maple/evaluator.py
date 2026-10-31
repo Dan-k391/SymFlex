@@ -20,7 +20,7 @@ from .printer import latex, lprint, name_str
 from .values import (
     FAIL, NULL, AppliedProc, BuiltinProc, ExprSeq, MEquation, MList, MLogic, MMatrix, Module,
     MRange, MRelation, MSet, MString, MTable, MUneval, MValue, MVector, PlotValue, Procedure,
-    RememberProc, UserProc, deep_map, make_seq, seq_items,
+    RememberProc, UserProc, deep_map, float_zero, make_seq, seq_items,
 )
 
 CONSTANTS = {
@@ -74,6 +74,32 @@ class Frame:
         self.globals_decl = set(globals_decl)
 
 
+def _is_pi_power(f) -> bool:
+    return f is sp.pi or (f.is_Pow and f.base is sp.pi and f.exp.is_Rational)
+
+
+def _float_pi(r, digits):
+    """Maple turns Pi into a float when it meets a float in a product or sum:
+    Pi/180. = .1745329252e-1, 2.*Pi*t = 6.283185308*t, Pi+1. = 4.141592654
+    (sqrt(2)*1.0 and exp(1)*1.0 stay symbolic)."""
+    pi = sp.Float(str(sp.pi.evalf(digits)), digits)    # Maple rounds Pi to Digits first
+
+    def term(e):
+        if e.is_Mul:
+            c, rest = e.as_coeff_Mul()
+            if c.is_Float and any(_is_pi_power(f) for f in sp.Mul.make_args(rest)):
+                return e.xreplace({sp.pi: pi})
+        return e
+    if r.is_Add:
+        terms = [term(t) for t in r.args]
+        if any(t.is_Float for t in terms):
+            terms = [t.xreplace({sp.pi: pi}) if t.has(sp.pi) and all(
+                _is_pi_power(f) or f.is_Rational for f in sp.Mul.make_args(t)) else t
+                for t in terms]
+        return sp.Add(*terms)
+    return term(r)
+
+
 def ordinal(n: int) -> str:
     suf = "th" if 10 <= n % 100 <= 20 else {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
     return f"{n}{suf}"
@@ -100,6 +126,14 @@ class Evaluator:
         self.call_depth = 0
         self.pending_name: str | None = None
         self.lasterror = NULL
+
+    def interrupted(self):
+        """Clear per-statement state an interrupt (KeyboardInterrupt) may leave behind."""
+        self.frame = None
+        self.quoting = 0
+        self.call_depth = 0
+        self.pending_name = None
+        self._printf_open = None
 
     # ------------------------------------------------------------ output helpers (builtin API)
     def emit(self, out: dict):
@@ -128,12 +162,22 @@ class Evaluator:
     def evalf(self, v, n: int | None = None):
         n = n or self.digits
 
+        def float_args(z):
+            if isinstance(z, sp.Piecewise):
+                return sp.Piecewise(*((a.evalf(n), c.xreplace({q: sp.Float(q, n) for q in c.atoms(sp.Rational)}))
+                                      for a, c in z.args))
+            return z.func(*(a.evalf(n) for a in z.args))
+
         def f(e):
             if isinstance(e, sp.Basic) and not e.is_Boolean:
                 try:
                     r = e.evalf(n)
                 except Exception:  # noqa: BLE001 - leave non-numeric parts alone
                     return e
+                if r is sp.S.Zero:      # SymPy keeps an exact 0; Maple's evalf(0) is 0.
+                    return sp.Float(0, n)
+                if not r.is_number:     # SymPy leaves sin(t + 2^(1/2)) and t < 1/3 alone; Maple floats them
+                    r = r.replace(lambda z: isinstance(z, sp.Function) and not z.is_number, float_args)
                 if r.has(sp.Pow) and not r.is_number:
                     # Maple keeps symbolic powers such as x^(1/2) exact under evalf
                     r = r.replace(lambda z: z.is_Pow and z.exp.is_Float and not z.base.is_number
@@ -169,8 +213,10 @@ class Evaluator:
                 v = f.vars[name]
                 if isinstance(v, _Missing):
                     p = v.proc.name or "anonymous procedure"
-                    raise MapleError(f"invalid input: {p} uses a {ordinal(v.pos)} argument, "
+                    err = MapleError(f"invalid input: {p} uses a {ordinal(v.pos)} argument, "
                                      f"{v.name}, which is missing")
+                    err.bare = True
+                    raise err
                 return v
             if name in f.globals_decl:
                 break
@@ -229,6 +275,14 @@ class Evaluator:
                 if str(a.base.label) in g:
                     return True
         return False
+
+    def rtable_entries(self, v):
+        """Vector/Matrix with its entries evaluated. Maple shows an rtable's entries as stored
+        (`v;`, `eval(v)`, `lprint(v)`), but arithmetic, indexing and map see their values."""
+        if isinstance(v, MMatrix) and any(isinstance(x, sp.Basic) and self._needs_eval(x)
+                                          for x in v.m):
+            return v.map_leaves(self.full_eval)
+        return v
 
     def full_eval(self, v, depth: int = 0):
         if isinstance(v, sp.Basic):
@@ -475,6 +529,7 @@ class Evaluator:
         return MLogic(op, [a, b])
 
     def neutral(self, op, args):
+        args = [self.rtable_entries(a) for a in args]
         f = self.globals.get(op) or self.bound.get(op) or self.env.functions.get(op)
         if f is None and op in self.env.operators:
             return self.env.operators[op](self, *args)
@@ -488,20 +543,25 @@ class Evaluator:
         if sa and sb and op in ("+", "-", "*", "/", "^"):
             try:
                 if op == "+":
-                    return a + b
-                if op == "-":
-                    return a - b
-                if op == "*":
-                    return a * b
-                if op == "/":
+                    r = a + b
+                elif op == "-":
+                    r = a - b
+                elif op == "*":
+                    r = a * b
+                elif op == "/":
                     if b.is_zero and not (b.is_Float):
                         raise MapleError("numeric exception: division by zero")
-                    return a / b
-                if b.is_negative and a.is_zero:
-                    raise MapleError("numeric exception: division by zero")
-                return a ** b
+                    r = a / b
+                else:
+                    if b.is_negative and a.is_zero:
+                        raise MapleError("numeric exception: division by zero")
+                    r = a ** b
             except TypeError as e:
                 raise MapleError(f"invalid arguments for {op}: {e}")
+            if a.has(sp.Float) or b.has(sp.Float):
+                r = _float_pi(r, self.digits)
+            return float_zero(r, (a, b), self.digits)
+        a, b = self.rtable_entries(a), self.rtable_entries(b)
         fn = self.env.operators.get(op)
         if fn is not None and (isinstance(a, MMatrix) or isinstance(b, MMatrix) or op == "."):
             r = fn(self, a, b)
@@ -604,6 +664,10 @@ class Evaluator:
             return self.unknown_call(f.name, args)
         if isinstance(f, MList):
             return MList(self.apply(x, args) for x in f.items)
+        if isinstance(f, MEquation):
+            return MEquation(self.apply(f.lhs, args), self.apply(f.rhs, args))
+        if isinstance(f, AppliedUndef):      # q(t)(x) stays as it is in Maple
+            return MCall(f, args)
         if isinstance(f, sp.Basic):
             if f.is_Number or f.is_NumberSymbol or f in (sp.I,):
                 return f
@@ -804,8 +868,8 @@ class Evaluator:
             if fn is not None:
                 r = fn(self, base, idx)
                 if r is not NotImplemented:
-                    return r
-            return _rtable_index(base, idx)
+                    return self.full_eval(self.rtable_entries(r))
+            return self.full_eval(self.rtable_entries(_rtable_index(base, idx)))
         if isinstance(base, (MRelation, MRange, sp.Basic)):
             return MIndexExpr(base, idx)    # Maple leaves e.g. (a = b)[2] unevaluated
         raise MapleError("invalid subscript selector")
@@ -1412,7 +1476,9 @@ def _generic_binop(ev, op, a, b):
         if isinstance(a, MList) and isinstance(b, MList):
             if op in ("+", "-") and len(a.items) == len(b.items):
                 return MList(ev.binop(op, x, y) for x, y in zip(a.items, b.items))
-            raise MapleError(f"invalid list operation")
+            if op in ("+", "-"):
+                raise MapleError("adding lists of different length")
+            raise MapleError("invalid list operation")
         if isinstance(a, MList) and isinstance(b, sp.Basic):
             return MList(ev.binop(op, x, b) for x in a.items)
         if isinstance(b, MList) and isinstance(a, sp.Basic):

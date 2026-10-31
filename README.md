@@ -25,11 +25,12 @@ npm run dev        # http://localhost:5173
 ```
 
 `npm run build` writes a static site to `dist/` (serve it with `npm run preview`, or any static server;
-set the COOP/COEP headers from `vite.config.js` to enable interrupts). The first load downloads about
-20 MB (Pyodide + SymPy) from your own server; later loads come from the browser cache.
+set the COOP/COEP headers from `vite.config.js` to enable interrupts). All paths are relative, so `dist/`
+can be served from any sub-path (e.g. GitHub Pages). The first load downloads about 20 MB (Pyodide +
+SymPy) from your own server; later loads come from the browser cache.
 
 While `npm run dev` is running, editing files under `py/` re-zips the engine and reloads it in the
-running kernel (kernel state is reset).
+running kernel once it is idle (kernel state is reset).
 
 ## Features
 
@@ -98,9 +99,15 @@ tests/                          engine test runners
 ## Testing
 
 ```sh
-npm test           # UI + kernel unit tests, FlexPDE unit tests, Maple and FlexPDE corpus runners
+npm test           # UI + kernel unit tests, FlexPDE unit tests, Maple and FlexPDE corpus runners, Pyodide parity
 npm run test:ui    # only the UI / kernel tests (node --test)
+node tests/pyodide_parity.mjs [filters...] [--all]   # Maple engine in Pyodide vs CPython
 ```
+
+The parity test runs corpus cases through the engine in Pyodide (offline, as the browser worker does)
+and in CPython, and reports SAME / NEAR (float round-off) / HASHDEP (output depends on the Python hash
+seed, an engine nondeterminism) / DIFF, with the Pyodide load time and per-case times. The browser
+kernel fixes `PYTHONHASHSEED=0`, so a notebook gives the same output on every reload.
 
 `npm test` runs every suite that exists, skipping missing ones, and prints a summary. The kernel test
 boots the real Pyodide under Node from `public/pyodide`, so run `npm run setup` first.
