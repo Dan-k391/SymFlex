@@ -3,9 +3,9 @@ import { autocompletion, closeBrackets, closeBracketsKeymap, completionKeymap, c
 import { defaultKeymap, history, historyKeymap, indentWithTab, toggleComment } from '@codemirror/commands'
 import { bracketMatching, HighlightStyle, indentOnInput, indentUnit, syntaxHighlighting } from '@codemirror/language'
 import { linter, lintGutter, lintKeymap } from '@codemirror/lint'
-import { highlightSelectionMatches, search, searchKeymap, searchPanelOpen } from '@codemirror/search'
-import { Compartment, EditorState, Prec } from '@codemirror/state'
-import { drawSelection, EditorView, highlightActiveLine, keymap, lineNumbers, placeholder } from '@codemirror/view'
+import { highlightSelectionMatches, selectNextOccurrence, selectSelectionMatches } from '@codemirror/search'
+import { Compartment, EditorState, Prec, StateEffect, StateField } from '@codemirror/state'
+import { Decoration, drawSelection, EditorView, highlightActiveLine, keymap, lineNumbers, placeholder } from '@codemirror/view'
 import { tags as t } from '@lezer/highlight'
 import { assistTheme, docHover, flexCompletionSource, mapleCompletionSource, mapleLintSource, signatureHelp } from './lang/assist.js'
 import { flexLanguage } from './lang/flex.js'
@@ -52,6 +52,24 @@ const theme = EditorView.theme({
 
 export const lineNumbersCompartment = new Compartment()
 
+// Notebook find (find.js) owns the query; each editor only draws the matches it is given.
+const setFindMatches = StateEffect.define()
+const matchMark = Decoration.mark({ class: 'sf-find-match' })
+const currentMark = Decoration.mark({ class: 'sf-find-match sf-find-current' })
+const findField = StateField.define({
+  create: () => Decoration.none,
+  update(deco, tr) {
+    for (const e of tr.effects) {
+      if (e.is(setFindMatches)) return Decoration.set(e.value.map(([from, to, cur]) => (cur ? currentMark : matchMark).range(from, to)))
+    }
+    return deco.map(tr.changes)
+  },
+  provide: (f) => EditorView.decorations.from(f),
+})
+
+/** Highlights find matches, given as [from, to, isCurrent] sorted by from ([] clears). */
+export const showFindMatches = (view, ranges) => view.dispatch({ effects: setFindMatches.of(ranges) })
+
 /**
  * @param {object} o
  * @param {HTMLElement} o.parent
@@ -85,7 +103,7 @@ export function createEditor({ parent, type, doc, onChange, keys, assist = {}, l
     { key: 'Shift-Enter', run: () => keys.runAdvance() },
     { key: 'Mod-Enter', run: () => keys.runInPlace() },
     { key: 'Alt-Enter', run: () => keys.runInsert() },
-    { key: 'Escape', run: (v) => !completionStatus(v.state) && !searchPanelOpen(v.state) && keys.escape() },
+    { key: 'Escape', run: (v) => !completionStatus(v.state) && keys.escape() },
     { key: 'ArrowUp', run: (v) => atEdge(v, -1) && keys.up() },
     { key: 'ArrowDown', run: (v) => atEdge(v, 1) && keys.down() },
     { key: 'Mod-/', run: toggleComment },
@@ -97,11 +115,13 @@ export function createEditor({ parent, type, doc, onChange, keys, assist = {}, l
       cellKeys,
       lineNumbersCompartment.of(showNumbers ? lineNumbers() : []),
       history(), drawSelection(), indentOnInput(), bracketMatching(), closeBrackets(),
-      highlightActiveLine(), highlightSelectionMatches(), search({ top: true }), lintGutter(),
+      highlightActiveLine(), highlightSelectionMatches(), findField, lintGutter(),
       indentUnit.of('  '), EditorState.tabSize.of(2),
       syntaxHighlighting(highlight), theme, assistTheme,
       ...langExt,
-      keymap.of([...closeBracketsKeymap, ...defaultKeymap, ...searchKeymap, ...historyKeymap,
+      // Ctrl+F / F3 belong to the notebook find bar, so only the selection commands of searchKeymap are kept.
+      keymap.of([...closeBracketsKeymap, ...defaultKeymap, { key: 'Mod-d', run: selectNextOccurrence, preventDefault: true },
+        { key: 'Mod-Shift-l', run: selectSelectionMatches }, ...historyKeymap,
         ...completionKeymap, ...lintKeymap, indentWithTab]),
       EditorView.updateListener.of((u) => { if (u.docChanged) onChange(u.state.doc.toString()) }),
       EditorView.contentAttributes.of({ 'aria-label': `${type} cell input` }),

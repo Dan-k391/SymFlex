@@ -15,7 +15,7 @@
   </script>
 </head>
 <body>
-  <a class="skip-link" href="#notebook">Skip to notebook</a>
+  <a class="skip-link" href="#notebooks">Skip to notebook</a>
   <header class="topbar">
     <button type="button" class="icon-btn" id="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="sidebar">☰</button>
     <div class="brand"><span class="brand-mark" aria-hidden="true">∫</span><span class="brand-name">SymFlex</span></div>
@@ -37,6 +37,9 @@
       <div class="menu" data-menu="edit">
         <button type="button" class="menu-btn" aria-haspopup="true" aria-expanded="false">Edit</button>
         <div class="menu-pop" role="menu">
+          <button role="menuitem" data-cmd="find">Find…<kbd>Ctrl+F</kbd></button>
+          <button role="menuitem" data-cmd="replace">Replace…<kbd>Ctrl+H</kbd></button>
+          <hr>
           <button role="menuitem" data-cmd="insert-above">Insert cell above<kbd>A</kbd></button>
           <button role="menuitem" data-cmd="insert-below">Insert cell below<kbd>B</kbd></button>
           <button role="menuitem" data-cmd="duplicate">Duplicate cell</button>
@@ -114,7 +117,23 @@
         <div id="help-list" class="help-list"></div>
       </section>
     </aside>
-    <main id="notebook" class="notebook" aria-label="Notebook cells"></main>
+    <div id="sidebar-resize" class="sidebar-resize" role="separator" aria-orientation="vertical" aria-label="Resize sidebar"
+      aria-controls="sidebar" aria-valuemin="200" aria-valuemax="640" tabindex="0" title="Drag to resize, double-click to reset"></div>
+    <div class="workspace">
+      <div class="tabbar">
+        <div id="tabstrip" class="tabstrip" role="tablist" aria-label="Open notebooks"></div>
+        <button type="button" class="icon-btn tab-new" data-cmd="new" aria-label="New notebook" title="New notebook">+</button>
+      </div>
+      <main id="notebooks" class="notebooks" aria-label="Notebook" tabindex="-1">
+        <div id="empty-state" class="empty-state" hidden>
+          <p>No notebook open</p>
+          <div class="panel-actions">
+            <button type="button" class="btn btn-primary" data-cmd="new">New notebook</button>
+            <button type="button" class="btn" data-cmd="open">Open…</button>
+          </div>
+        </div>
+      </main>
+    </div>
   </div>
 
   <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
@@ -133,13 +152,15 @@
           <dt><kbd>Ctrl</kbd>+<kbd>Enter</kbd></dt><dd>Run cell in place</dd>
           <dt><kbd>Alt</kbd>+<kbd>Enter</kbd></dt><dd>Run cell, insert below</dd>
           <dt><kbd>Ctrl</kbd>+<kbd>S</kbd></dt><dd>Save notebook</dd>
+          <dt><kbd>Ctrl</kbd>+<kbd>F</kbd></dt><dd>Find in notebook</dd>
+          <dt><kbd>Ctrl</kbd>+<kbd>H</kbd></dt><dd>Find and replace</dd>
+          <dt><kbd>F3</kbd> / <kbd>Shift</kbd>+<kbd>F3</kbd></dt><dd>Next / previous match</dd>
         </dl>
         <h3>Edit mode</h3>
         <dl>
           <dt><kbd>Esc</kbd></dt><dd>Command mode</dd>
           <dt><kbd>Ctrl</kbd>+<kbd>Space</kbd></dt><dd>Autocomplete</dd>
           <dt><kbd>Ctrl</kbd>+<kbd>/</kbd></dt><dd>Toggle comment</dd>
-          <dt><kbd>Ctrl</kbd>+<kbd>F</kbd></dt><dd>Search in cell</dd>
           <dt><kbd>Tab</kbd> / <kbd>Shift</kbd>+<kbd>Tab</kbd></dt><dd>Indent / dedent</dd>
           <dt><kbd>Ctrl</kbd>+<kbd>Z</kbd></dt><dd>Undo typing</dd>
         </dl>

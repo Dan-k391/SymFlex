@@ -1,4 +1,5 @@
 // Sidebar: saved notebooks, course examples browser, function reference.
+import { showContextMenu } from './contextmenu.js'
 import { mplToCells } from './io.js'
 import { FLEX_FUNCTIONS, FLEX_PLOTS, FLEX_SECTIONS, FLEX_SELECT } from './lang/flex_docs.js'
 import { MAPLE_DOCS } from './lang/maple_docs.js'
@@ -21,10 +22,11 @@ const ago = (t) => {
 export function exampleToNotebook(group, ex) {
   const intro = `### ${ex.title}\n\n*${group.title}*` + (ex.context ? `\n\n> ${ex.context}` : '')
   const code = ex.kind === 'pde' ? [newCell('flexpde', ex.code)] : mplToCells(ex.code)
-  return newNotebook(`${group.title}: ${ex.title}`.slice(0, 80), [newCell('markdown', intro), ...code])
+  // Title first so narrow tabs of one section still tell the examples apart.
+  return newNotebook(`${ex.title} (${group.title})`.slice(0, 80), [newCell('markdown', intro), ...code])
 }
 
-export function initSidebar({ store, toast, openById, openNotebook, currentId, insertText }) {
+export function initSidebar({ store, toast, openById, openNotebook, openNotebooks, closeTab, currentId, insertText }) {
   // ---- tabs
   const tabs = [...document.querySelectorAll('.sidebar [role=tab]')]
   const selectTab = (tab) => {
@@ -62,11 +64,8 @@ export function initSidebar({ store, toast, openById, openNotebook, currentId, i
       del.setAttribute('aria-label', `Delete notebook ${e.name}`)
       del.onclick = () => {
         if (!confirm(`Delete notebook "${e.name}"? This cannot be undone.`)) return
+        closeTab(e.id, { discard: true })
         store.remove(e.id)
-        if (e.id === currentId()) {
-          const next = store.list()[0]
-          next ? openById(next.id) : openNotebook(newNotebook('Untitled'))
-        }
         refresh()
       }
       li.append(open, del)
@@ -97,6 +96,18 @@ export function initSidebar({ store, toast, openById, openNotebook, currentId, i
       d.open = !!q
       const sum = h('summary', null)
       sum.append(h('span', null, g.title), h('span', 'count', String(items.length)))
+      sum.title = 'Right-click to open every example in this section'
+      const n = items.length, s = n === 1 ? '' : 's'
+      sum.addEventListener('contextmenu', (e) => showContextMenu(e, [
+        { label: `Open all ${n} example${s} in tabs`, run: () => {
+          openNotebooks(items.map((ex) => exampleToNotebook(g, ex)))
+          toast(`Opened ${n} example${s} from ${g.title}`)
+        } },
+        { label: `Combine ${n} example${s} into one notebook`, run: () => {
+          openNotebook(newNotebook(g.title, items.flatMap((ex) => exampleToNotebook(g, ex).cells)))
+          toast(`Combined ${n} example${s} from ${g.title}`)
+        } },
+      ]))
       const ul = h('ul')
       for (const ex of items) {
         const b = h('button', 'ex-item')

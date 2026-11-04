@@ -1,6 +1,7 @@
 // Notebook view: renders cells, Jupyter-style command/edit modes, execution queue.
 import { setDiagnostics } from '@codemirror/lint'
 import { EditorSelection } from '@codemirror/state'
+import { EditorView } from '@codemirror/view'
 import { createEditor, setLineNumbers } from './editor.js'
 import { mapleUserNames, toDiagnostics } from './lang/assist.js'
 import { renderMarkdown } from './markdown.js'
@@ -43,6 +44,14 @@ export class NotebookView extends EventTarget {
     this.mode = 'command'
     this.lastKey = null
     root.addEventListener('keydown', (e) => this.#onKey(e))
+    // Any notebook's Restart (or a Stop without interrupt support) wipes the shared Maple session.
+    this.onKernelRestart = () => {
+      this.counter = 0
+      const queued = this.queue
+      this.queue = []
+      if (this.nb) for (const q of queued) { const c = this.nb.cells.find((x) => x.id === q); if (c) this.#renderCell(c) }
+    }
+    kernel.addEventListener('restart', this.onKernelRestart)
   }
 
   // ---- notebook lifecycle
@@ -65,9 +74,24 @@ export class NotebookView extends EventTarget {
       h('button', { type: 'button', class: 'btn btn-ghost', onclick: add('markdown') }, '+ Text'))
   }
 
+  /** Debounced persist; also tells listeners (find) that cells changed. */
   save() {
+    if (this.closed) return
     clearTimeout(this.saveTimer)
     this.saveTimer = setTimeout(() => this.persist(this.nb), 400)
+    this.dispatchEvent(new Event('change'))
+  }
+
+  /** Tab closed: stops this notebook's runs, saves it (unless discarded) and frees the editors. */
+  dispose({ discard = false } = {}) {
+    this.stopAll()
+    clearTimeout(this.saveTimer)
+    if (!discard) this.persist(this.nb)
+    this.closed = true
+    this.kernel.removeEventListener('restart', this.onKernelRestart)
+    for (const v of this.views.values()) v.editor?.destroy()
+    this.views.clear()
+    this.root.remove()
   }
 
   get cell() { return this.nb.cells.find((c) => c.id === this.selectedId) }
@@ -117,7 +141,11 @@ export class NotebookView extends EventTarget {
       type: cell.type,
       doc: cell.source,
       lineNumbers: this.lineNumbers,
-      onChange: (text) => { cell.source = text; this.save() },
+      onChange: (text) => {
+        cell.source = text
+        if (cell.type === 'markdown') this.#renderMarkdown(cell)  // find's Replace can edit a rendered text cell
+        this.save()
+      },
       keys: {
         runAdvance: () => (this.run(cell.id, 'next'), true),
         runInPlace: () => (this.run(cell.id, 'none'), true),
@@ -165,11 +193,24 @@ export class NotebookView extends EventTarget {
   }
 
   jumpToLine(id, line) {
-    const v = this.views.get(id)
-    const doc = v.editor.state.doc
+    const doc = this.views.get(id).editor.state.doc
     const l = doc.line(Math.min(Math.max(1, line), doc.lines))
+    this.selectRange(id, l.from, l.to)
+  }
+
+  /** Edits a cell with [from, to) selected. */
+  selectRange(id, from, to) {
     this.edit(id)
-    v.editor.dispatch({ selection: EditorSelection.range(l.from, l.to), scrollIntoView: true })
+    this.views.get(id).editor.dispatch({ selection: EditorSelection.range(from, to), scrollIntoView: true })
+  }
+
+  /** Scrolls a position of a cell's source into view without taking focus (find); opens a rendered text cell. */
+  reveal(id, pos) {
+    const cell = this.nb.cells.find((c) => c.id === id), v = this.views.get(id)
+    if (!cell || !v) return
+    this.select(id, { focus: false, scroll: false })
+    if (cell.type === 'markdown' && !v.mdEditing) { v.mdEditing = true; this.#renderMarkdown(cell) }
+    v.editor.dispatch({ effects: EditorView.scrollIntoView(pos, { y: 'center' }) })
   }
 
   // ---- selection & modes
@@ -397,7 +438,7 @@ export class NotebookView extends EventTarget {
   }
 
   async #runMaple(cell) {
-    cell.outputs = capOutputs(await this.kernel.run(cell.source))
+    cell.outputs = capOutputs(await this.kernel.run(cell.source, this))
     cell.execCount = ++this.counter
   }
 
@@ -409,7 +450,7 @@ export class NotebookView extends EventTarget {
     const result = await this.flex.run(cell.source, (msg) => {
       const text = typeof msg === 'string' ? msg : msg?.msg ?? msg?.message ?? (msg?.t != null ? `t = ${(+msg.t).toPrecision(4)}` : JSON.stringify(msg))
       live.lastChild.textContent = `${text}   (${((performance.now() - t0) / 1000).toFixed(1)} s)`
-    })
+    }, this)
     cell.outputs = [{ kind: 'flex', result }]
     cell.execCount = ++this.counter
     const ed = this.views.get(cell.id)?.editor
@@ -424,11 +465,11 @@ export class NotebookView extends EventTarget {
     if (this.nb) for (const q of queued) { const c = this.nb.cells.find((x) => x.id === q); if (c) this.#renderCell(c) }
     if (!id) return
     const cell = this.nb.cells.find((c) => c.id === id)
-    if (cell?.type === 'flexpde') { this.flex.interrupt(); return }
-    if (this.kernel.status !== 'busy') return
+    if (cell?.type === 'flexpde') { this.flex.interrupt(this); return }
+    // The kernel is shared: only interrupt when it is executing this notebook's cell.
+    if (!this.kernel.isRunning(this)) { this.kernel.cancel(this); return }
     const survived = this.kernel.interrupt()
     if (!survived && !silent) {
-      this.counter = 0
       this.toast('Kernel restarted: Maple state was lost (no interrupt support in this browser context).', 'warn')
     }
   }

@@ -1,8 +1,10 @@
 // Main-thread clients for the Maple (Pyodide) worker and the FlexPDE worker.
 
 /**
- * Maple kernel. Emits 'status' events with detail {status, pct, msg}:
- * status is 'loading' | 'idle' | 'busy' | 'error'.
+ * Maple kernel, shared by every open notebook. Emits 'status' events with detail {status, pct, msg}
+ * (status is 'loading' | 'idle' | 'busy' | 'error') and 'restart' when the Maple session was wiped.
+ * Runs wait in a main-thread queue and go to the worker one at a time, so a notebook can cancel
+ * its own waiting runs without touching the one another notebook is executing.
  */
 export class MapleKernel extends EventTarget {
   constructor(baseUrl = new URL(import.meta.env?.BASE_URL ?? './', location.href).href) {
@@ -10,6 +12,8 @@ export class MapleKernel extends EventTarget {
     this.baseUrl = baseUrl
     this.pending = new Map()
     this.seq = 0
+    this.jobs = []        // [{code, owner, resolve, reject}] not yet sent to the worker
+    this.current = null   // the job the worker is executing
     this.start()
   }
 
@@ -55,8 +59,31 @@ export class MapleKernel extends EventTarget {
     })
   }
 
-  /** Runs a cell; resolves to the output list. Rejects with {interrupted:true} on restart. */
-  run(code) { return this.#request('run', { code }, true) }
+  /** Runs a cell for owner (a notebook view); resolves to the output list. Rejects with {interrupted:true} on cancel or restart. */
+  run(code, owner = null) {
+    return new Promise((resolve, reject) => {
+      this.jobs.push({ code, owner, resolve, reject })
+      this.#pump()
+    })
+  }
+
+  async #pump() {
+    if (this.current || !this.jobs.length) return
+    const job = this.current = this.jobs.shift()
+    try { job.resolve(await this.#request('run', { code: job.code }, true)) } catch (e) { job.reject(e) }
+    if (this.current === job) this.current = null
+    this.#pump()
+  }
+
+  /** True when owner's run is the one executing now. */
+  isRunning(owner) { return this.current?.owner === owner }
+
+  /** Drops owner's runs that are still waiting (never reach the worker). */
+  cancel(owner) {
+    const mine = this.jobs.filter((j) => j.owner === owner)
+    this.jobs = this.jobs.filter((j) => j.owner !== owner)
+    for (const j of mine) j.reject(Object.assign(new Error('Cancelled'), { interrupted: true }))
+  }
 
   /** Names for autocompletion; never waits behind a long computation. */
   complete(prefix) {
@@ -80,15 +107,22 @@ export class MapleKernel extends EventTarget {
   /** Hard restart: terminates the worker; all kernel state is lost. */
   restart() {
     this.worker.terminate()
-    for (const p of this.pending.values()) p.reject(Object.assign(new Error('Kernel restarted'), { interrupted: true }))
+    const stopped = Object.assign(new Error('Kernel restarted'), { interrupted: true })
+    for (const p of this.pending.values()) p.reject(stopped)
+    for (const j of this.jobs) j.reject(stopped)
     this.pending.clear()
+    this.jobs = []
+    this.current = null
     this.start()
+    this.dispatchEvent(new Event('restart'))
   }
 
   /** Soft restart (Maple restart): fast when the kernel is idle. */
   async reset() {
-    if (this.status === 'idle') await this.#request('reset', {})
-    else this.restart()
+    if (this.status === 'idle' && !this.current) {
+      await this.#request('reset', {})
+      this.dispatchEvent(new Event('restart'))
+    } else this.restart()
   }
 }
 
@@ -111,23 +145,34 @@ export class FlexRunner {
     }
   }
 
-  #request(type, payload, onProgress) {
+  #request(type, payload, onProgress, owner = null) {
     const id = ++this.seq
     return new Promise((resolve, reject) => {
-      this.pending.set(id, { resolve, reject, onProgress, type })
+      this.pending.set(id, { resolve, reject, onProgress, type, payload, owner })
       this.worker.postMessage({ type, id, ...payload })
     })
   }
 
-  run(code, onProgress) { return this.#request('run', { code }, onProgress) }
+  run(code, onProgress, owner = null) { return this.#request('run', { code }, onProgress, owner) }
   lint(code) { return this.#request('lint', { code }) }
 
   get busy() { return [...this.pending.values()].some((p) => p.type === 'run') }
 
-  interrupt() {
+  /**
+   * Stops owner's runs. The worker handles requests in order, so the oldest pending one is executing:
+   * if that is owner's, the worker is replaced and everyone else's requests are sent to the new one.
+   */
+  interrupt(owner = null) {
+    const [executing] = this.pending.values()
+    const stopped = Object.assign(new Error('Stopped'), { interrupted: true })
+    for (const [id, p] of this.pending) {
+      if (owner && p.owner !== owner) continue
+      this.pending.delete(id)
+      p.reject(stopped)
+    }
+    if (!executing || (owner && executing.owner !== owner)) return
     this.worker.terminate()
-    for (const p of this.pending.values()) p.reject(Object.assign(new Error('Stopped'), { interrupted: true }))
-    this.pending.clear()
     this.#spawn()
+    for (const [id, p] of this.pending) this.worker.postMessage({ type: p.type, id, ...p.payload })
   }
 }

@@ -7,6 +7,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { makeZip } from '../../../scripts/bundle_py.mjs'
+import { expandReplacement, findMatches, findPattern } from '../find.js'
 import { exportJson, exportMpl, exportPde, importFile, looksLikePde, mplToCells, mwToCells } from '../io.js'
 import { enclosingCall, flexUserNames, mapleUserNames, toDiagnostics } from '../lang/assist.js'
 import { flexSectionAt, flexStreamParser } from '../lang/flex.js'
@@ -221,4 +222,21 @@ test('capOutputs keeps the head, the tail and a count of what it drops', () => {
   assert.equal(c[278].text, '278')
   assert.deepEqual(c[279], { kind: 'warning', text: 'Warning, 701 outputs not shown' })
   assert.equal(c.at(-1).text, '999')
+})
+
+test('find: pattern options, matches and replacement expansion', () => {
+  const spans = (text, q, o) => findMatches(text, findPattern(q, o)).map((x) => text.slice(x.from, x.to))
+  assert.equal(findPattern(''), null)
+  assert.deepEqual(spans('x := a.b; X(a+b)', 'x'), ['x', 'X'])
+  assert.deepEqual(spans('x := a.b; X(a+b)', 'x', { matchCase: true }), ['x'])
+  assert.deepEqual(spans('a.b a+b', 'a.b'), ['a.b'])                       // literal: '.' is not a wildcard
+  assert.deepEqual(spans('a.b a+b', 'a.b', { regex: true }), ['a.b', 'a+b'])
+  assert.deepEqual(spans('diff(dt, t)', 't', { wholeWord: true }), ['t'])
+  assert.deepEqual(spans('abc', 'x*', { regex: true }), [])               // empty matches are skipped
+  assert.throws(() => findPattern('(', { regex: true }), SyntaxError)
+  const [hit] = findMatches('x(t) = 3', findPattern(String.raw`(\w)\((\w)\)`, { regex: true }))
+  assert.equal(expandReplacement('$2[$1] $$ $& $9', hit.m, true), 't[x] $ x(t) $9')
+  assert.equal(expandReplacement('$1', hit.m, false), '$1')
+  assert.equal(expandReplacement('$10|$0', hit.m, true), 'x0|$0')  // like String.replace with 2 groups
+  assert.deepEqual(spans('a;\nb;\nc', ';$', { regex: true }), [';', ';'])  // ^ and $ per line
 })
