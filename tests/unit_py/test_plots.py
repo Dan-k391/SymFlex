@@ -80,6 +80,13 @@ def test_smartview_cuts_singular_spikes():
     assert spec("plot(1/x, x=-1..1, smartview=false);")["yrange"] is None
 
 
+def test_smartview_on_log_x_axis_keeps_the_low_end():
+    # a phase curve rising 0 -> Pi around w=6: weights must follow the log axis, or the
+    # wide linear spans at high w outweigh the low end and it is cut off as a "spike"
+    sp_ = spec("with(plots): semilogplot(arctan(3*w, 40-w^2), w=1..100);")
+    assert sp_["yrange"] is None
+
+
 def test_adaptive_sampling_resolves_fast_oscillation():
     c = spec("plot(8*cos(10*t), t=0..20);")["curves"][0]
     peaks = [y for y in finite(c) if y < -7.9]

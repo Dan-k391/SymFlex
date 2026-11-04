@@ -244,13 +244,14 @@ def discontinuities(expr, x, a, b, f):
 
 
 # ---------------------------------------------------------------- smartview
-def smart_range(curves):
+def smart_range(curves, xlog=False):
     """A y range that cuts off singular spikes (Maple's smartview), or None when the curves have
-    none.  curves: [(xs, ys)] of function plots; quantiles are weighted by the x span of a point
-    since adaptive sampling crowds points into spikes."""
+    none.  curves: [(xs, ys)] of function plots; quantiles are weighted by the on-screen x span of
+    a point (log x on a logarithmic axis) since adaptive sampling crowds points into spikes."""
     pts = []
     for xs, ys in curves:
-        P = [(x, y) for x, y in zip(xs, ys) if x is not None and y is not None]
+        P = [(math.log10(x) if xlog else x, y) for x, y in zip(xs, ys)
+             if x is not None and y is not None and (not xlog or x > 0)]
         for i, (_, y) in enumerate(P):
             w = (P[min(i + 1, len(P) - 1)][0] - P[max(i - 1, 0)][0]) / 2
             pts.append((y, abs(w)))

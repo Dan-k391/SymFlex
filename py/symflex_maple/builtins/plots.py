@@ -354,7 +354,8 @@ def plot2d(ctx, args, opts, xlog=False, ylog=False):
         spec["yrange"] = _range(ctx, yr)
     elif func_curves and not ylog and opts.get("view") is None and \
             not (opts.get("smartview") is not None and not is_true(opts["smartview"])):
-        spec["yrange"] = smart_range([(c["x"], c["y"]) for c in func_curves if not c.get("filled")])
+        spec["yrange"] = smart_range([(c["x"], c["y"]) for c in func_curves if not c.get("filled")],
+                                     xlog=xlog)
     return _apply_common(ctx, spec, opts)
 
 
