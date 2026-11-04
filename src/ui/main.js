@@ -518,6 +518,20 @@ if (import.meta.hot) {
   onViewIdle = reloadEngine
 }
 
+// Edits are saved 400 ms after typing stops; don't lose that window on reload or close.
+addEventListener('pagehide', () => { for (const t of tabs) if (t.view && !t.view.closed) store.save(t.view.nb) })
+
+// A page cached from an older deploy (GitHub Pages caches for 10 min) can ask for lazy chunks
+// such as Plotly that the new deploy removed: reload once to get the current build.
+addEventListener('vite:preloadError', (e) => {
+  let last = 0
+  try { last = +sessionStorage.getItem('symflex.staleReload') || 0 } catch { /* storage blocked */ }
+  if (Date.now() - last < 30000) return  // already tried: let the error show
+  e.preventDefault()
+  try { sessionStorage.setItem('symflex.staleReload', String(Date.now())) } catch { /* storage blocked */ }
+  location.reload()
+})
+
 // ---- boot: reopen the tabs of the last session
 
 const names = new Map(store.list().map((e) => [e.id, e.name]))
