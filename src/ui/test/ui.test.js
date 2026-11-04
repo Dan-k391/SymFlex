@@ -15,7 +15,7 @@ import { checkMapleBrackets, mapleStreamParser } from '../lang/maple.js'
 import { MAPLE_DOCS, MAPLE_PACKAGES } from '../lang/maple_docs.js'
 import { renderMarkdown } from '../markdown.js'
 import { capOutputs } from '../output.js'
-import { arrowSegments, bounds2d, gridZ, meshToGrid, specToLayout, specToTraces } from '../plot.js'
+import { arrowSegments, bounds2d, gridZ, legendNames, meshToGrid, specToLayout, specToTraces } from '../plot.js'
 import * as model from '../store.js'
 
 function tokens(parser, text) {
@@ -239,4 +239,14 @@ test('find: pattern options, matches and replacement expansion', () => {
   assert.equal(expandReplacement('$1', hit.m, false), '$1')
   assert.equal(expandReplacement('$10|$0', hit.m, true), 'x0|$0')  // like String.replace with 2 groups
   assert.deepEqual(spans('a;\nb;\nc', ';$', { regex: true }), [';', ';'])  // ^ and $ per line
+})
+
+test('plot legends and default colours', () => {
+  const two = [{ x: [0], y: [0], ci: 0, label: 'x(t)' }, { x: [0], y: [0], ci: 0, legend: '' }, { x: [0], y: [0], ci: 1, label: 'y(t)' }]
+  assert.deepEqual(legendNames(two), ['x(t)', '', 'y(t)'])               // automatic: several labelled curves
+  assert.deepEqual(legendNames([{ label: 'x' }]), [''])                  // one curve needs no legend
+  assert.deepEqual(legendNames([{ label: 'x', legend: 'pos' }, { label: 'v' }]), ['pos', ''])  // explicit legend wins
+  assert.equal(legendNames([{ label: 'a'.repeat(60) }, { label: 'b' }])[0].length, 40)
+  const t = specToTraces({ type: '2d', curves: [...two, { x: [0], y: [0], ci: 2, color: 'red' }] })
+  assert.deepEqual(t.map((c) => c.line.color), ['#2563eb', '#2563eb', '#dc2626', 'red'])  // a curve's pieces share its colour
 })

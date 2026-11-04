@@ -95,7 +95,8 @@ def test_curve_options():
     assert [k["thickness"] for k in c] == [1, 3] and [k["dash"] for k in c] == ["dash", "dashdot"]
     assert (s["title"], s["xlabel"], s["ylabel"], s["xrange"], s["yrange"], s["axes"]) == \
         ("T", "u", "v", [0.0, 2.0], [-1.0, 1.0], "boxed")
-    assert spec("plot(x, x=0..1);")["curves"][0]["color"] == "#78000E"   # Maple's first default colour
+    c = spec("plot([x, x^2], x=0..1);")["curves"]   # default colours come from the UI palette, by index
+    assert [(k["color"], k["ci"], k["label"]) for k in c] == [("", 0, "x"), ("", 1, "x^2")]
 
 
 def test_log_axes_sample_positive_log_spaced_x():
@@ -163,7 +164,7 @@ def test_implicitplot_components():
     assert len(spec("plots:-implicitplot(x^2-y^2=1, x=-3..3, y=-3..3);")["curves"]) == 2
     assert len(spec("plots:-implicitplot(x*y=1, x=-3..3, y=-3..3);")["curves"]) == 2   # no segment across the pole
     two = spec("plots:-implicitplot([x^2+y^2=1, y=x], x=-2..2, y=-2..2);")["curves"]
-    assert len(two) == 2 and two[0]["color"] != two[1]["color"]
+    assert len(two) == 2 and two[0]["ci"] != two[1]["ci"]
 
 
 def test_textplot_and_polarplot():

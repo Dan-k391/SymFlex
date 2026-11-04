@@ -1,5 +1,7 @@
 // PlotSpec (see ARCHITECTURE.md) -> Plotly figures. Plotly is loaded lazily on first plot.
+// One palette for Maple and FlexPDE plots; a curve without its own colour uses PALETTE[ci].
 const PALETTE = ['#2563eb', '#dc2626', '#16a34a', '#9333ea', '#ea580c', '#0891b2', '#db2777', '#65a30d']
+const LABEL_MAX = 40
 const DASH = { solid: 'solid', dash: 'dash', dot: 'dot', dashdot: 'dashdot', longdash: 'longdash', spacedash: 'dash', spacedot: 'dot' }
 
 let plotlyPromise
@@ -87,14 +89,26 @@ function themeColors() {
 
 const is3d = (spec) => spec.type === '3d' || spec.type === 'surface'
 
+/**
+ * Legend text per curve. Without any legend option, a plot of several labelled curves (the engine
+ * labels each plotted expression) gets an automatic legend so the curves can be told apart.
+ */
+export function legendNames(curves = []) {
+  if (curves.some((c) => c.legend)) return curves.map((c) => c.legend || '')
+  const auto = curves.filter((c) => c.label).length >= 2
+  const short = (s) => (s.length > LABEL_MAX ? `${s.slice(0, LABEL_MAX - 1)}…` : s)
+  return curves.map((c) => (auto && c.label ? short(c.label) : ''))
+}
+
 export function specToTraces(spec) {
   const traces = []
   const three = is3d(spec)
+  const names = legendNames(spec.curves)
   ;(spec.curves || []).forEach((c, k) => {
-    const color = c.color || PALETTE[k % PALETTE.length]
+    const color = c.color || PALETTE[(c.ci ?? k) % PALETTE.length]
     const points = c.style === 'point'
     const base = {
-      x: c.x, y: c.y, name: c.legend || '', showlegend: !!c.legend,
+      x: c.x, y: c.y, name: names[k], showlegend: !!names[k],
       mode: points ? 'markers' : 'lines',
       line: { color, width: three ? 4 : Math.max(1, (c.thickness ?? 1) * 1.6), dash: DASH[c.dash] || 'solid' },
       marker: { color, size: three ? 3 : c.symbolsize ? c.symbolsize * 0.6 : 6 },
@@ -142,7 +156,7 @@ export function specToLayout(spec, colors = themeColors(), fixed = null) {
     paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: colors.bg,
     font: { family: 'Inter, system-ui, sans-serif', color: colors.fg, size: 12 },
     margin: { l: 56, r: 24, t: spec.title ? 44 : 20, b: 48 },
-    showlegend: (spec.curves || []).some((c) => c.legend),
+    showlegend: legendNames(spec.curves).some(Boolean),
     legend: { orientation: 'h', y: -0.18 },
     hovermode: 'closest',
   }

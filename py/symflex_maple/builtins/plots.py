@@ -32,9 +32,6 @@ PLOT_OPTIONS = {
 }
 PLOT3D_OPTIONS = dict(PLOT_OPTIONS, grid=None, shading=None, lightmodel=None, orientation=None,
                       glossiness=None, contours=None, projection=None)
-# Maple 2024's default "Niagara" colour sequence
-PALETTE = ["#78000E", "#000E78", "#4A7800", "#3E578A", "#780072", "#00786A", "#604191", "#004A78",
-           "#784C00", "#91414A"]
 LINESTYLES = ["solid", "dot", "dash", "dashdot", "longdash", "spacedash", "spacedot"]
 TRIG = (sp.sin, sp.cos, sp.tan, sp.sec, sp.csc, sp.cot)
 
@@ -79,9 +76,10 @@ def _opt(opts, key, i):
     return v
 
 
-def _color(c, i):
+def _color(c):
+    """An explicit colour option as CSS; "" when none (the UI then picks from its palette by "ci")."""
     if c is None:
-        return PALETTE[i % len(PALETTE)]
+        return ""
     if isinstance(c, AppliedUndef) and type(c).__name__ in ("RGB", "COLOR", "COLOUR") and len(c.args) >= 3:
         r, g, b = (max(0, min(255, round(255 * float(v)))) for v in c.args[-3:])
         return f"rgb({r},{g},{b})"
@@ -104,7 +102,7 @@ def _curve(ctx, xs, ys, i, opts, zs=None, legend=None, style=None):
     st = style or _opt(opts, "style", i)
     thick = _opt(opts, "thickness", i)
     c = {"x": xs, "y": ys, "legend": legend,
-         "color": _color(_opt(opts, "color", i) or _opt(opts, "colour", i), i),
+         "color": _color(_opt(opts, "color", i) or _opt(opts, "colour", i)), "ci": i,
          "style": "point" if st is not None and _text(st).lower() == "point" else "line",
          "thickness": int(_num(ctx, thick)) if thick is not None else 1,
          "dash": _dash(_opt(opts, "linestyle", i))}
@@ -341,8 +339,11 @@ def plot2d(ctx, args, opts, xlog=False, ylog=False):
             spec["curves"].append(_curve(ctx, pts[0], pts[1], i, opts))
         elif _is_param(item):
             spec["curves"].append(_param_curve(ctx, item, opts, i, xlog, ylog))
+            spec["curves"][-1]["label"] = lprint(MList(item.items[:2]))
         else:
             cs = _function_curves(ctx, item, var, a, b, opts, i, xlog, ylog)
+            if cs:   # names the curve in the UI's automatic legend (several curves, no legend option)
+                cs[0]["label"] = lprint(item)
             spec["curves"] += cs
             func_curves += cs
     if func_curves and opts.get("coords") is None:
@@ -470,7 +471,13 @@ def merge_specs(ctx, specs, opts):
         return out
     out = dict(specs[0])
     out["type"] = "3d" if any(s["type"] == "3d" for s in specs) else specs[0]["type"]
-    out["curves"] = [c for s in specs for c in s.get("curves", [])]
+    # Each plot's default colours continue after the previous plot's (Maple restarts them, which
+    # draws every single-curve plot of a display in the same colour).
+    out["curves"], off = [], 0
+    for s in specs:
+        cs = s.get("curves", [])
+        out["curves"] += [dict(c, ci=c.get("ci", 0) + off) for c in cs]
+        off += max((c.get("ci", 0) for c in cs), default=-1) + 1
     texts = [t for s in specs for t in s.get("texts", [])]
     if texts:
         out["texts"] = texts
@@ -602,6 +609,7 @@ def m_odeplot(ctx, sol, *args, frames=None, **opts):
     for i, g in enumerate(groups):
         cols = [series(e) for e in g]
         spec["curves"].append(_curve(ctx, cols[0], cols[1], i, opts, zs=cols[2] if len(cols) == 3 else None))
+        spec["curves"][-1]["label"] = ", ".join(lprint(e) for e in g[1:])
     for k, key in enumerate(("xlabel", "ylabel", "zlabel")[:len(groups[0])]):
         spec[key] = ", ".join(dict.fromkeys(_ode_label(g[k], ns.t) for g in groups if k < len(g)))
     spec = _apply_common(ctx, spec, opts)
@@ -739,6 +747,8 @@ def m_implicitplot(ctx, f, *rest, **opts):
         for k, line in enumerate(implicit_curves(g, xa, xb, ya, yb, nx, ny)):
             spec["curves"].append(_curve(ctx, [p[0] for p in line], [p[1] for p in line], i, opts,
                                          legend=None if k == 0 else ""))
+            if k == 0:
+                spec["curves"][-1]["label"] = lprint(eq)
     if xv is not None:
         spec["xlabel"], spec["ylabel"] = _text(xv), _text(yv)
     return PlotValue(_apply_common(ctx, spec, opts))
@@ -756,8 +766,7 @@ def m_textplot(ctx, data, *rest, align=None, **opts):
         if len(e.items) == 4:
             raise MapleError("textplot3d data is not implemented in SymFlex")
         texts.append({"x": _num(ctx, e.items[0]), "y": _num(ctx, e.items[1]), "text": _text(e.items[2]),
-                      "color": _color(opts.get("color") or opts.get("colour"), 0) if
-                      (opts.get("color") or opts.get("colour")) is not None else ""})
+                      "color": _color(opts.get("color") or opts.get("colour"))})
     spec = empty_spec()
     spec["texts"] = texts
     return PlotValue(_apply_common(ctx, spec, opts))
